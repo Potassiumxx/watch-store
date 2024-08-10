@@ -8,13 +8,19 @@ export default function Navbar() {
       </div>
       <div className="flex gap-2 bg-black text-white rounded-[25px] min-h-[3.2rem] items-center">
         <span className="navbar-link-style border-r-2">
-          <Link to={"/"}>Home</Link>
+          <Link to={"/"} className="navbar-link-padding">
+            Home
+          </Link>
         </span>
         <span className="navbar-link-style border-r-2">
-          <Link to={"products"}>Collection</Link>
+          <Link to={"products"} className="navbar-link-padding">
+            Collection
+          </Link>
         </span>
         <span className="navbar-link-style">
-          <Link to={"about"}>About Us</Link>
+          <Link to={"about"} className=" navbar-link-padding">
+            About Us
+          </Link>
         </span>
       </div>
       <div className="flex w-28 items-center justify-center gap-4">

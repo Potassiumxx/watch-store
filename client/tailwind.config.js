@@ -5,7 +5,10 @@ import plugin from "tailwindcss/plugin";
 function customClassName({ addComponents }) {
   const newComponents = {
     ".navbar-link-style": {
-      "@apply w-[200px] text-center border-white uppercase font-semibold tracking-wider": {},
+      "@apply text-center border-white uppercase font-semibold tracking-wider": {},
+    },
+    ".navbar-link-padding": {
+      "@apply px-[50px] py-[10px]": {},
     },
   };
   addComponents(newComponents);
