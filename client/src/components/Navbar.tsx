@@ -4,7 +4,9 @@ export default function Navbar() {
   return (
     <div className="flex justify-between px-7 py-7 items-center">
       <div>
-        <span>Logo</span>
+        <Link to={"/"}>
+          <img alt="logo" />
+        </Link>
       </div>
       <div className="flex gap-2 bg-black text-white rounded-[25px] min-h-[3.2rem] items-center">
         <span className="navbar-link-style border-r-2">
