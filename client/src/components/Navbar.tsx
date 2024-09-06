@@ -45,7 +45,7 @@ export default function Navbar() {
 
   return (
     <div className="flex flex-col justify-between items-center">
-      <div className="relative flex justify-between w-full py-2 pl-[100px] pr-[100px] bg-[#0E0E0E] text-white items-center">
+      <div className="navbar-x-axis-padding relative flex justify-between w-full py-2 bg-[#0E0E0E] text-white items-center">
         <div>
           <span className="text-[10px] italic capitalize text-[#898989]">Buy best watches with free shipping & returns</span>
         </div>
@@ -71,7 +71,7 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      <div className="flex w-full pt-5 items-center pl-[100px] pr-[100px]">
+      <div className="navbar-x-axis-padding flex w-full pt-5 items-center">
         <button onClick={scrollToTop} className="flex items-center gap-2 hover:scale-110 duration-300">
           <span className="bg-[#1bddf3] w-5 h-5 block"></span>
           <span className="font-bold text-2xl tracking-wider">WS</span>
