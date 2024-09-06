@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <div className="min-h-dvh">
+      <div className="min-h-dvh z-10">
         <Outlet />
       </div>
       <Footer />
