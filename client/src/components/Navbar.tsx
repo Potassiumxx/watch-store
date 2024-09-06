@@ -32,12 +32,14 @@ export default function Navbar() {
     }
   }
 
+  function scrollToTop() {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }
+
   React.useEffect(() => {
-    console.log("run");
     document.addEventListener("click", handleCloseSearchBar);
     return () => {
       document.removeEventListener("click", handleCloseSearchBar);
-      console.log("stop");
     };
   }, [openSearchBar]);
 
@@ -69,31 +71,30 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      <div>
-        <Link to={"/"}>
-          <img alt="logo" />
-        </Link>
-      </div>
-      <div className="flex gap-2 bg-black text-white rounded-[25px] min-h-[3.2rem] items-center">
-        <span className="navbar-link-style border-r-2">
-          <Link to={"/"} className="navbar-link-padding">
-            Home
-          </Link>
-        </span>
-        <span className="navbar-link-style border-r-2">
-          <Link to={"products"} className="navbar-link-padding">
-            Collection
-          </Link>
-        </span>
-        <span className="navbar-link-style">
-          <Link to={"about"} className=" navbar-link-padding">
-            About Us
-          </Link>
-        </span>
-      </div>
-      <div className="flex w-28 items-center justify-center gap-4">
-        <span>Search</span>
-        <span>Cart</span>
+      <div className="flex w-full pt-5 items-center pl-[100px] pr-[100px]">
+        <button onClick={scrollToTop} className="flex items-center gap-2 hover:scale-110 duration-300">
+          <span className="bg-[#1bddf3] w-5 h-5 block"></span>
+          <span className="font-bold text-2xl tracking-wider">WS</span>
+        </button>
+        <div className="flex w-full justify-center">
+          <div className="flex gap-2 bg-black backdrop-blur-lg text-white rounded-[25px] min-h-[3.2rem] items-center">
+            <span className="navbar-link-style border-r-2">
+              <Link to={"/"} className="navbar-link-padding">
+                Home
+              </Link>
+            </span>
+            <span className="navbar-link-style border-r-2">
+              <Link to={"products"} className="navbar-link-padding">
+                Collection
+              </Link>
+            </span>
+            <span className="navbar-link-style">
+              <Link to={"about"} className=" navbar-link-padding">
+                About Us
+              </Link>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
