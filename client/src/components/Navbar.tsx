@@ -8,7 +8,7 @@ export default function Navbar() {
   const [openSearchBar, setOpenSearchBar] = React.useState<boolean>(false);
   const [isSearchBarVisible, setIsSearchBarVisible] = React.useState<boolean>(false);
   const searchBarRef = React.useRef<HTMLInputElement | null>(null);
-  const searchIconRef = React.useRef<HTMLSpanElement | null>(null);
+  const searchIconRef = React.useRef<HTMLButtonElement | null>(null);
 
   function handleOpenSearchBar() {
     setOpenSearchBar(true);
@@ -57,16 +57,16 @@ export default function Navbar() {
           />
         )}
         <div className="flex items-center w-[200px] justify-between">
-          <span ref={searchIconRef} onClick={handleOpenSearchBar} className="hover:cursor-pointer">
+          <button ref={searchIconRef} onClick={handleOpenSearchBar} className="hover:cursor-pointer" aria-label="Search">
             <IoSearchOutline size={25} />
-          </span>
-          <span className="flex items-center hover:cursor-pointer">
+          </button>
+          <button className="flex items-center hover:cursor-pointer" aria-label="Cart">
             <LiaShoppingCartSolid size={32} />
             <span className="flex items-center text-[12px] font-bold px-[5px] py-[1px] rounded-[50%] bg-[#f28c26]">999</span>
-          </span>
-          <span className="hover:cursor-pointer">
+          </button>
+          <button className="hover:cursor-pointer" aria-label="User">
             <FaRegUser size={22} />
-          </span>
+          </button>
         </div>
       </div>
       <div>
