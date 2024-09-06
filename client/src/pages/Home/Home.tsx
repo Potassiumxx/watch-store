@@ -6,6 +6,7 @@ export default function Home() {
         alt="Round watch"
         className="absolute top-[48px] w-full h-full object-cover object-center"
       />
+      {/* Photo by Pixabay: https://www.pexels.com/photo/round-skeleton-watch-277319/ */}
       <h1>Home Page</h1>
     </div>
   );

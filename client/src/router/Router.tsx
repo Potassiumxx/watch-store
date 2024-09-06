@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../App";
-import Home from "../pages/Home";
+import Home from "../pages/Home/Home";
 import ErrorPage from "../pages/ErrorPage";
 
 export default function Router() {
