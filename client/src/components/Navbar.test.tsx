@@ -17,7 +17,7 @@ describe("Navbar Component", () => {
   });
 
   it("renders Navbar links", () => {
-    expect(screen.getAllByRole("link")).toHaveLength(4);
+    expect(screen.getAllByRole("link")).toHaveLength(3);
   });
 
   it("does not shows search bar when the page is first loaded", () => {
