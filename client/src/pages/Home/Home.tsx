@@ -5,6 +5,7 @@ function ImageSlider() {
   const imageList = [
     { src: "./src/assets/images/pexels-pixabay-277319.jpg", alt: "Round Skeleton Watch" },
     { src: "./src/assets/images/pexels-thefstopper-1075189.jpg", alt: "Black Coloured Chronograph Watch" },
+    { src: "./src/assets/images/pexels-ferarcosn-190819.jpg", alt: "Silver And Black Round Watch" },
   ];
 
   const [currentIndex, setCurrentIndex] = React.useState(0);
@@ -35,7 +36,9 @@ export default function Home() {
     <div className="h-screen">
       <ImageSlider />
       {/*1st Photo by Pixabay: https://www.pexels.com/photo/round-skeleton-watch-277319/ */}
-      {/* Photo by Fstopper: https://www.pexels.com/photo/round-black-current-chronograph-watch-with-link-bracelet-1075189/ */}
+      {/*2nd Photo by Fstopper: https://www.pexels.com/photo/round-black-current-chronograph-watch-with-link-bracelet-1075189/ */}
+      {/*3rd Photo by Fernando Arcos:
+      https://www.pexels.com/photo/silver-linked-bracelet-silver-and-black-round-chronograph-watch-190819/ */}
       <div className="absolute z-10 w-[300px] h-[150px] bg-white bottom-5 right-2 rounded-lg"></div>
     </div>
   );
