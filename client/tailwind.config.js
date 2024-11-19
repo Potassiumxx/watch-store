@@ -10,6 +10,9 @@ function customClassName({ addComponents }) {
     ".navbar-link-style": {
       "@apply text-center border-white uppercase font-semibold tracking-wider": {},
     },
+    ".navbar-link-style:hover": {
+      "@apply underline underline-offset-8": {},
+    },
     ".navbar-link-padding": {
       "@apply px-[50px] py-[10px]": {},
     },

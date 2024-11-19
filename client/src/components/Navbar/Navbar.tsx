@@ -45,7 +45,7 @@ export default function Navbar() {
 
   return (
     <div className="flex flex-col justify-between items-center z-20 relative">
-      <div className="navbar-x-axis-padding relative flex justify-between w-full py-2 bg-[#0E0E0E] text-white items-center">
+      <div className="relative flex justify-between w-full py-2 bg-[#0E0E0E] text-white items-center px-[50px]">
         <div>
           <span className="text-[10px] italic capitalize text-[#898989]">Buy best watches with free shipping & returns</span>
         </div>
@@ -71,28 +71,22 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      <div className="navbar-x-axis-padding flex w-full pt-5 items-center">
+      <div className="navbar-x-axis-padding flex w-full pt-5 items-center bg-black text-white">
         <button onClick={scrollToTop} className="flex items-center gap-2 hover:scale-110 duration-300">
           <span className="bg-[#1bddf3] w-5 h-5 block"></span>
           <span className="font-bold text-2xl tracking-wider text-white">WS</span>
         </button>
         <div className="flex w-full justify-center">
-          <div className="flex gap-2 bg-white bg-opacity-10 backdrop-blur-lg text-white rounded-[25px] min-h-[3.2rem] items-center">
-            <span className="navbar-link-style border-r-2">
-              <Link to={"/"} className="navbar-link-padding">
-                Home
-              </Link>
-            </span>
-            <span className="navbar-link-style border-r-2">
-              <Link to={"products"} className="navbar-link-padding">
-                Collection
-              </Link>
-            </span>
-            <span className="navbar-link-style">
-              <Link to={"about"} className=" navbar-link-padding">
-                About Us
-              </Link>
-            </span>
+          <div className="flex gap-[8rem] min-h-[3.2rem] items-center">
+            <Link to={"/"} className="navbar-link-style">
+              Home
+            </Link>
+            <Link to={"products"} className="navbar-link-style">
+              Collection
+            </Link>
+            <Link to={"about"} className="navbar-link-style">
+              About Us
+            </Link>
           </div>
         </div>
       </div>

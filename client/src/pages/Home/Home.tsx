@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
+import backgroundImage from "../../assets/images/pexels-pixabay-277319.jpg";
 
 function ImageSlider() {
   const imageList = [
@@ -34,12 +35,12 @@ export default function Home() {
   React.useEffect(() => {}, []);
   return (
     <div className="h-screen">
-      <ImageSlider />
+      {/* <ImageSlider /> */}
       {/*1st Photo by Pixabay: https://www.pexels.com/photo/round-skeleton-watch-277319/ */}
       {/*2nd Photo by Fstopper: https://www.pexels.com/photo/round-black-current-chronograph-watch-with-link-bracelet-1075189/ */}
       {/*3rd Photo by Fernando Arcos:
       https://www.pexels.com/photo/silver-linked-bracelet-silver-and-black-round-chronograph-watch-190819/ */}
-      <div className="absolute z-10 w-[300px] h-[150px] bg-white bottom-5 right-2 rounded-lg"></div>
+      <div style={{ backgroundImage: backgroundImage }}></div>
     </div>
   );
 }
