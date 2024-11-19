@@ -40,7 +40,16 @@ export default function Home() {
       {/*2nd Photo by Fstopper: https://www.pexels.com/photo/round-black-current-chronograph-watch-with-link-bracelet-1075189/ */}
       {/*3rd Photo by Fernando Arcos:
       https://www.pexels.com/photo/silver-linked-bracelet-silver-and-black-round-chronograph-watch-190819/ */}
-      <div style={{ backgroundImage: backgroundImage }}></div>
+      <div className="flex items-center bg-[url(./src/assets/images/pexels-thefstopper-1075189.jpg)] min-h-dvh bg-cover bg-center bg-no-repeat">
+        <div className="flex flex-col gap-7 text-white px-[50px] min-h-[300px]">
+          <div className="flex flex-col gap-7 max-w-[500px]">
+            <h1 className="uppercase text-6xl font-bold tracking-wide">Buy watches online</h1>
+            <p className="text-white text-lg">
+              Discover the best collection of watches, perfect for every occasion. Stylish, durable, and affordable.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
