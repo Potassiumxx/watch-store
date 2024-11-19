@@ -45,7 +45,7 @@ export default function Navbar() {
 
   return (
     <div className="flex flex-col justify-between items-center z-20 relative">
-      <div className="relative flex justify-between w-full py-2 bg-[#0E0E0E] text-white items-center px-[50px]">
+      <div className="relative flex justify-between w-full py-2 bg-[#1a1a1a] text-white items-center px-[50px]">
         <div>
           <span className="text-[10px] italic capitalize text-[#898989]">Buy best watches with free shipping & returns</span>
         </div>
