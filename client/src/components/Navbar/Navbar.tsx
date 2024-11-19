@@ -71,13 +71,13 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      <div className="navbar-x-axis-padding flex w-full pt-5 items-center bg-black text-white">
+      <div className="navbar-x-axis-padding flex w-full py-5 items-center bg-black text-white">
         <button onClick={scrollToTop} className="flex items-center gap-2 hover:scale-110 duration-300">
           <span className="bg-[#1bddf3] w-5 h-5 block"></span>
           <span className="font-bold text-2xl tracking-wider text-white">WS</span>
         </button>
         <div className="flex w-full justify-center">
-          <div className="flex gap-[8rem] min-h-[3.2rem] items-center">
+          <div className="flex gap-[8rem]">
             <Link to={"/"} className="navbar-link-style">
               Home
             </Link>
