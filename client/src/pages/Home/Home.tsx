@@ -35,19 +35,21 @@ function ImageSlider() {
 export default function Home() {
   React.useEffect(() => {}, []);
   return (
-    <div className="h-screen">
+    <>
       {/* <ImageSlider /> */}
       {/*1st Photo by Pixabay: https://www.pexels.com/photo/round-skeleton-watch-277319/ */}
       {/*2nd Photo by Fstopper: https://www.pexels.com/photo/round-black-current-chronograph-watch-with-link-bracelet-1075189/ */}
       {/*3rd Photo by Fernando Arcos:
       https://www.pexels.com/photo/silver-linked-bracelet-silver-and-black-round-chronograph-watch-190819/ */}
-      <div className="relative flex items-end pb-9 min-h-dvh bg-black z-10 backgroundImageStyle">
-        <div className="flex flex-col justify-between text-white px-[50px] min-h-[350px]">
-          <div className="flex flex-col gap-7 max-w-[500px]">
-            <h1 className="uppercase text-6xl font-bold tracking-wide">Buy watches online</h1>
-            <p className="text-white text-lg max-w-[400px]">
-              Discover the best collection of watches, perfect for every occasion. Stylish, durable, and affordable.
-            </p>
+      <div className="absolute inset-0 flex items-end pb-3 min-h-dvh bg-black z-10 backgroundImageStyle">
+        <div className="flex flex-col justify-between text-white px-[50px] min-h-[350px] w-full">
+          <div className="self-center max-w-[700px]">
+            <div className="flex flex-col gap-7 text-center">
+              <h1 className="uppercase text-6xl font-bold tracking-wide">Buy watches online</h1>
+              <p className="text-white text-lg font-semibold">
+                Discover the best collection of watches, perfect for every occasion. Stylish, durable, and affordable.
+              </p>
+            </div>
           </div>
           <Button textValue={"Shop Now"} className="rounded-sm hover:font-bold" />
           <div className="absolute bottom-4 right-4 bg-white text-black rounded-sm hover:bg-[#3f3f3f] hover:text-white transition-all duration-150">
@@ -63,6 +65,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
