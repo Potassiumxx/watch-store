@@ -16,6 +16,21 @@ function customClassName({ addComponents }) {
     ".navbar-link-padding": {
       "@apply px-[50px] py-[10px]": {},
     },
+    ".backgroundImageStyle::before": {
+      content: "''",
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundImage: "url(./src/assets/images/pexels-thefstopper-1075189.jpg)",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      minHeight: "100%",
+      zIndex: -1,
+      opacity: ".5",
+    },
   };
   addComponents(newComponents);
 }

@@ -14,9 +14,4 @@ describe("Home Component", () => {
   beforeEach(() => {
     render(<RouterProvider router={router} />);
   });
-
-  it("renders background image", () => {
-    const image = screen.getByAltText(/round watch/i);
-    expect(image).toBeVisible();
-  });
 });
