@@ -7,8 +7,10 @@ import * as React from "react";
 export default function Navbar() {
   const [openSearchBar, setOpenSearchBar] = React.useState<boolean>(false);
   const [isSearchBarVisible, setIsSearchBarVisible] = React.useState<boolean>(false);
+  const [isNavbarBackgroundVisible, setIsNavbarBackgroundVisible] = React.useState<boolean>(false);
   const searchBarRef = React.useRef<HTMLInputElement | null>(null);
   const searchIconRef = React.useRef<HTMLButtonElement | null>(null);
+  const bottomNavbarRef = React.useRef<HTMLDivElement | null>(null);
 
   function handleOpenSearchBar() {
     setOpenSearchBar(true);
@@ -36,6 +38,15 @@ export default function Navbar() {
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }
 
+  function updateNavbarBackgroundOnScroll() {
+    const currentScrollPosition = window.scrollY;
+    if (currentScrollPosition > 0 && bottomNavbarRef.current) {
+      setIsNavbarBackgroundVisible(true);
+    } else if (currentScrollPosition === 0 && bottomNavbarRef.current) {
+      setIsNavbarBackgroundVisible(false);
+    }
+  }
+
   React.useEffect(() => {
     document.addEventListener("click", handleCloseSearchBar);
     return () => {
@@ -43,9 +54,15 @@ export default function Navbar() {
     };
   }, [openSearchBar]);
 
+  React.useEffect(() => {
+    window.addEventListener("scroll", updateNavbarBackgroundOnScroll);
+
+    return () => window.removeEventListener("scroll", updateNavbarBackgroundOnScroll);
+  });
+
   return (
-    <div className="flex flex-col justify-between items-center z-20 relative">
-      <div className="relative flex justify-between w-full py-2 bg-[#1a1a1a] text-white items-center px-[50px]">
+    <div className="fixed top-0 flex flex-col justify-between items-center z-20 w-full">
+      <div className="flex justify-between w-full py-2 bg-[#1a1a1a] text-white items-center px-[50px]">
         <div>
           <span className="text-[10px] italic capitalize text-[#898989]">Buy best watches with free shipping & returns</span>
         </div>
@@ -71,7 +88,12 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      <div className="navbar-x-axis-padding flex w-full py-5 items-center bg-black text-white">
+      <div
+        className={`navbar-x-axis-padding flex w-full py-5 items-center text-white duration-300 ${
+          isNavbarBackgroundVisible ? "bg-black/[.5] backdrop-blur-md" : "bg-transparent"
+        }`}
+        data-testid="bottom-navbar"
+        ref={bottomNavbarRef}>
         <button onClick={scrollToTop} className="flex items-center gap-2 hover:scale-110 duration-300">
           <span className="bg-[#1bddf3] w-5 h-5 block"></span>
           <span className="font-bold text-2xl tracking-wider text-white">WS</span>
