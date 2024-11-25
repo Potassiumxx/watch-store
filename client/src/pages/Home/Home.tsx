@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import Button from "../../components/Button/Button";
+import { FaCamera } from "react-icons/fa";
 
 function ImageSlider() {
   const imageList = [
@@ -49,6 +50,17 @@ export default function Home() {
             </p>
           </div>
           <Button textValue={"Shop Now"} className="rounded-sm hover:font-bold" />
+          <div className="absolute bottom-4 right-4 bg-white text-black rounded-sm hover:bg-[#3f3f3f] hover:text-white transition-all duration-150">
+            <a
+              href="https://www.pexels.com/photo/round-black-current-chronograph-watch-with-link-bracelet-1075189/"
+              target="_blank"
+              className="inline-block font-bold text-[13px] p-[4px_6px] leading-[1]">
+              <span className="inline-block p-[2px_3px] align-middle">
+                <FaCamera size={14} />
+              </span>
+              <span className="inline-block p-[2px_3px] align-middle">Fstoppper</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
