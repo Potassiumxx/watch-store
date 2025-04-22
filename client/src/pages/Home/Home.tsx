@@ -1,8 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import Button from "../../components/Button/Button";
 import { FaCamera } from "react-icons/fa";
 import Collection from "../../components/Collection/Collection";
+import { useLocation } from "react-router-dom";
 
 // function ImageSlider() {
 //   const imageList = [
@@ -34,7 +34,22 @@ import Collection from "../../components/Collection/Collection";
 // }
 
 export default function Home() {
-  React.useEffect(() => {}, []);
+  const location = useLocation();
+
+  React.useEffect(() => {
+    // Check the state's values passed from Navbar
+    if (location.state?.scrollTo === "collection") {
+      const collectionSection = document.getElementById("collection");
+      if (collectionSection) {
+        setTimeout(() => {
+          collectionSection.scrollIntoView({ behavior: "smooth" });
+        }, 50); // Slight delay ensures the DOM is ready
+      }
+
+      // Clear the state to avoid repeating scroll if navigating back
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
   return (
     <>
       {/* <ImageSlider /> */}

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import { FaRegUser } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 import * as React from "react";
 
 export default function Navbar() {
@@ -11,6 +12,7 @@ export default function Navbar() {
   const searchBarRef = React.useRef<HTMLInputElement | null>(null);
   const searchIconRef = React.useRef<HTMLButtonElement | null>(null);
   const bottomNavbarRef = React.useRef<HTMLDivElement | null>(null);
+  const navigate = useNavigate();
 
   function handleOpenSearchBar() {
     setOpenSearchBar(true);
@@ -46,6 +48,16 @@ export default function Navbar() {
       setIsNavbarBackgroundVisible(false);
     }
   }
+
+  const handleGoToCollection = () => {
+    if (location.pathname === "/") {
+      const collectionSection = document.getElementById("collection");
+      if (collectionSection) collectionSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Pass the "state" to the "/" location when navigating. The state is stored in memory by React Router. It can only be read by Home.tsx.
+      navigate("/", { state: { scrollTo: "collection" } });
+    }
+  };
 
   React.useEffect(() => {
     document.addEventListener("click", handleCloseSearchBar);
@@ -103,9 +115,9 @@ export default function Navbar() {
             <Link to={"/"} className="navbar-link-style">
               Home
             </Link>
-            <Link to={"products"} className="navbar-link-style">
+            <button className="navbar-link-style" onClick={handleGoToCollection}>
               Collection
-            </Link>
+            </button>
             <Link to={"about"} className="navbar-link-style">
               About Us
             </Link>
