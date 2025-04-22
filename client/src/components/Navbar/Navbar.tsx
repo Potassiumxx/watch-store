@@ -4,6 +4,7 @@ import { LiaShoppingCartSolid } from "react-icons/lia";
 import { FaRegUser } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
+import UserMenu from "../UserMenu/UserMenu";
 
 export default function Navbar() {
   const [openSearchBar, setOpenSearchBar] = React.useState<boolean>(false);
@@ -12,6 +13,7 @@ export default function Navbar() {
   const searchBarRef = React.useRef<HTMLInputElement | null>(null);
   const searchIconRef = React.useRef<HTMLButtonElement | null>(null);
   const bottomNavbarRef = React.useRef<HTMLDivElement | null>(null);
+  const [showUserMenu, setShowUserMenu] = React.useState<boolean>(false);
   const navigate = useNavigate();
 
   function handleOpenSearchBar() {
@@ -49,7 +51,8 @@ export default function Navbar() {
     }
   }
 
-  const handleGoToCollection = () => {
+  // Go to collection section in home page
+  function handleGoToCollection() {
     if (location.pathname === "/") {
       const collectionSection = document.getElementById("collection");
       if (collectionSection) collectionSection.scrollIntoView({ behavior: "smooth" });
@@ -57,7 +60,7 @@ export default function Navbar() {
       // Pass the "state" to the "/" location when navigating. The state is stored in memory by React Router. It can only be read by Home.tsx.
       navigate("/", { state: { scrollTo: "collection" } });
     }
-  };
+  }
 
   React.useEffect(() => {
     document.addEventListener("click", handleCloseSearchBar);
@@ -74,6 +77,7 @@ export default function Navbar() {
 
   return (
     <div className="fixed top-0 flex flex-col justify-between items-center z-20 w-full">
+      <UserMenu isVisible={showUserMenu} onClose={() => setShowUserMenu(false)} />
       <div className="flex justify-between w-full py-2 bg-[#1a1a1a] text-white items-center px-[50px]">
         <div>
           <span className="text-[10px] italic capitalize text-[#898989]">Buy best watches with free shipping & returns</span>
@@ -95,7 +99,7 @@ export default function Navbar() {
             <LiaShoppingCartSolid size={32} />
             <span className="flex items-center text-[12px] font-bold px-[5px] py-[1px] rounded-[50%] bg-[#f28c26]">999</span>
           </button>
-          <button className="hover:cursor-pointer" aria-label="User">
+          <button className="hover:cursor-pointer" aria-label="User" onClick={() => setShowUserMenu(!showUserMenu)}>
             <FaRegUser size={22} />
           </button>
         </div>
