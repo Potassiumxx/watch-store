@@ -89,7 +89,7 @@ export default function Navbar() {
         </div>
       </div>
       <div
-        className={`navbar-x-axis-padding flex w-full py-5 items-center text-white duration-300 ${
+        className={`component-x-axis-padding flex w-full py-5 items-center text-white duration-300 ${
           isNavbarBackgroundVisible ? "bg-black/[.5] backdrop-blur-md" : "bg-transparent backdrop-blur-md"
         }`}
         data-testid="bottom-navbar"

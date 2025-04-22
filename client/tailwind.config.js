@@ -4,7 +4,7 @@ import plugin from "tailwindcss/plugin";
 
 function customClassName({ addComponents }) {
   const newComponents = {
-    ".navbar-x-axis-padding": {
+    ".component-x-axis-padding": {
       "@apply pr-[50px] pl-[50px]": {},
     },
     ".navbar-link-style": {
