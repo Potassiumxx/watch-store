@@ -1,7 +1,12 @@
 package com.watchstore.server.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class LoginRequest {
+    @JsonProperty("loginEmail")
     private String email;
+
+    @JsonProperty("loginPassword")
     private String password;
 
     // Getters and Setters

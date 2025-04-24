@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import { RxCross1 } from "react-icons/rx";
+import { loginUser, registerUser } from "../../services/api/authAPI";
 
 type UserMenuProps = {
   isVisible: boolean;
@@ -14,6 +15,28 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
   const [registerUsername, setRegisterUsername] = React.useState("");
   const [registerEmail, setRegisterEmail] = React.useState("");
   const [registerPassword, setRegisterPassword] = React.useState("");
+
+  async function handleLoginFormSubmit(event) {
+    event.preventDefault();
+
+    try {
+      const data = await loginUser({ loginEmail, loginPassword });
+      console.log("Login Success: " + data);
+    } catch (error) {
+      console.log("Login Error: " + error);
+    }
+  }
+
+  async function handleRegisterFormSubmit(event) {
+    event.preventDefault();
+
+    try {
+      const data = await registerUser({ registerEmail, registerPassword, registerUsername });
+      console.log("Login Success: " + data);
+    } catch (error) {
+      console.log("Login Error: " + error);
+    }
+  }
 
   React.useEffect(() => {
     // User's email will not be removed when the form is switched
@@ -51,7 +74,7 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
 
         <div className="p-6">
           {isLoginMode ? (
-            <form className="flex flex-col gap-4 text-black">
+            <form className="flex flex-col gap-4 text-black" onSubmit={handleLoginFormSubmit}>
               <div className="flex flex-col gap-2">
                 <label className="font-semibold text-white">Email</label>
                 <input
@@ -77,7 +100,7 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
               </button>
             </form>
           ) : (
-            <form className="flex flex-col gap-4 text-black">
+            <form className="flex flex-col gap-4 text-black" onSubmit={handleRegisterFormSubmit}>
               <div className="flex flex-col gap-2">
                 <label className="font-semibold text-white">Username</label>
                 <input

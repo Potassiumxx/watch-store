@@ -1,3 +1,6 @@
+# Environment variable - stores sensitive data
+.env
+
 # Logs
 logs
 *.log
