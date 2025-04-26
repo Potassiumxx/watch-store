@@ -4,6 +4,7 @@ import { loginUser, registerUser } from "../../../services/api/authAPI";
 import SidePanel from "../SidePanel/SidePanel";
 import Backdrop from "../Backdrop/Backdrop";
 import { useAuthStore } from "../../../store/authStore";
+import { errorHandler } from "../../../utils/errorHandler";
 
 type UserMenuProps = {
   isVisible: boolean;
@@ -26,7 +27,7 @@ function LoginForm() {
       console.log("Login Success: " + data);
     } catch (error: unknown) {
       console.log("Login Error: " + error);
-      setErrorMessage("uhh omething happened");
+      setErrorMessage(errorHandler(error));
     }
   }
 
