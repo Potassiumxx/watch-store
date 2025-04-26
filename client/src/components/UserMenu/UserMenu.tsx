@@ -2,6 +2,7 @@
 import * as React from "react";
 import { loginUser, registerUser } from "../../services/api/authAPI";
 import SidePanel from "../SidePanel/SidePanel";
+import Backdrop from "../Backdrop/Backdrop";
 
 type UserMenuProps = {
   isVisible: boolean;
@@ -126,13 +127,7 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
 
   return (
     <>
-      {/* Backdrop */}
-      <div
-        onClick={onClose}
-        className={`fixed inset-0 z-40 backdrop-blur-sm transition-opacity duration-300 ${
-          isVisible ? "bg-black/40 opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-      />
+      <Backdrop onClose={onClose} isVisible={isVisible} />
 
       <SidePanel isLoginMode={isLoginMode} isVisible={isVisible} onClose={onClose}>
         {isLoginMode ? <LoginForm /> : <RegisterForm />}
