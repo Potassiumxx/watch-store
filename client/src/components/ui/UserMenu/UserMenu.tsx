@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import { loginUser, registerUser } from "../../../services/api/authAPI";
-import SidePanel from "../SidePanel/SidePanel";
 import Backdrop from "../Backdrop/Backdrop";
 import { useAuthStore } from "../../../store/authStore";
 import { errorHandler } from "../../../utils/errorHandler";
+import SidePanelContainer from "../SidePanel/SidePanelContainer";
 
 type UserMenuProps = {
   isVisible: boolean;
@@ -137,7 +137,7 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
     <>
       <Backdrop onClose={onClose} isVisible={isVisible} />
 
-      <SidePanel isLoginMode={isLoginMode} isVisible={isVisible} onClose={onClose}>
+      <SidePanelContainer isLoginMode={isLoginMode} isVisible={isVisible} onClose={onClose}>
         {isLoginMode ? <LoginForm /> : <RegisterForm />}
         <div className="flex justify-center">
           <button onClick={() => setIsLoginMode(!isLoginMode)}>
@@ -149,7 +149,7 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
             </div>
           </button>
         </div>
-      </SidePanel>
+      </SidePanelContainer>
     </>
   );
 }

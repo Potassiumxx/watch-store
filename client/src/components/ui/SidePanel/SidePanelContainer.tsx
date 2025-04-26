@@ -8,7 +8,7 @@ type SidePanelProps = {
   onClose: () => void;
 };
 
-export default function SidePanel({ children, isVisible, isLoginMode, onClose }: SidePanelProps) {
+export default function SidePanelContainer({ children, isVisible, isLoginMode, onClose }: SidePanelProps) {
   return (
     <div
       className={`fixed top-0 right-0 h-full w-[420px] bg-[#1a1a1a] text-white z-50 shadow-lg transform transition-transform duration-300 ${
