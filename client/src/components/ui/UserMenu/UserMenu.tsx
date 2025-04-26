@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
-import { loginUser, registerUser } from "../../services/api/authAPI";
+import { loginUser, registerUser } from "../../../services/api/authAPI";
 import SidePanel from "../SidePanel/SidePanel";
 import Backdrop from "../Backdrop/Backdrop";
 

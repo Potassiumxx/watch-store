@@ -1,7 +1,7 @@
 import * as React from "react";
-import Button from "../../components/Button/Button";
+import Button from "../../components/ui/Button/Button";
 import { FaCamera } from "react-icons/fa";
-import Collection from "../../components/Collection/Collection";
+import Collection from "../../components/ui/Collection/Collection";
 import { useLocation } from "react-router-dom";
 
 // function ImageSlider() {

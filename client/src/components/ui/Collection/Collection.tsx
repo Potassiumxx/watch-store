@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import analogImg from "../../assets/images/pexels-ferarcosn-190819.jpg";
-import digitalImg from "../../assets/images/pexels-pixabay-277319.jpg";
-import smartImg from "../../assets/images/pexels-thefstopper-1075189.jpg";
+import analogImg from "../../../assets/images/pexels-ferarcosn-190819.jpg";
+import digitalImg from "../../../assets/images/pexels-pixabay-277319.jpg";
+import smartImg from "../../../assets/images/pexels-thefstopper-1075189.jpg";
 
 const collectionArray = [
   { id: 1, title: "Analog Watches", img: analogImg, link: "analog" },
