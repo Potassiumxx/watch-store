@@ -3,6 +3,7 @@ import * as React from "react";
 import { loginUser, registerUser } from "../../../services/api/authAPI";
 import SidePanel from "../SidePanel/SidePanel";
 import Backdrop from "../Backdrop/Backdrop";
+import { useAuthStore } from "../../../store/authStore";
 
 type UserMenuProps = {
   isVisible: boolean;
@@ -10,8 +11,12 @@ type UserMenuProps = {
 };
 
 function LoginForm() {
-  const [loginEmail, setLoginEmail] = React.useState("");
-  const [loginPassword, setLoginPassword] = React.useState("");
+  const loginEmail = useAuthStore((state) => state.loginEmail);
+  const loginPassword = useAuthStore((state) => state.loginPassword);
+  const errorMessage = useAuthStore((state) => state.errorMessage);
+  const setLoginEmail = useAuthStore((state) => state.setLoginEmail);
+  const setLoginPassword = useAuthStore((state) => state.setLoginPassword);
+  const setErrorMessage = useAuthStore((state) => state.setErrorMessage);
 
   async function handleLoginFormSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -19,13 +24,15 @@ function LoginForm() {
     try {
       const data = await loginUser({ loginEmail, loginPassword });
       console.log("Login Success: " + data);
-    } catch (error) {
+    } catch (error: unknown) {
       console.log("Login Error: " + error);
+      setErrorMessage("uhh omething happened");
     }
   }
 
   return (
     <form className="flex flex-col gap-4 text-black p-6" onSubmit={handleLoginFormSubmit}>
+      <span>{errorMessage}</span>
       <div className="flex flex-col gap-2">
         <label className="font-semibold text-white">Email</label>
         <input
