@@ -16,7 +16,7 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
   const [registerEmail, setRegisterEmail] = React.useState("");
   const [registerPassword, setRegisterPassword] = React.useState("");
 
-  async function handleLoginFormSubmit(event) {
+  async function handleLoginFormSubmit(event: React.FormEvent) {
     event.preventDefault();
 
     try {
@@ -27,7 +27,7 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
     }
   }
 
-  async function handleRegisterFormSubmit(event) {
+  async function handleRegisterFormSubmit(event: React.FormEvent) {
     event.preventDefault();
 
     try {
@@ -62,7 +62,7 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
 
       {/* Side panel */}
       <div
-        className={`fixed top-0 right-0 h-full w-[400px] bg-[#1a1a1a] text-white z-50 shadow-lg transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full w-[420px] bg-[#1a1a1a] text-white z-50 shadow-lg transform transition-transform duration-300 ${
           isVisible ? "translate-x-0" : "translate-x-full"
         }`}>
         <div className="flex w-full border-b-white border-b-2">

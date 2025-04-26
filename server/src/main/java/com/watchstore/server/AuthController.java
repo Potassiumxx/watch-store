@@ -24,16 +24,16 @@ public class AuthController {
     // Login Route
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-       Optional<User> userOpt = userRepository.findByEmail(loginRequest.getEmail());
+       Optional<User> userOptional = userRepository.findByEmail(loginRequest.getEmail());
 
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
             if (user.getPassword().equals(loginRequest.getPassword())) {
                 return new ResponseEntity<>("Login successful", HttpStatus.OK);
             }
-    }
+        }
 
-        return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>("Invalid Email or password", HttpStatus.UNAUTHORIZED);
     }
 
     // Register Route
@@ -42,12 +42,13 @@ public class AuthController {
         System.out.println("Email: " + registerRequest.getEmail());
         System.out.println("Password: " + registerRequest.getPassword());
         System.out.println("Username: " + registerRequest.getUsername());
+
         if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
             return new ResponseEntity<>("Email already registered", HttpStatus.BAD_REQUEST);
         }
 
         User newUser = new User(registerRequest.getEmail(), registerRequest.getPassword(), registerRequest.getUsername());
-        userRepository.save(newUser);
+        userRepository.save(newUser);   // Save in database
         return new ResponseEntity<>("Registration successful", HttpStatus.CREATED);
     }
 }

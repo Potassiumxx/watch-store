@@ -11,15 +11,27 @@ type registerCredentials = {
   registerUsername: string;
 };
 
+interface loginData {
+  email: string;
+  password: string;
+  username: string;
+}
+
 const BACKEND_API_URL = import.meta.env.VITE_APP_API_URL;
 
-export async function loginUser(credentials: loginCredentials) {
+export async function loginUser(credentials: loginCredentials): Promise<loginData> {
   try {
     const response = await axios.post(`${BACKEND_API_URL}/auth/login`, credentials);
+    console.log(response);
     return response.data;
-  } catch (error) {
-    console.error("Login failed", error);
-    throw error;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data);
+      throw error;
+    } else {
+      console.error("Unexpected error:", error);
+      throw error;
+    }
   }
 }
 
