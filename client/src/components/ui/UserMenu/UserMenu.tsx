@@ -5,6 +5,7 @@ import Backdrop from "../Backdrop/Backdrop";
 import { useAuthStore } from "../../../store/authStore";
 import { errorHandler } from "../../../utils/errorHandler";
 import SidePanelContainer from "../SidePanel/SidePanelContainer";
+import Input from "../Input/Input";
 
 type UserMenuProps = {
   isVisible: boolean;
@@ -33,27 +34,26 @@ function LoginForm() {
 
   return (
     <form className="flex flex-col gap-4 text-black p-6" onSubmit={handleLoginFormSubmit}>
-      <span>{errorMessage}</span>
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-white">Email</label>
-        <input
-          type="email"
-          placeholder="Email"
-          className="border p-2 rounded"
-          value={loginEmail}
-          onChange={(e) => setLoginEmail(e.target.value)}
-        />
-      </div>
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-white">Password</label>
-        <input
-          type="password"
-          placeholder="Password"
-          className="border p-2 rounded"
-          value={loginPassword}
-          onChange={(e) => setLoginPassword(e.target.value)}
-        />
-      </div>
+      <Input
+        type="email"
+        placeholder="Email"
+        className="border p-2 rounded"
+        value={loginEmail}
+        onChange={(e) => setLoginEmail(e.target.value)}
+        error={errorMessage}
+        label="Email"
+        id="login-email"
+      />
+      <Input
+        type="password"
+        placeholder="Password"
+        className="border p-2 rounded"
+        value={loginPassword}
+        onChange={(e) => setLoginPassword(e.target.value)}
+        error={errorMessage}
+        label="Password"
+        id="login-password"
+      />
       <button type="submit" className="bg-[#1bddf3] text-black py-2 rounded">
         Sign In
       </button>
@@ -65,6 +65,8 @@ function RegisterForm() {
   const [registerUsername, setRegisterUsername] = React.useState("");
   const [registerEmail, setRegisterEmail] = React.useState("");
   const [registerPassword, setRegisterPassword] = React.useState("");
+  const errorMessage = useAuthStore((state) => state.errorMessage);
+  const setErrorMessage = useAuthStore((state) => state.setErrorMessage);
 
   async function handleRegisterFormSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -72,43 +74,42 @@ function RegisterForm() {
     try {
       const data = await registerUser({ registerEmail, registerPassword, registerUsername });
       console.log("Login Success: " + data);
-    } catch (error) {
+    } catch (error: unknown) {
       console.log("Login Error: " + error);
+      setErrorMessage(errorHandler(error));
     }
   }
 
   return (
     <form className="flex flex-col gap-4 text-black p-6" onSubmit={handleRegisterFormSubmit}>
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-white">Username</label>
-        <input
-          type="name"
-          placeholder="Username"
-          className="border p-2 rounded"
-          value={registerUsername}
-          onChange={(e) => setRegisterUsername(e.target.value)}
-        />
-      </div>
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-white">Email</label>
-        <input
-          type="email"
-          placeholder="Email"
-          className="border p-2 rounded"
-          value={registerEmail}
-          onChange={(e) => setRegisterEmail(e.target.value)}
-        />
-      </div>
-      <div className="flex flex-col gap-2">
-        <label className="font-semibold text-white">Password</label>
-        <input
-          type="password"
-          placeholder="Password"
-          className="border p-2 rounded"
-          value={registerPassword}
-          onChange={(e) => setRegisterPassword(e.target.value)}
-        />
-      </div>
+      <Input
+        type="name"
+        placeholder="Username"
+        value={registerUsername}
+        onChange={(e) => setRegisterUsername(e.target.value)}
+        error={errorMessage}
+        label="Username"
+        id="register-username"
+      />
+      <Input
+        type="email"
+        placeholder="Email"
+        value={registerEmail}
+        onChange={(e) => setRegisterEmail(e.target.value)}
+        error={errorMessage}
+        label="Email"
+        id="register-email"
+      />
+      <Input
+        type="password"
+        placeholder="Password"
+        className="border p-2 rounded"
+        value={registerPassword}
+        onChange={(e) => setRegisterPassword(e.target.value)}
+        error={errorMessage}
+        label="Password"
+        id="register-password"
+      />
       <button type="submit" className="bg-[#1bddf3] text-black py-2 rounded">
         Sign Up
       </button>
@@ -144,7 +145,7 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
             <div className="group flex gap-2 items-end text-[14px]">
               <span className="">{isLoginMode ? "Need an Account?" : "Already have an account?"}</span>
               <span className="text-[#1bddf3] group-hover:underline underline-offset-4">
-                {isLoginMode ? "Sign Un" : "Sign In"}
+                {isLoginMode ? "Sign Up" : "Sign In"}
               </span>
             </div>
           </button>
