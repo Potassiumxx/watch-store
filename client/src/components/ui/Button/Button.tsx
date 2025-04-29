@@ -1,4 +1,4 @@
-type ButtonProps = {
+interface ButtonProps {
   textValue: string;
   /**
    * CSS classes to apply to the button.
@@ -12,7 +12,7 @@ type ButtonProps = {
    * className="w-full bg-black text-white font-bold" // paddings, margins, borders and some other classes were skipped but continued with the order provided above.
    */
   className: string;
-};
+}
 
 export default function Button({ textValue = "This is a button", className }: ButtonProps) {
   const defaultStyle =

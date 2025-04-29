@@ -1,15 +1,15 @@
 import axios from "axios";
 
-type loginCredentials = {
+interface loginCredentials {
   loginEmail: string;
   loginPassword: string;
-};
+}
 
-type registerCredentials = {
+interface registerCredentials {
   registerEmail: string;
   registerPassword: string;
   registerUsername: string;
-};
+}
 
 interface loginData {
   email: string;

@@ -6,10 +6,10 @@ import { errorHandler } from "../../../utils/errorHandler";
 import SidePanelContainer from "../SidePanel/SidePanelContainer";
 import Input from "../Input/Input";
 
-type UserMenuProps = {
+interface UserMenuProps {
   isVisible: boolean;
   onClose: () => void;
-};
+}
 
 function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);

@@ -1,7 +1,7 @@
-type BackdropProps = {
+interface BackdropProps {
   onClose: () => void;
   isVisible: boolean;
-};
+}
 
 export default function Backdrop({ onClose, isVisible }: BackdropProps) {
   return (

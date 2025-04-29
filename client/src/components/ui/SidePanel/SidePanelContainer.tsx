@@ -2,12 +2,12 @@ import { ReactNode } from "react";
 import { RxCross1 } from "react-icons/rx";
 import Backdrop from "../Backdrop/Backdrop";
 
-type SidePanelProps = {
+interface SidePanelProps {
   children: ReactNode;
   isVisible: boolean;
   isLoginMode?: boolean; // For login and register only
   onClose: () => void;
-};
+}
 
 export default function SidePanelContainer({ children, isVisible, isLoginMode, onClose }: SidePanelProps) {
   return (

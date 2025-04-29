@@ -1,17 +1,17 @@
 import { create } from "zustand";
 
-type LoginErrors = {
+interface LoginErrors {
   email?: string;
   password?: string;
-};
+}
 
-type RegisterErrors = {
+interface RegisterErrors {
   email?: string;
   password?: string;
   username?: string;
-};
+}
 
-type AuthStore = {
+interface AuthStore {
   loginEmail: string;
   loginPassword: string;
 
@@ -34,7 +34,7 @@ type AuthStore = {
 
   clearLoginErrors: () => void;
   clearRegisterErrors: () => void;
-};
+}
 
 export const useAuthStore = create<AuthStore>((set) => ({
   loginEmail: "",
