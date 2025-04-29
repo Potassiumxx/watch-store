@@ -1,20 +1,69 @@
 import { create } from "zustand";
 
+type LoginErrors = {
+  email?: string;
+  password?: string;
+};
+
+type RegisterErrors = {
+  email?: string;
+  password?: string;
+  username?: string;
+};
+
 type AuthStore = {
   loginEmail: string;
   loginPassword: string;
-  errorMessage: string;
+
+  registerEmail: string;
+  registerPassword: string;
+  registerUsername: string;
+
+  loginErrors: LoginErrors;
+  registerErrors: RegisterErrors;
+
   setLoginEmail: (email: string) => void;
   setLoginPassword: (password: string) => void;
-  setErrorMessage: (message: string) => void;
+
+  setRegisterEmail: (email: string) => void;
+  setRegisterPassword: (email: string) => void;
+  setRegisterUsername: (email: string) => void;
+
+  setLoginError: (inputField: keyof LoginErrors, message: string) => void;
+  setRegisterError: (inputField: keyof RegisterErrors, message: string) => void;
+
+  clearLoginErrors: () => void;
+  clearRegisterErrors: () => void;
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
   loginEmail: "",
   loginPassword: "",
-  errorMessage: "",
+
+  registerEmail: "",
+  registerPassword: "",
+  registerUsername: "",
+
+  loginErrors: {},
+  registerErrors: {},
 
   setLoginEmail: (email) => set({ loginEmail: email }),
   setLoginPassword: (password) => set({ loginPassword: password }),
-  setErrorMessage: (message) => set({ errorMessage: message }),
+
+  setRegisterEmail: (email) => set({ registerEmail: email }),
+  setRegisterPassword: (password) => set({ registerEmail: password }),
+  setRegisterUsername: (username) => set({ registerEmail: username }),
+
+  setLoginError: (inputField, message) =>
+    set((state) => ({
+      loginErrors: { ...state.loginErrors, [inputField]: message },
+    })),
+
+  setRegisterError: (inputField, message) =>
+    set((state) => ({
+      registerErrors: { ...state.registerErrors, [inputField]: message },
+    })),
+
+  clearLoginErrors: () => set({ loginErrors: {} }),
+  clearRegisterErrors: () => set({ registerErrors: {} }),
 }));

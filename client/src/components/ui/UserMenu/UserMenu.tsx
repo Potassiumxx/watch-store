@@ -15,10 +15,12 @@ type UserMenuProps = {
 function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
   const loginPassword = useAuthStore((state) => state.loginPassword);
-  const errorMessage = useAuthStore((state) => state.errorMessage);
+
   const setLoginEmail = useAuthStore((state) => state.setLoginEmail);
   const setLoginPassword = useAuthStore((state) => state.setLoginPassword);
-  const setErrorMessage = useAuthStore((state) => state.setErrorMessage);
+
+  const loginErrorMsg = useAuthStore((state) => state.loginErrors);
+  const setLoginError = useAuthStore((state) => state.setLoginError);
 
   async function handleLoginFormSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -28,7 +30,8 @@ function LoginForm() {
       console.log("Login Success: " + data);
     } catch (error: unknown) {
       console.log("Login Error: " + error);
-      setErrorMessage(errorHandler(error));
+      setLoginError("email", errorHandler(error));
+      setLoginError("password", errorHandler(error));
     }
   }
 
@@ -39,7 +42,7 @@ function LoginForm() {
         placeholder="Email"
         value={loginEmail}
         onChange={(e) => setLoginEmail(e.target.value)}
-        error={errorMessage}
+        error={loginErrorMsg.email}
         label="Email"
         id="login-email"
       />
@@ -48,7 +51,7 @@ function LoginForm() {
         placeholder="Password"
         value={loginPassword}
         onChange={(e) => setLoginPassword(e.target.value)}
-        error={errorMessage}
+        error={loginErrorMsg.password}
         label="Password"
         id="login-password"
       />
@@ -60,11 +63,16 @@ function LoginForm() {
 }
 
 function RegisterForm() {
-  const [registerUsername, setRegisterUsername] = React.useState("");
-  const [registerEmail, setRegisterEmail] = React.useState("");
-  const [registerPassword, setRegisterPassword] = React.useState("");
-  const errorMessage = useAuthStore((state) => state.errorMessage);
-  const setErrorMessage = useAuthStore((state) => state.setErrorMessage);
+  const registerEmail = useAuthStore((state) => state.registerEmail);
+  const registerPassword = useAuthStore((state) => state.registerPassword);
+  const registerUsername = useAuthStore((state) => state.registerUsername);
+
+  const setRegisterEmail = useAuthStore((state) => state.setRegisterEmail);
+  const setRegisterPassword = useAuthStore((state) => state.setRegisterPassword);
+  const setRegisterUsername = useAuthStore((state) => state.setRegisterUsername);
+
+  const setRegisterError = useAuthStore((state) => state.setRegisterError);
+  const regiserErrorMsg = useAuthStore((state) => state.registerErrors);
 
   async function handleRegisterFormSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -74,7 +82,9 @@ function RegisterForm() {
       console.log("Login Success: " + data);
     } catch (error: unknown) {
       console.log("Login Error: " + error);
-      setErrorMessage(errorHandler(error));
+      setRegisterError("email", errorHandler(error));
+      setRegisterError("password", errorHandler(error));
+      setRegisterError("username", errorHandler(error));
     }
   }
 
@@ -85,7 +95,7 @@ function RegisterForm() {
         placeholder="Username"
         value={registerUsername}
         onChange={(e) => setRegisterUsername(e.target.value)}
-        error={errorMessage}
+        error={regiserErrorMsg.username}
         label="Username"
         id="register-username"
       />
@@ -94,7 +104,7 @@ function RegisterForm() {
         placeholder="Email"
         value={registerEmail}
         onChange={(e) => setRegisterEmail(e.target.value)}
-        error={errorMessage}
+        error={regiserErrorMsg.email}
         label="Email"
         id="register-email"
       />
@@ -103,7 +113,7 @@ function RegisterForm() {
         placeholder="Password"
         value={registerPassword}
         onChange={(e) => setRegisterPassword(e.target.value)}
-        error={errorMessage}
+        error={regiserErrorMsg.password}
         label="Password"
         id="register-password"
       />
@@ -117,19 +127,37 @@ function RegisterForm() {
 export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
   const [isLoginMode, setIsLoginMode] = React.useState<boolean>(true);
 
+  const loginEmail = useAuthStore((state) => state.loginEmail);
+  const loginPassword = useAuthStore((state) => state.loginPassword);
+
+  const registerEmail = useAuthStore((state) => state.registerEmail);
+  const registerPassword = useAuthStore((state) => state.registerPassword);
+
+  const setLoginEmail = useAuthStore((state) => state.setLoginEmail);
+  const setLoginPassword = useAuthStore((state) => state.setLoginPassword);
+
+  const setRegisterEmail = useAuthStore((state) => state.setRegisterEmail);
+  const setRegisterPassword = useAuthStore((state) => state.setRegisterPassword);
+
+  const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
+  const clearRegisterErrors = useAuthStore((state) => state.clearRegisterErrors);
+
   // Commented out the useEffect code for now. Will use Zustand to manage states.
 
-  // React.useEffect(() => {
-  //   // User's email will not be removed when the form is switched
-  //   if (loginEmail !== "") setRegisterEmail(loginEmail);
-  //   if (registerEmail !== "") setLoginEmail(registerEmail);
-  // }, [isLoginMode]);
+  React.useEffect(() => {
+    // User's email will not be removed when the form is switched
+    if (loginEmail !== "") setRegisterEmail(loginEmail);
+    if (registerEmail !== "") setLoginEmail(registerEmail);
 
-  // React.useEffect(() => {
-  //   // Clear password fields if the form is closed. For security reasons.
-  //   if (loginPassword !== "") setLoginPassword("");
-  //   if (registerPassword !== "") setRegisterPassword("");
-  // }, [isVisible]);
+    clearLoginErrors();
+    clearRegisterErrors();
+  }, [isLoginMode]);
+
+  React.useEffect(() => {
+    // Clear password fields if the form is closed or switched. For security reasons.
+    if (loginPassword !== "") setLoginPassword("");
+    if (registerPassword !== "") setRegisterPassword("");
+  }, [isVisible, isLoginMode]);
 
   return (
     <>
