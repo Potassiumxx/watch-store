@@ -4,15 +4,22 @@ import Home from "../pages/Home/Home";
 import ErrorPage from "../pages/ErrorPage";
 
 export default function Router() {
-  const router = createBrowserRouter([
+  const router = createBrowserRouter(
+    [
+      {
+        element: <App />,
+        children: [
+          { path: "*", element: <ErrorPage /> },
+          { path: "/", element: <Home /> },
+        ],
+      },
+    ],
     {
-      element: <App />,
-      children: [
-        { path: "*", element: <ErrorPage /> },
-        { path: "/", element: <Home /> },
-      ],
-    },
-  ]);
+      future: {
+        v7_relativeSplatPath: true,
+      },
+    }
+  );
 
-  return <RouterProvider router={router} />;
+  return <RouterProvider router={router} future={{ v7_startTransition: true }} />;
 }
