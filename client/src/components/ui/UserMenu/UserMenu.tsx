@@ -37,7 +37,6 @@ function LoginForm() {
       <Input
         type="email"
         placeholder="Email"
-        className="border p-2 rounded"
         value={loginEmail}
         onChange={(e) => setLoginEmail(e.target.value)}
         error={errorMessage}
@@ -47,7 +46,6 @@ function LoginForm() {
       <Input
         type="password"
         placeholder="Password"
-        className="border p-2 rounded"
         value={loginPassword}
         onChange={(e) => setLoginPassword(e.target.value)}
         error={errorMessage}
@@ -103,7 +101,6 @@ function RegisterForm() {
       <Input
         type="password"
         placeholder="Password"
-        className="border p-2 rounded"
         value={registerPassword}
         onChange={(e) => setRegisterPassword(e.target.value)}
         error={errorMessage}
