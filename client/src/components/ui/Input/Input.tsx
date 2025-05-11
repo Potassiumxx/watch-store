@@ -11,7 +11,7 @@ export default function Input({ label, error, id, className, ...attributes }: In
 
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={id} className={`font-semibold text-[13px] text-white uppercase ${error && "text-red-700"}`}>
+      <label htmlFor={id} className={`font-semibold text-[13px] uppercase ${error ? "text-red-600" : "text-white"}`}>
         {label} {error && <span className="normal-case"> - {error}</span>}
       </label>
       <input className={`${baseInputClass} ${className}`} id={id} autoComplete="off" {...attributes} />
