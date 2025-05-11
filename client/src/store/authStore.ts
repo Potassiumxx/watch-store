@@ -51,8 +51,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
   setLoginPassword: (password) => set({ loginPassword: password }),
 
   setRegisterEmail: (email) => set({ registerEmail: email }),
-  setRegisterPassword: (password) => set({ registerEmail: password }),
-  setRegisterUsername: (username) => set({ registerEmail: username }),
+  setRegisterPassword: (password) => set({ registerPassword: password }),
+  setRegisterUsername: (username) => set({ registerUsername: username }),
 
   setLoginError: (inputField, message) =>
     set((state) => ({
