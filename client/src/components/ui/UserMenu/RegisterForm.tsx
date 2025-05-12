@@ -17,6 +17,8 @@ export function RegisterForm() {
   const setRegisterError = useAuthStore((state) => state.setRegisterError);
   const regiserErrorMsg = useAuthStore((state) => state.registerErrors);
 
+  const clearRegisterErrors = useAuthStore((state) => state.clearRegisterErrors);
+
   const [isUsernameFocused, setIsUsernameFocused] = React.useState<boolean>(false);
 
   async function handleRegisterFormSubmit(event: React.FormEvent) {
@@ -24,6 +26,7 @@ export function RegisterForm() {
 
     const validationError = validateRegisterForm(registerEmail, registerPassword, registerUsername);
     if (Object.keys(validationError).length > 0) {
+      console.log(validationError);
       return applyFieldErrors(validationError, setRegisterError);
     }
 
@@ -35,6 +38,8 @@ export function RegisterForm() {
       const fieldErrors: Record<string, string> = errorHandler(error);
       applyFieldErrors<RegisterErrors>(fieldErrors, setRegisterError);
     }
+
+    clearRegisterErrors();
   }
 
   return (

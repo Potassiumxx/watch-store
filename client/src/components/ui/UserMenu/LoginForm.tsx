@@ -1,9 +1,23 @@
+import * as React from "react";
 import { useAuthStore } from "../../../store/authStore";
 import { loginUser } from "../../../services/api/authAPI";
 import { errorHandler, applyFieldErrors } from "../../../utils/errorHandler";
 import { LoginErrors } from "../../../store/authStore";
 import Input from "../Input/Input";
 import { validateLoginForm } from "../../../utils/validateForm";
+
+interface DirtyFieldState {
+  email: boolean;
+  password: boolean;
+}
+
+type DirtyFieldAction =
+  | {
+      type: "SET_DIRTY";
+      field: keyof DirtyFieldState;
+    }
+  | { type: "SET_ALL_DIRTY" }
+  | { type: "RESET_ALL" };
 
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
@@ -15,16 +29,72 @@ export default function LoginForm() {
   const loginErrorMsg = useAuthStore((state) => state.loginErrors);
   const setLoginError = useAuthStore((state) => state.setLoginError);
 
+  const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
+
+  const [dirtyField, dispatchDirtyField] = React.useReducer(dirtyFieldReducer, {
+    email: false,
+    password: false,
+  });
+
+  function dirtyFieldReducer(state: DirtyFieldState, action: DirtyFieldAction): DirtyFieldState {
+    switch (action.type) {
+      case "SET_DIRTY":
+        return { ...state, [action.field]: true };
+      case "SET_ALL_DIRTY":
+        return { email: true, password: true };
+      case "RESET_ALL":
+        return { email: false, password: false };
+      default:
+        return state;
+    }
+  }
+
+  function handleLoginEmailOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const newEmailInput = event.target.value;
+    setLoginEmail(newEmailInput);
+
+    if (dirtyField.email) {
+      const validationError = validateLoginForm(newEmailInput, loginPassword);
+
+      // If the validation is correct
+      if (Object.keys(validationError).indexOf("email") === -1) {
+        clearLoginErrors();
+      }
+      applyFieldErrors<LoginErrors>(validationError, setLoginError);
+    }
+  }
+
+  function handleLoginPasswordOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const newPasswordInput = event.target.value;
+    setLoginPassword(newPasswordInput);
+
+    if (dirtyField.password) {
+      const validationError = validateLoginForm(loginEmail, newPasswordInput);
+
+      // If the validation is correct
+      if (Object.keys(validationError).indexOf("password") === -1) {
+        clearLoginErrors();
+      }
+      applyFieldErrors<LoginErrors>(validationError, setLoginError);
+    }
+  }
+
   async function handleLoginFormSubmit(event: React.FormEvent) {
     event.preventDefault();
 
     const validationError = validateLoginForm(loginEmail, loginPassword);
+
+    // if (validationError.email) dispatchDirtyField({ type: "SET_DIRTY", field: "email" });
+    // if (validationError.password) dispatchDirtyField({ type: "SET_DIRTY", field: "password" });
+
     if (Object.keys(validationError).length > 0) {
+      dispatchDirtyField({ type: "SET_ALL_DIRTY" });
       return applyFieldErrors<LoginErrors>(validationError, setLoginError);
     }
 
     try {
       const data = await loginUser({ loginEmail, loginPassword });
+      dispatchDirtyField({ type: "RESET_ALL" });
       console.log("Login Success: " + data);
     } catch (error: unknown) {
       console.log("Login Error: " + error);
@@ -39,7 +109,7 @@ export default function LoginForm() {
         type="email"
         placeholder="Email"
         value={loginEmail}
-        onChange={(e) => setLoginEmail(e.target.value)}
+        onChange={(e) => handleLoginEmailOnChange(e)}
         error={loginErrorMsg.email}
         label="Email"
         id="login-email"
@@ -48,7 +118,7 @@ export default function LoginForm() {
         type="password"
         placeholder="Password"
         value={loginPassword}
-        onChange={(e) => setLoginPassword(e.target.value)}
+        onChange={(e) => handleLoginPasswordOnChange(e)}
         error={loginErrorMsg.password}
         label="Password"
         id="login-password"

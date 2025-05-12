@@ -43,6 +43,9 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
     // Clear password fields if the form is closed or switched. For security reasons.
     if (loginPassword !== "") setLoginPassword("");
     if (registerPassword !== "") setRegisterPassword("");
+
+    clearLoginErrors();
+    clearRegisterErrors();
   }, [isVisible, isLoginMode]);
 
   return (
