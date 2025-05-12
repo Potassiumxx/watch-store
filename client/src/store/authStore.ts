@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-interface LoginErrors {
+export interface LoginErrors {
   email?: string;
   password?: string;
 }
 
-interface RegisterErrors {
+export interface RegisterErrors {
   email?: string;
   password?: string;
   username?: string;

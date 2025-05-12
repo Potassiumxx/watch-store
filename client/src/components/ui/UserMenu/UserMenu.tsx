@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import { loginUser, registerUser } from "../../../services/api/authAPI";
-import { useAuthStore } from "../../../store/authStore";
+import { LoginErrors, RegisterErrors, useAuthStore } from "../../../store/authStore";
 import { errorHandler } from "../../../utils/errorHandler";
 import SidePanelContainer from "../SidePanel/SidePanelContainer";
 import Input from "../Input/Input";
@@ -29,8 +29,10 @@ function LoginForm() {
       console.log("Login Success: " + data);
     } catch (error: unknown) {
       console.log("Login Error: " + error);
-      setLoginError("email", errorHandler(error));
-      setLoginError("password", errorHandler(error));
+      const fieldErrors = errorHandler(error);
+      for (const field in fieldErrors) {
+        setLoginError(field as keyof LoginErrors, fieldErrors[field]);
+      }
     }
   }
 
@@ -81,9 +83,10 @@ function RegisterForm() {
       console.log("Login Success: " + data);
     } catch (error: unknown) {
       console.log("Login Error: " + error);
-      setRegisterError("email", errorHandler(error));
-      setRegisterError("password", errorHandler(error));
-      setRegisterError("username", errorHandler(error));
+      const fieldErrors: Record<string, string> = errorHandler(error);
+      for (const field in fieldErrors) {
+        setRegisterError(field as keyof RegisterErrors, fieldErrors[field]);
+      }
     }
   }
 
