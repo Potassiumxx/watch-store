@@ -2,7 +2,7 @@
 import * as React from "react";
 import { loginUser, registerUser } from "../../../services/api/authAPI";
 import { LoginErrors, RegisterErrors, useAuthStore } from "../../../store/authStore";
-import { errorHandler } from "../../../utils/errorHandler";
+import { applyFieldErrors, errorHandler } from "../../../utils/errorHandler";
 import SidePanelContainer from "../SidePanel/SidePanelContainer";
 import Input from "../Input/Input";
 
@@ -30,9 +30,7 @@ function LoginForm() {
     } catch (error: unknown) {
       console.log("Login Error: " + error);
       const fieldErrors = errorHandler(error);
-      for (const field in fieldErrors) {
-        setLoginError(field as keyof LoginErrors, fieldErrors[field]);
-      }
+      applyFieldErrors<LoginErrors>(fieldErrors, setLoginError);
     }
   }
 
@@ -84,9 +82,7 @@ function RegisterForm() {
     } catch (error: unknown) {
       console.log("Login Error: " + error);
       const fieldErrors: Record<string, string> = errorHandler(error);
-      for (const field in fieldErrors) {
-        setRegisterError(field as keyof RegisterErrors, fieldErrors[field]);
-      }
+      applyFieldErrors<RegisterErrors>(fieldErrors, setRegisterError);
     }
   }
 

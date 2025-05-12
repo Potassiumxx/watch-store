@@ -14,3 +14,13 @@ export function errorHandler(error: unknown): Record<string, string> {
     return { message: "Something went wrong. Please try again later." };
   }
 }
+
+export function applyFieldErrors<T extends { [K in keyof T]: string | undefined }>(
+  fieldErrors: T,
+  setError: (field: keyof T, message: string) => void
+): void {
+  for (const field in fieldErrors) {
+    const key = field as keyof T;
+    setError(key, fieldErrors[key]!);
+  }
+}
