@@ -3,6 +3,7 @@ import { loginUser } from "../../../services/api/authAPI";
 import { errorHandler, applyFieldErrors } from "../../../utils/errorHandler";
 import { LoginErrors } from "../../../store/authStore";
 import Input from "../Input/Input";
+import { validateLoginForm } from "../../../utils/validateForm";
 
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
@@ -16,6 +17,11 @@ export default function LoginForm() {
 
   async function handleLoginFormSubmit(event: React.FormEvent) {
     event.preventDefault();
+
+    const validationError = validateLoginForm(loginEmail, loginPassword);
+    if (Object.keys(validationError).length > 0) {
+      return applyFieldErrors<LoginErrors>(validationError, setLoginError);
+    }
 
     try {
       const data = await loginUser({ loginEmail, loginPassword });
