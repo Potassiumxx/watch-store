@@ -9,6 +9,12 @@ import { ACTION_TYPES, GENERAL_ERROR_KEY } from "../../../utils/constants";
 import { ErrorMessage } from "../Error/ErrorMessage";
 import useDirtyField from "../../../hooks/useDirtyField";
 
+interface DirtyFieldState {
+  email: boolean;
+  password: boolean;
+  username?: boolean;
+}
+
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
   const loginPassword = useAuthStore((state) => state.loginPassword);
