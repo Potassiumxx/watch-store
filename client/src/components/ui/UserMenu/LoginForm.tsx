@@ -6,6 +6,7 @@ import { LoginErrors } from "../../../store/authStore";
 import Input from "../Input/Input";
 import { validateLoginForm } from "../../../utils/validateForm";
 import { GENERAL_ERROR_KEY } from "../../../utils/constants";
+import { ErrorMessage } from "../Error/ErrorMessage";
 
 interface DirtyFieldState {
   email: boolean;
@@ -135,7 +136,7 @@ export default function LoginForm() {
         Sign In
       </button>
 
-      {generalError && <span className="text-red-600 font-semibold text-[15px] text-center">{generalError}</span>}
+      {generalError && <ErrorMessage message={generalError} />}
     </form>
   );
 }
