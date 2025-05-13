@@ -5,21 +5,9 @@ import { errorHandler, applyFieldErrors } from "../../../utils/errorHandler";
 import { LoginErrors } from "../../../store/authStore";
 import Input from "../Input/Input";
 import { validateLoginForm } from "../../../utils/validateForm";
-import { GENERAL_ERROR_KEY } from "../../../utils/constants";
+import { ACTION_TYPES, GENERAL_ERROR_KEY } from "../../../utils/constants";
 import { ErrorMessage } from "../Error/ErrorMessage";
-
-interface DirtyFieldState {
-  email: boolean;
-  password: boolean;
-}
-
-type DirtyFieldAction =
-  | {
-      type: "SET_DIRTY";
-      field: keyof DirtyFieldState;
-    }
-  | { type: "SET_ALL_DIRTY" }
-  | { type: "RESET_ALL" };
+import useDirtyField from "../../../hooks/useDirtyField";
 
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
@@ -35,27 +23,12 @@ export default function LoginForm() {
 
   const [generalError, setGeneralError] = React.useState<string | null>(null);
 
-  const [dirtyField, dispatchDirtyField] = React.useReducer(dirtyFieldReducer, {
-    email: false,
-    password: false,
-  });
-
-  function dirtyFieldReducer(state: DirtyFieldState, action: DirtyFieldAction): DirtyFieldState {
-    switch (action.type) {
-      case "SET_DIRTY":
-        return { ...state, [action.field]: true };
-      case "SET_ALL_DIRTY":
-        return { email: true, password: true };
-      case "RESET_ALL":
-        return { email: false, password: false };
-      default:
-        return state;
-    }
-  }
+  const [dirtyField, dispatchDirtyFieldReducer] = useDirtyField();
 
   function handleLoginEmailOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     const newEmailInput = event.target.value;
     setLoginEmail(newEmailInput);
+    console.log(dirtyField);
 
     if (dirtyField.email) {
       const validationError = validateLoginForm(newEmailInput, loginPassword);
@@ -89,17 +62,18 @@ export default function LoginForm() {
 
     const validationError = validateLoginForm(loginEmail, loginPassword);
 
-    // if (validationError.email) dispatchDirtyField({ type: "SET_DIRTY", field: "email" });
-    // if (validationError.password) dispatchDirtyField({ type: "SET_DIRTY", field: "password" });
+    // if (validationError.email) dispatchDirtyFieldReducer({ type: "SET_DIRTY", field: "email" });
+    // if (validationError.password) dispatchDirtyFieldReducer({ type: "SET_DIRTY", field: "password" });
 
     if (Object.keys(validationError).length > 0) {
-      dispatchDirtyField({ type: "SET_ALL_DIRTY" });
+      dispatchDirtyFieldReducer({ type: ACTION_TYPES.SET_ALL_DIRTY });
+      console.log(dirtyField);
       return applyFieldErrors<LoginErrors>(validationError, setLoginError);
     }
 
     try {
       const data = await loginUser({ loginEmail, loginPassword });
-      dispatchDirtyField({ type: "RESET_ALL" });
+      dispatchDirtyFieldReducer({ type: ACTION_TYPES.RESET_ALL });
       console.log("Login Success: " + data);
     } catch (error: unknown) {
       console.log("Login Error: " + error);
