@@ -33,7 +33,7 @@ export default function LoginForm() {
 
   const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
 
-  const [generalError, setGeneralError] = React.useState<string>("");
+  const [generalError, setGeneralError] = React.useState<string | null>(null);
 
   const [dirtyField, dispatchDirtyField] = React.useReducer(dirtyFieldReducer, {
     email: false,
@@ -85,6 +85,7 @@ export default function LoginForm() {
 
   async function handleLoginFormSubmit(event: React.FormEvent) {
     event.preventDefault();
+    setGeneralError(null);
 
     const validationError = validateLoginForm(loginEmail, loginPassword);
 
