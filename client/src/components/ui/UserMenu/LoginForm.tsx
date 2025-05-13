@@ -5,6 +5,7 @@ import { errorHandler, applyFieldErrors } from "../../../utils/errorHandler";
 import { LoginErrors } from "../../../store/authStore";
 import Input from "../Input/Input";
 import { validateLoginForm } from "../../../utils/validateForm";
+import { GENERAL_ERROR_KEY } from "../../../utils/constants";
 
 interface DirtyFieldState {
   email: boolean;
@@ -30,6 +31,8 @@ export default function LoginForm() {
   const setLoginError = useAuthStore((state) => state.setLoginError);
 
   const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
+
+  const [generalError, setGeneralError] = React.useState<string>("");
 
   const [dirtyField, dispatchDirtyField] = React.useReducer(dirtyFieldReducer, {
     email: false,
@@ -98,8 +101,13 @@ export default function LoginForm() {
       console.log("Login Success: " + data);
     } catch (error: unknown) {
       console.log("Login Error: " + error);
-      const fieldErrors = errorHandler(error);
-      applyFieldErrors<LoginErrors>(fieldErrors, setLoginError);
+
+      const errorMessage = errorHandler(error);
+      if (GENERAL_ERROR_KEY in errorMessage) {
+        return setGeneralError(errorMessage[GENERAL_ERROR_KEY]);
+      }
+
+      applyFieldErrors<LoginErrors>(errorMessage, setLoginError);
     }
   }
 
@@ -126,6 +134,8 @@ export default function LoginForm() {
       <button type="submit" className="bg-[#1bddf3] text-black py-2 rounded">
         Sign In
       </button>
+
+      {generalError && <span className="text-red-600 font-semibold text-[15px] text-center">{generalError}</span>}
     </form>
   );
 }
