@@ -10,9 +10,7 @@ import { ErrorMessage } from "../Error/ErrorMessage";
 import useDirtyField from "../../../hooks/useDirtyField";
 
 interface DirtyFieldState {
-  email: boolean;
-  password: boolean;
-  username?: boolean;
+  [key: string]: boolean;
 }
 
 export default function LoginForm() {
@@ -29,12 +27,16 @@ export default function LoginForm() {
 
   const [generalError, setGeneralError] = React.useState<string | null>(null);
 
-  const [dirtyField, dispatchDirtyFieldReducer] = useDirtyField();
+  const initialDirtyFieldState: DirtyFieldState = {
+    email: false,
+    password: false,
+  };
+
+  const [dirtyField, dispatchDirtyFieldReducer] = useDirtyField<DirtyFieldState>(initialDirtyFieldState);
 
   function handleLoginEmailOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     const newEmailInput = event.target.value;
     setLoginEmail(newEmailInput);
-    console.log(dirtyField);
 
     if (dirtyField.email) {
       const validationError = validateLoginForm(newEmailInput, loginPassword);
