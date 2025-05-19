@@ -2,6 +2,13 @@ import * as React from "react";
 import useDirtyField from "./useDirtyField";
 import { ACTION_TYPES, GENERAL_ERROR_KEY } from "../utils/constants";
 import { applyFieldErrors, errorHandler } from "../utils/errorHandler";
+import { APIErrorReturnType } from "../types/form";
+// import { FormAPIData } from "../types/form";
+
+interface HandleFormSubmitParameter<V> {
+  apiCall: () => Promise<unknown>;
+  setError: (field: keyof V, message: string) => void;
+}
 
 export default function useFormError<T extends { [key: string]: boolean }>(initialState: T) {
   const [generalError, setGeneralError] = React.useState<string | null>();
@@ -10,13 +17,13 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
   /**
    * Handles errors like networks and server errors, no route/API found errors, etc. related to backend connection
    */
-  function handleFormAPIError(error: unknown): Record<string, string> {
+  function handleFormAPIError<V>(error: unknown): APIErrorReturnType<V> {
     const errorMessage = errorHandler(error);
     if (GENERAL_ERROR_KEY in errorMessage) {
       setGeneralError(errorMessage[GENERAL_ERROR_KEY]);
-      return errorMessage;
+      return errorMessage as APIErrorReturnType<V>;
     }
-    return errorMessage;
+    return errorMessage as APIErrorReturnType<V>;
   }
 
   // Used 'V' instead of 'T' for generic type so that it doesn't get confusing since there's a 'T' in parent too
@@ -32,6 +39,23 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
     return false;
   }
 
+  async function handleFormSubmit<V extends { [K in keyof V]: string | undefined }>({
+    apiCall,
+    setError,
+  }: HandleFormSubmitParameter<V>): Promise<void> {
+    setGeneralError(null);
+    try {
+      const data = await apiCall();
+      dispatchDirtyFieldReducer({ type: "RESET_ALL" });
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      const fieldErrorMessage = handleFormAPIError<V>(error);
+      console.log(fieldErrorMessage);
+      applyFieldErrors<V>(fieldErrorMessage, setError);
+    }
+  }
+
   return {
     generalError,
     setGeneralError,
@@ -39,5 +63,6 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
     dispatchDirtyFieldReducer,
     handleFormAPIError,
     isValidationError,
+    handleFormSubmit,
   };
 }

@@ -5,7 +5,6 @@ import { applyFieldErrors } from "../../../utils/errorHandler";
 import { LoginErrors } from "../../../store/authStore";
 import Input from "../Input/Input";
 import { validateLoginForm } from "../../../utils/validateForm";
-import { ACTION_TYPES } from "../../../utils/constants";
 import { ErrorMessage } from "../Error/ErrorMessage";
 import { DirtyFieldState } from "../../../types/form";
 import useFormError from "../../../hooks/useFormError";
@@ -27,8 +26,7 @@ export default function LoginForm() {
     password: false,
   };
 
-  const { dirtyField, dispatchDirtyFieldReducer, generalError, setGeneralError, handleFormAPIError, isValidationError } =
-    useFormError<DirtyFieldState>(initialDirtyFieldState);
+  const { dirtyField, generalError, isValidationError, handleFormSubmit } = useFormError<DirtyFieldState>(initialDirtyFieldState);
 
   function handleLoginEmailOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     const newEmailInput = event.target.value;
@@ -62,23 +60,12 @@ export default function LoginForm() {
 
   async function handleLoginFormSubmit(event: React.FormEvent) {
     event.preventDefault();
-    setGeneralError(null);
 
     const validationError = validateLoginForm(loginEmail, loginPassword);
 
     if (isValidationError<LoginErrors>(validationError, setLoginError)) return;
 
-    try {
-      const data = await loginUser({ loginEmail, loginPassword });
-      dispatchDirtyFieldReducer({ type: ACTION_TYPES.RESET_ALL });
-      console.log("Login Success: " + data);
-    } catch (error: unknown) {
-      console.log("Login Error: " + error);
-
-      const errorMessage = handleFormAPIError(error);
-
-      applyFieldErrors<LoginErrors>(errorMessage, setLoginError);
-    }
+    await handleFormSubmit<LoginErrors>({ apiCall: () => loginUser({ loginEmail, loginPassword }), setError: setLoginError });
   }
 
   return (

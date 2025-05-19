@@ -4,6 +4,9 @@ import { RegisterErrors, useAuthStore } from "../../../store/authStore";
 import { applyFieldErrors, errorHandler } from "../../../utils/errorHandler";
 import Input from "../Input/Input";
 import { validateRegisterForm } from "../../../utils/validateForm";
+import useFormError from "../../../hooks/useFormError";
+import { DirtyFieldState } from "../../../types/form";
+import { ErrorMessage } from "../Error/ErrorMessage";
 
 export function RegisterForm() {
   const registerEmail = useAuthStore((state) => state.registerEmail);
@@ -21,22 +24,29 @@ export function RegisterForm() {
 
   const [isUsernameFocused, setIsUsernameFocused] = React.useState<boolean>(false);
 
+  const initialDirtyFieldState: DirtyFieldState = {
+    email: false,
+    password: false,
+    username: false,
+  };
+
+  const { dirtyField, setGeneralError, generalError, isValidationError, handleFormAPIError } =
+    useFormError(initialDirtyFieldState);
+
   async function handleRegisterFormSubmit(event: React.FormEvent) {
     event.preventDefault();
+    setGeneralError(null);
 
     const validationError = validateRegisterForm(registerEmail, registerPassword, registerUsername);
-    if (Object.keys(validationError).length > 0) {
-      console.log(validationError);
-      return applyFieldErrors(validationError, setRegisterError);
-    }
+    if (isValidationError(validationError, setRegisterError)) return;
 
     try {
       const data = await registerUser({ registerEmail, registerPassword, registerUsername });
       console.log("Login Success: " + data);
     } catch (error: unknown) {
       console.log("Login Error: " + error);
-      const fieldErrors: Record<string, string> = errorHandler(error);
-      applyFieldErrors<RegisterErrors>(fieldErrors, setRegisterError);
+      const fieldErrorMessage = handleFormAPIError(error);
+      applyFieldErrors<RegisterErrors>(fieldErrorMessage, setRegisterError);
     }
 
     clearRegisterErrors();
@@ -86,6 +96,8 @@ export function RegisterForm() {
       <button type="submit" className="bg-[#1bddf3] text-black py-2 rounded">
         Sign Up
       </button>
+
+      {generalError && <ErrorMessage message={generalError} />}
     </form>
   );
 }
