@@ -2,11 +2,10 @@ import * as React from "react";
 import { useAuthStore } from "../../../store/authStore";
 import { loginUser } from "../../../services/api/authAPI";
 import { applyFieldErrors } from "../../../utils/errorHandler";
-import { LoginErrors } from "../../../store/authStore";
 import Input from "../Input/Input";
 import { validateLoginForm } from "../../../utils/validateForm";
 import { ErrorMessage } from "../Error/ErrorMessage";
-import { DirtyFieldState } from "../../../types/form";
+import { DirtyFieldState, LoginFields } from "../../../types/form";
 import useFormError from "../../../hooks/useFormError";
 
 export default function LoginForm() {
@@ -16,7 +15,7 @@ export default function LoginForm() {
   const setLoginEmail = useAuthStore((state) => state.setLoginEmail);
   const setLoginPassword = useAuthStore((state) => state.setLoginPassword);
 
-  const loginErrorMsg = useAuthStore((state) => state.loginErrors);
+  const loginErrorFields = useAuthStore((state) => state.loginErrorFields);
   const setLoginError = useAuthStore((state) => state.setLoginError);
 
   const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
@@ -39,7 +38,7 @@ export default function LoginForm() {
       if (Object.keys(validationError).indexOf("email") === -1) {
         clearLoginErrors();
       }
-      applyFieldErrors<LoginErrors>(validationError, setLoginError);
+      applyFieldErrors<LoginFields>(validationError, setLoginError);
     }
   }
 
@@ -54,7 +53,7 @@ export default function LoginForm() {
       if (Object.keys(validationError).indexOf("password") === -1) {
         clearLoginErrors();
       }
-      applyFieldErrors<LoginErrors>(validationError, setLoginError);
+      applyFieldErrors<LoginFields>(validationError, setLoginError);
     }
   }
 
@@ -63,9 +62,9 @@ export default function LoginForm() {
 
     const validationError = validateLoginForm(loginEmail, loginPassword);
 
-    if (isValidationError<LoginErrors>(validationError, setLoginError)) return;
+    if (isValidationError<LoginFields>(validationError, setLoginError)) return;
 
-    await handleFormSubmit<LoginErrors>({ apiCall: () => loginUser({ loginEmail, loginPassword }), setError: setLoginError });
+    await handleFormSubmit<LoginFields>({ apiCall: () => loginUser({ loginEmail, loginPassword }), setError: setLoginError });
   }
 
   return (
@@ -75,7 +74,7 @@ export default function LoginForm() {
         placeholder="Email"
         value={loginEmail}
         onChange={(e) => handleLoginEmailOnChange(e)}
-        error={loginErrorMsg.email}
+        error={loginErrorFields.email}
         label="Email"
         id="login-email"
       />
@@ -84,7 +83,7 @@ export default function LoginForm() {
         placeholder="Password"
         value={loginPassword}
         onChange={(e) => handleLoginPasswordOnChange(e)}
-        error={loginErrorMsg.password}
+        error={loginErrorFields.password}
         label="Password"
         id="login-password"
       />

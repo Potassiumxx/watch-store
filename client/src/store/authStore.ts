@@ -1,15 +1,16 @@
 import { create } from "zustand";
+import { LoginFields, RegisterField } from "../types/form";
 
-export interface LoginErrors {
-  email?: string;
-  password?: string;
-}
+// export interface LoginErrors {
+//   email?: string;
+//   password?: string;
+// }
 
-export interface RegisterErrors {
-  email?: string;
-  password?: string;
-  username?: string;
-}
+// export interface RegisterErrors {
+//   email?: string;
+//   password?: string;
+//   username?: string;
+// }
 
 interface AuthStore {
   loginEmail: string;
@@ -19,8 +20,8 @@ interface AuthStore {
   registerPassword: string;
   registerUsername: string;
 
-  loginErrors: LoginErrors;
-  registerErrors: RegisterErrors;
+  loginErrorFields: LoginFields;
+  registerErrorFields: RegisterField;
 
   setLoginEmail: (email: string) => void;
   setLoginPassword: (password: string) => void;
@@ -29,8 +30,8 @@ interface AuthStore {
   setRegisterPassword: (email: string) => void;
   setRegisterUsername: (email: string) => void;
 
-  setLoginError: (inputField: keyof LoginErrors, message: string) => void;
-  setRegisterError: (inputField: keyof RegisterErrors, message: string) => void;
+  setLoginError: (inputField: keyof LoginFields, message: string) => void;
+  setRegisterError: (inputField: keyof RegisterField, message: string) => void;
 
   clearLoginErrors: () => void;
   clearRegisterErrors: () => void;
@@ -44,8 +45,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
   registerPassword: "",
   registerUsername: "",
 
-  loginErrors: {},
-  registerErrors: {},
+  loginErrorFields: {},
+  registerErrorFields: {},
 
   setLoginEmail: (email) => set({ loginEmail: email }),
   setLoginPassword: (password) => set({ loginPassword: password }),
@@ -56,14 +57,14 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   setLoginError: (inputField, message) =>
     set((state) => ({
-      loginErrors: { ...state.loginErrors, [inputField]: message },
+      loginErrorFields: { ...state.loginErrorFields, [inputField]: message },
     })),
 
   setRegisterError: (inputField, message) =>
     set((state) => ({
-      registerErrors: { ...state.registerErrors, [inputField]: message },
+      registerErrorFields: { ...state.registerErrorFields, [inputField]: message },
     })),
 
-  clearLoginErrors: () => set({ loginErrors: {} }),
-  clearRegisterErrors: () => set({ registerErrors: {} }),
+  clearLoginErrors: () => set({ loginErrorFields: {} }),
+  clearRegisterErrors: () => set({ registerErrorFields: {} }),
 }));
