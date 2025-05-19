@@ -1,17 +1,6 @@
 import { create } from "zustand";
 import { LoginFields, RegisterField } from "../types/form";
 
-// export interface LoginErrors {
-//   email?: string;
-//   password?: string;
-// }
-
-// export interface RegisterErrors {
-//   email?: string;
-//   password?: string;
-//   username?: string;
-// }
-
 interface AuthStore {
   loginEmail: string;
   loginPassword: string;
