@@ -1,11 +1,10 @@
 import * as React from "react";
 import { registerUser } from "../../../services/api/authAPI";
-import { RegisterErrors, useAuthStore } from "../../../store/authStore";
-import { applyFieldErrors, errorHandler } from "../../../utils/errorHandler";
+import { useAuthStore } from "../../../store/authStore";
 import Input from "../Input/Input";
 import { validateRegisterForm } from "../../../utils/validateForm";
 import useFormError from "../../../hooks/useFormError";
-import { DirtyFieldState } from "../../../types/form";
+import { DirtyFieldState, RegisterField } from "../../../types/form";
 import { ErrorMessage } from "../Error/ErrorMessage";
 
 export function RegisterForm() {
@@ -18,9 +17,7 @@ export function RegisterForm() {
   const setRegisterUsername = useAuthStore((state) => state.setRegisterUsername);
 
   const setRegisterError = useAuthStore((state) => state.setRegisterError);
-  const regiserErrorMsg = useAuthStore((state) => state.registerErrors);
-
-  const clearRegisterErrors = useAuthStore((state) => state.clearRegisterErrors);
+  const regiserErrorFields = useAuthStore((state) => state.registerErrorFields);
 
   const [isUsernameFocused, setIsUsernameFocused] = React.useState<boolean>(false);
 
@@ -30,26 +27,19 @@ export function RegisterForm() {
     username: false,
   };
 
-  const { dirtyField, setGeneralError, generalError, isValidationError, handleFormAPIError } =
-    useFormError(initialDirtyFieldState);
+  const { generalError, isValidationError, handleFormSubmit } = useFormError(initialDirtyFieldState);
 
   async function handleRegisterFormSubmit(event: React.FormEvent) {
     event.preventDefault();
-    setGeneralError(null);
 
     const validationError = validateRegisterForm(registerEmail, registerPassword, registerUsername);
-    if (isValidationError(validationError, setRegisterError)) return;
 
-    try {
-      const data = await registerUser({ registerEmail, registerPassword, registerUsername });
-      console.log("Login Success: " + data);
-    } catch (error: unknown) {
-      console.log("Login Error: " + error);
-      const fieldErrorMessage = handleFormAPIError(error);
-      applyFieldErrors<RegisterErrors>(fieldErrorMessage, setRegisterError);
-    }
+    if (isValidationError<RegisterField>(validationError, setRegisterError)) return;
 
-    clearRegisterErrors();
+    await handleFormSubmit<RegisterField>({
+      apiCall: () => registerUser({ registerEmail, registerPassword, registerUsername }),
+      setError: setRegisterError,
+    });
   }
 
   return (
@@ -62,7 +52,7 @@ export function RegisterForm() {
           onChange={(e) => setRegisterUsername(e.target.value)}
           onFocus={() => setIsUsernameFocused(true)}
           onBlur={() => setIsUsernameFocused(false)}
-          error={regiserErrorMsg.username}
+          error={regiserErrorFields.username}
           label="Username"
           id="register-username"
         />
@@ -80,7 +70,7 @@ export function RegisterForm() {
         placeholder="Email"
         value={registerEmail}
         onChange={(e) => setRegisterEmail(e.target.value)}
-        error={regiserErrorMsg.email}
+        error={regiserErrorFields.email}
         label="Email"
         id="register-email"
       />
@@ -89,7 +79,7 @@ export function RegisterForm() {
         placeholder="Password"
         value={registerPassword}
         onChange={(e) => setRegisterPassword(e.target.value)}
-        error={regiserErrorMsg.password}
+        error={regiserErrorFields.password}
         label="Password"
         id="register-password"
       />
