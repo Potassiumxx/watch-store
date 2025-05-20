@@ -16,7 +16,12 @@ export default function Input({ label, error, id, className, ...attributes }: In
       <label htmlFor={id} className={`font-semibold text-[14px] uppercase ${error ? "text-red-600" : "text-white"}`}>
         {label} {error && <ErrorMessage message={error} isInputFieldError={true} className="normal-case" />}
       </label>
-      <input className={`${baseInputClass} ${className}`} id={id} autoComplete="off" {...attributes} />
+      <input
+        className={`${baseInputClass} ${className} ${error && "border-2 border-red-800 focus:border-red-600"}`}
+        id={id}
+        autoComplete="off"
+        {...attributes}
+      />
     </div>
   );
 }

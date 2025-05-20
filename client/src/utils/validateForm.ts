@@ -51,7 +51,7 @@ export function validateRegisterForm({ email, password, username }: RegisterFiel
   if (isEmpty(username)) {
     errors.username = "Please enter a username";
   } else if (username && !/^[A-Za-z0-9_-]+$/.test(username)) {
-    errors.username = "Username can only contain letters, numbers, underscores (_) or dashes (-)";
+    errors.username = "Invalid character for username";
   }
 
   return errors;

@@ -112,8 +112,10 @@ export function RegisterForm() {
           <div
             className={`${
               isUsernameFocused ? "opacity-100 h-4 mt-1" : "opacity-0 h-0"
-            } overflow-hidden transition-all duration-200 text-[13px] text-white`}>
-            <span>Please only use numbers, letters, underscore (_) or hyphen (-)</span>
+            } overflow-hidden transition-all duration-200 text-[13px] text-white}`}>
+            <span className={`font-semibold ${regiserErrorFields.username ? "text-red-600" : "text-white"}`}>
+              Please only use numbers, letters, underscore (_) or hyphen (-)
+            </span>
           </div>
         }
       </div>
