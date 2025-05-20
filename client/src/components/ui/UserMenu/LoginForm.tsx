@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useAuthStore } from "../../../store/authStore";
 import { loginUser } from "../../../services/api/authAPI";
-import { applyFieldErrors } from "../../../utils/errorHandler";
 import Input from "../Input/Input";
 import { validateLoginForm } from "../../../utils/validateForm";
 import { ErrorMessage } from "../Error/ErrorMessage";
@@ -18,49 +17,47 @@ export default function LoginForm() {
   const loginErrorFields = useAuthStore((state) => state.loginErrorFields);
   const setLoginError = useAuthStore((state) => state.setLoginError);
 
-  const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
-
   const initialDirtyFieldState: DirtyFieldState = {
     email: false,
     password: false,
   };
 
-  const { dirtyField, generalError, isValidationError, handleFormSubmit } = useFormError<DirtyFieldState>(initialDirtyFieldState);
+  const { dirtyField, generalError, isValidationError, handleFormSubmit, handleFieldOnChange } =
+    useFormError<DirtyFieldState>(initialDirtyFieldState);
 
   function handleLoginEmailOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const newEmailInput = event.target.value;
-    setLoginEmail(newEmailInput);
+    const email = event.target.value;
+    setLoginEmail(email);
 
-    if (dirtyField.email) {
-      const validationError = validateLoginForm(newEmailInput, loginPassword);
-
-      // If the validation is correct
-      if (Object.keys(validationError).indexOf("email") === -1) {
-        clearLoginErrors();
-      }
-      applyFieldErrors<LoginFields>(validationError, setLoginError);
-    }
+    handleFieldOnChange<LoginFields>({
+      fieldKey: "email",
+      newValue: email,
+      allFormValues: { email: loginEmail, password: loginPassword },
+      formValueSetter: setLoginEmail,
+      validateFunction: validateLoginForm,
+      setFieldErrorFunction: setLoginError,
+      dirtyField: dirtyField,
+    });
   }
 
   function handleLoginPasswordOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const newPasswordInput = event.target.value;
-    setLoginPassword(newPasswordInput);
+    const password = event.target.value;
 
-    if (dirtyField.password) {
-      const validationError = validateLoginForm(loginEmail, newPasswordInput);
-
-      // If the validation is correct
-      if (Object.keys(validationError).indexOf("password") === -1) {
-        clearLoginErrors();
-      }
-      applyFieldErrors<LoginFields>(validationError, setLoginError);
-    }
+    handleFieldOnChange<LoginFields>({
+      fieldKey: "password",
+      newValue: password,
+      allFormValues: { email: loginEmail, password: loginPassword },
+      formValueSetter: setLoginPassword,
+      validateFunction: validateLoginForm,
+      setFieldErrorFunction: setLoginError,
+      dirtyField: dirtyField,
+    });
   }
 
   async function handleLoginFormSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-    const validationError = validateLoginForm(loginEmail, loginPassword);
+    const validationError = validateLoginForm({ email: loginEmail, password: loginPassword });
 
     if (isValidationError<LoginFields>(validationError, setLoginError)) return;
 

@@ -17,7 +17,7 @@ export function errorHandler(error: unknown): Record<string, string> {
 }
 
 export function applyFieldErrors<T extends { [K in keyof T]: string | undefined }>(
-  fieldErrors: T,
+  fieldErrors: Partial<T>,
   setError: (field: keyof T, message: string) => void
 ): void {
   for (const field in fieldErrors) {

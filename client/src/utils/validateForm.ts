@@ -1,23 +1,23 @@
-import { LoginErrors, RegisterErrors } from "../store/authStore";
+import { LoginFields, RegisterField } from "../types/form";
 
-export function validateLoginForm(email: string, password: string): LoginErrors {
-  const errors: LoginErrors = {};
+export function validateLoginForm({ email, password }: LoginFields): Partial<LoginFields> {
+  const errors: Partial<LoginFields> = {};
 
-  if (email.trim().length === 0) {
+  if (email?.trim().length === 0) {
     errors.email = "Please enter an Email";
-  } else if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+  } else if (email !== undefined && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
     errors.email = "Invalid Email pattern.";
   }
 
-  if (password.trim().length === 0) {
+  if (password?.trim().length === 0) {
     errors.password = "Please enter a password";
   }
 
   return errors;
 }
 
-export function validateRegisterForm(email: string, password: string, username: string): RegisterErrors {
-  const errors: RegisterErrors = {};
+export function validateRegisterForm(email: string, password: string, username: string): RegisterField {
+  const errors: RegisterField = {};
 
   if (email.trim().length === 0) {
     errors.email = "Please enter an Email";
