@@ -19,6 +19,11 @@ interface loginData {
 
 const BACKEND_API_URL = import.meta.env.VITE_APP_API_URL;
 
+/**
+ * API function - Send login data to the backend
+ *
+ * @param credentials Login data, e.g., email and password values/data
+ */
 export async function loginUser(credentials: loginCredentials): Promise<loginData> {
   try {
     const response = await axios.post(`${BACKEND_API_URL}/auth/login`, credentials);
@@ -35,6 +40,11 @@ export async function loginUser(credentials: loginCredentials): Promise<loginDat
   }
 }
 
+/**
+ * API function - Send registration data to the backend
+ *
+ * @param credentials Registration data, e.g., email, password and username
+ */
 export async function registerUser(credentials: registerCredentials) {
   try {
     console.log(credentials);
