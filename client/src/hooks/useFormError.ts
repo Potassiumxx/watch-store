@@ -3,16 +3,27 @@ import useDirtyField from "./useDirtyField";
 import { ACTION_TYPES, GENERAL_ERROR_KEY } from "../utils/constants";
 import { applyFieldErrors, errorHandler } from "../utils/errorHandler";
 import { APIErrorReturnType } from "../types/form";
-// import { FormAPIData } from "../types/form";
+import { useAuthStore } from "../store/authStore";
 
 interface HandleFormSubmitParameter<V> {
   apiCall: () => Promise<unknown>;
   setError: (field: keyof V, message: string) => void;
 }
 
+interface handleFieldOnChangeParamter<InputFieldType> {
+  fieldKey: keyof InputFieldType;
+  newValue: string;
+  allFormValues: InputFieldType;
+  formValueSetter: (value: string) => void;
+  validateFunction: (fields: InputFieldType) => Partial<InputFieldType>;
+  setFieldErrorFunction: (inputField: keyof InputFieldType, errorMessage: string) => void;
+  dirtyField: { [K in keyof InputFieldType]: boolean };
+}
+
 export default function useFormError<T extends { [key: string]: boolean }>(initialState: T) {
   const [generalError, setGeneralError] = React.useState<string | null>();
   const [dirtyField, dispatchDirtyFieldReducer] = useDirtyField<T>(initialState);
+  const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
 
   /**
    * Handles errors like networks and server errors, no route/API found errors, etc. related to backend connection
@@ -56,6 +67,29 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
     }
   }
 
+  function handleFieldOnChange<InputFieldType extends { [K in keyof InputFieldType]: string | undefined }>({
+    fieldKey,
+    newValue,
+    allFormValues,
+    formValueSetter,
+    validateFunction,
+    setFieldErrorFunction,
+    dirtyField,
+  }: handleFieldOnChangeParamter<InputFieldType>): void {
+    formValueSetter(newValue);
+    if (dirtyField[fieldKey]) {
+      const updatedFormValue = { ...allFormValues, [fieldKey]: newValue };
+
+      const validationError = validateFunction(updatedFormValue);
+
+      if (!(fieldKey in validationError)) {
+        clearLoginErrors();
+      }
+
+      applyFieldErrors<InputFieldType>(validationError, setFieldErrorFunction);
+    }
+  }
+
   return {
     generalError,
     setGeneralError,
@@ -64,5 +98,6 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
     handleFormAPIError,
     isValidationError,
     handleFormSubmit,
+    handleFieldOnChange,
   };
 }
