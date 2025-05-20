@@ -4,7 +4,7 @@ import { useAuthStore } from "../../../store/authStore";
 import Input from "../Input/Input";
 import { validateRegisterForm } from "../../../utils/validateForm";
 import useFormError from "../../../hooks/useForm";
-import { DirtyFieldState, RegisterField } from "../../../types/form";
+import { DirtyFieldState, RegisterFields } from "../../../types/form";
 import { ErrorMessage } from "../Error/ErrorMessage";
 
 export function RegisterForm() {
@@ -19,6 +19,8 @@ export function RegisterForm() {
   const setRegisterError = useAuthStore((state) => state.setRegisterError);
   const regiserErrorFields = useAuthStore((state) => state.registerErrorFields);
 
+  const clearRegisterErrors = useAuthStore((state) => state.clearRegisterErrors);
+
   const [isUsernameFocused, setIsUsernameFocused] = React.useState<boolean>(false);
 
   const initialDirtyFieldState: DirtyFieldState = {
@@ -27,16 +29,66 @@ export function RegisterForm() {
     username: false,
   };
 
-  const { generalError, isValidationError, handleFormSubmit } = useFormError(initialDirtyFieldState);
+  const { dirtyField, generalError, isValidationError, handleFormSubmit, handleFieldOnChange } =
+    useFormError(initialDirtyFieldState);
+
+  function handleRegisterUsernameOnChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    const username = event.target.value;
+
+    handleFieldOnChange<RegisterFields>({
+      fieldKey: "username",
+      newValue: username,
+      allFormValues: { email: registerEmail, password: registerPassword, username: registerUsername },
+      formValueSetter: setRegisterUsername,
+      validateFunction: validateRegisterForm,
+      setFieldErrorFunction: setRegisterError,
+      clearErrorsFunction: clearRegisterErrors,
+      dirtyField: dirtyField,
+    });
+  }
+
+  function handleRegisterEmailOnChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    const email = event.target.value;
+
+    handleFieldOnChange<RegisterFields>({
+      fieldKey: "email",
+      newValue: email,
+      allFormValues: { email: registerEmail, password: registerPassword, username: registerUsername },
+      formValueSetter: setRegisterEmail,
+      validateFunction: validateRegisterForm,
+      setFieldErrorFunction: setRegisterError,
+      clearErrorsFunction: clearRegisterErrors,
+      dirtyField: dirtyField,
+    });
+  }
+
+  function handleRegisterPasswordOnChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    const password = event.target.value;
+
+    handleFieldOnChange<RegisterFields>({
+      fieldKey: "password",
+      newValue: password,
+      allFormValues: { email: registerEmail, password: registerPassword, username: registerUsername },
+      formValueSetter: setRegisterPassword,
+      validateFunction: validateRegisterForm,
+      setFieldErrorFunction: setRegisterError,
+      clearErrorsFunction: clearRegisterErrors,
+      dirtyField: dirtyField,
+    });
+  }
 
   async function handleRegisterFormSubmit(event: React.FormEvent) {
     event.preventDefault();
 
-    const validationError = validateRegisterForm(registerEmail, registerPassword, registerUsername);
+    const validationError = validateRegisterForm({
+      email: registerEmail,
+      password: registerPassword,
+      username: registerUsername,
+    });
 
-    if (isValidationError<RegisterField>(validationError, setRegisterError)) return;
+    if (isValidationError<RegisterFields>(validationError, setRegisterError)) return;
 
-    await handleFormSubmit<RegisterField>({
+    await handleFormSubmit<RegisterFields>({
       apiCall: () => registerUser({ registerEmail, registerPassword, registerUsername }),
       setError: setRegisterError,
     });
@@ -49,7 +101,7 @@ export function RegisterForm() {
           type="name"
           placeholder="Username"
           value={registerUsername}
-          onChange={(e) => setRegisterUsername(e.target.value)}
+          onChange={(e) => handleRegisterUsernameOnChange(e)}
           onFocus={() => setIsUsernameFocused(true)}
           onBlur={() => setIsUsernameFocused(false)}
           error={regiserErrorFields.username}
@@ -69,7 +121,7 @@ export function RegisterForm() {
         type="email"
         placeholder="Email"
         value={registerEmail}
-        onChange={(e) => setRegisterEmail(e.target.value)}
+        onChange={(e) => handleRegisterEmailOnChange(e)}
         error={regiserErrorFields.email}
         label="Email"
         id="register-email"
@@ -78,7 +130,7 @@ export function RegisterForm() {
         type="password"
         placeholder="Password"
         value={registerPassword}
-        onChange={(e) => setRegisterPassword(e.target.value)}
+        onChange={(e) => handleRegisterPasswordOnChange(e)}
         error={regiserErrorFields.password}
         label="Password"
         id="register-password"

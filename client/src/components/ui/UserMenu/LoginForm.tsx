@@ -17,6 +17,8 @@ export default function LoginForm() {
   const loginErrorFields = useAuthStore((state) => state.loginErrorFields);
   const setLoginError = useAuthStore((state) => state.setLoginError);
 
+  const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
+
   const initialDirtyFieldState: DirtyFieldState = {
     email: false,
     password: false,
@@ -36,6 +38,7 @@ export default function LoginForm() {
       formValueSetter: setLoginEmail,
       validateFunction: validateLoginForm,
       setFieldErrorFunction: setLoginError,
+      clearErrorsFunction: clearLoginErrors,
       dirtyField: dirtyField,
     });
   }
@@ -50,6 +53,7 @@ export default function LoginForm() {
       formValueSetter: setLoginPassword,
       validateFunction: validateLoginForm,
       setFieldErrorFunction: setLoginError,
+      clearErrorsFunction: clearLoginErrors,
       dirtyField: dirtyField,
     });
   }

@@ -14,6 +14,6 @@ export interface LoginFields {
   password?: string;
 }
 
-export interface RegisterField extends Partial<LoginFields> {
+export interface RegisterFields extends Partial<LoginFields> {
   username?: string;
 }

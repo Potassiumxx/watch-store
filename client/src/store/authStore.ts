@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { LoginFields, RegisterField } from "../types/form";
+import { LoginFields, RegisterFields } from "../types/form";
 
 interface AuthStore {
   loginEmail: string;
@@ -10,7 +10,7 @@ interface AuthStore {
   registerUsername: string;
 
   loginErrorFields: LoginFields;
-  registerErrorFields: RegisterField;
+  registerErrorFields: RegisterFields;
 
   setLoginEmail: (email: string) => void;
   setLoginPassword: (password: string) => void;
@@ -20,7 +20,7 @@ interface AuthStore {
   setRegisterUsername: (email: string) => void;
 
   setLoginError: (inputField: keyof LoginFields, message: string) => void;
-  setRegisterError: (inputField: keyof RegisterField, message: string) => void;
+  setRegisterError: (inputField: keyof RegisterFields, message: string) => void;
 
   clearLoginErrors: () => void;
   clearRegisterErrors: () => void;

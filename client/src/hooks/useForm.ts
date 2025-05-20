@@ -3,7 +3,6 @@ import useDirtyField from "./useDirtyField";
 import { ACTION_TYPES, GENERAL_ERROR_KEY } from "../utils/constants";
 import { applyFieldErrors, errorHandler } from "../utils/errorHandler";
 import { APIErrorReturnType } from "../types/form";
-import { useAuthStore } from "../store/authStore";
 
 interface HandleFormSubmitParameter<V> {
   apiCall: () => Promise<unknown>;
@@ -17,13 +16,13 @@ interface handleFieldOnChangeParamter<InputFieldType> {
   formValueSetter: (value: string) => void;
   validateFunction: (fields: InputFieldType) => Partial<InputFieldType>;
   setFieldErrorFunction: (inputField: keyof InputFieldType, errorMessage: string) => void;
+  clearErrorsFunction: () => void;
   dirtyField: { [K in keyof InputFieldType]: boolean };
 }
 
 export default function useFormError<T extends { [key: string]: boolean }>(initialState: T) {
   const [generalError, setGeneralError] = React.useState<string | null>();
   const [dirtyField, dispatchDirtyFieldReducer] = useDirtyField<T>(initialState);
-  const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
 
   /**
    * Handles errors like networks and server errors, no route/API found errors, etc. related to backend connection
@@ -74,6 +73,7 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
     formValueSetter,
     validateFunction,
     setFieldErrorFunction,
+    clearErrorsFunction,
     dirtyField,
   }: handleFieldOnChangeParamter<InputFieldType>): void {
     formValueSetter(newValue);
@@ -82,8 +82,9 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
 
       const validationError = validateFunction(updatedFormValue);
 
+      // If the validation is successfull
       if (!(fieldKey in validationError)) {
-        clearLoginErrors();
+        clearErrorsFunction();
       }
 
       applyFieldErrors<InputFieldType>(validationError, setFieldErrorFunction);
