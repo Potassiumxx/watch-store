@@ -16,6 +16,13 @@ function mapKeyAndValue<T extends Record<string, boolean>>(object: T, value: boo
   }, {} as T);
 }
 
+/**
+ * Custom hook to manage "dirty" form fields state.
+ *
+ * @template T - An object with string keys and boolean values representing field dirtiness.
+ * @param initialState - Initial state object where each key represents a field and the value indicates if it's dirty.
+ * @returns A tuple containing the current dirty field state and a dispatch function for the reducer.
+ */
 export default function useDirtyField<T extends { [key: string]: boolean }>(initialState: T) {
   function dirtyFieldReducer(state: T, action: DirtyFieldAction<T>): T {
     switch (action.type) {
