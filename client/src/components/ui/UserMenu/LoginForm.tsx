@@ -5,7 +5,7 @@ import Input from "../Input/Input";
 import { validateLoginForm } from "../../../utils/validateForm";
 import { ErrorMessage } from "../Error/ErrorMessage";
 import { DirtyFieldState, LoginFields } from "../../../types/form";
-import useFormError from "../../../hooks/useFormError";
+import useFormError from "../../../hooks/useForm";
 
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);

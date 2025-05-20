@@ -3,7 +3,7 @@ import { registerUser } from "../../../services/api/authAPI";
 import { useAuthStore } from "../../../store/authStore";
 import Input from "../Input/Input";
 import { validateRegisterForm } from "../../../utils/validateForm";
-import useFormError from "../../../hooks/useFormError";
+import useFormError from "../../../hooks/useForm";
 import { DirtyFieldState, RegisterField } from "../../../types/form";
 import { ErrorMessage } from "../Error/ErrorMessage";
 
