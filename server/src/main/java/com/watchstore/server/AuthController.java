@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.watchstore.server.dto.FieldErrorResponse;
 import com.watchstore.server.dto.LoginRequest;
 import com.watchstore.server.dto.RegisterRequest;
+import com.watchstore.server.dto.UserDTO;
 import com.watchstore.server.model.User;
 import com.watchstore.server.repository.UserRepository;
 
@@ -31,7 +32,8 @@ public class AuthController {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (user.getPassword().equals(loginRequest.getPassword())) {
-                return new ResponseEntity<>("Login successful", HttpStatus.OK);
+                UserDTO userDTO = new UserDTO(user.getId(), user.getEmail(), user.getPassword());
+                return ResponseEntity.ok(userDTO);
             }
         }
         
