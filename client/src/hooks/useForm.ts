@@ -77,17 +77,19 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
   async function handleFormSubmit<V extends { [K in keyof V]: string | undefined }>({
     apiCall,
     setError,
-  }: HandleFormSubmitParameter<V>): Promise<void> {
+  }: HandleFormSubmitParameter<V>): Promise<unknown> {
     setGeneralError(null);
     try {
       const data = await apiCall();
       dispatchDirtyFieldReducer({ type: "RESET_ALL" });
       console.log(data);
+      return data;
     } catch (error) {
       console.log(error);
       const fieldErrorMessage = handleFormAPIError<V>(error);
       console.log(fieldErrorMessage);
       applyFieldErrors<V>(fieldErrorMessage, setError);
+      return error;
     }
   }
 
