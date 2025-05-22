@@ -5,16 +5,25 @@ import { FaRegUser } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import UserMenu from "../UserMenu/UserMenu";
+import { useAuthStore } from "../../../store/authStore";
+import { useSideBarStore } from "../../../store/uiStore";
 
 export default function Navbar() {
   const [openSearchBar, setOpenSearchBar] = React.useState<boolean>(false);
   const [isSearchBarVisible, setIsSearchBarVisible] = React.useState<boolean>(false);
   const [isNavbarBackgroundVisible, setIsNavbarBackgroundVisible] = React.useState<boolean>(false);
+
   const searchBarRef = React.useRef<HTMLInputElement | null>(null);
   const searchIconRef = React.useRef<HTMLButtonElement | null>(null);
   const bottomNavbarRef = React.useRef<HTMLDivElement | null>(null);
-  const [showUserMenu, setShowUserMenu] = React.useState<boolean>(false);
+
   const navigate = useNavigate();
+
+  const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
+  const username = useAuthStore((state) => state.registerUsername);
+
+  const showUserMenu = useSideBarStore((state) => state.showUserMenu);
+  const setShowUserMenu = useSideBarStore((state) => state.setShowUserMenu);
 
   function handleOpenSearchBar() {
     setOpenSearchBar(true);
@@ -75,6 +84,10 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", updateNavbarBackgroundOnScroll);
   });
 
+  React.useEffect(() => {
+    console.log(username);
+  }, [isUserSignedIn]);
+
   return (
     <div className="fixed top-0 flex flex-col justify-between items-center z-20 w-full">
       <UserMenu isVisible={showUserMenu} onClose={() => setShowUserMenu(false)} />
@@ -99,9 +112,13 @@ export default function Navbar() {
             <LiaShoppingCartSolid size={32} />
             <span className="flex items-center text-[12px] font-bold px-[5px] py-[1px] rounded-[50%] bg-[#f28c26]">999</span>
           </button>
-          <button className="hover:cursor-pointer" aria-label="User" onClick={() => setShowUserMenu(!showUserMenu)}>
-            <FaRegUser size={22} />
-          </button>
+          {isUserSignedIn ? (
+            ""
+          ) : (
+            <button className="hover:cursor-pointer" aria-label="User" onClick={() => setShowUserMenu(!showUserMenu)}>
+              <FaRegUser size={22} />
+            </button>
+          )}
         </div>
       </div>
       <div

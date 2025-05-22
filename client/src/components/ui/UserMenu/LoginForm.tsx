@@ -6,6 +6,7 @@ import { validateLoginForm } from "../../../utils/validateForm";
 import { ErrorMessage } from "../Error/ErrorMessage";
 import { DirtyFieldState, LoginFields } from "../../../types/form";
 import useFormError from "../../../hooks/useForm";
+import { useSideBarStore } from "../../../store/uiStore";
 
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
@@ -18,6 +19,10 @@ export default function LoginForm() {
   const setLoginError = useAuthStore((state) => state.setLoginError);
 
   const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
+
+  const userSignedIn = useAuthStore((state) => state.userSignedIn);
+
+  const setShowUserMenu = useSideBarStore((state) => state.setShowUserMenu);
 
   const initialDirtyFieldState: DirtyFieldState = {
     email: false,
@@ -60,12 +65,21 @@ export default function LoginForm() {
 
   async function handleLoginFormSubmit(event: React.FormEvent) {
     event.preventDefault();
+    clearLoginErrors();
 
     const validationError = validateLoginForm({ email: loginEmail, password: loginPassword });
 
     if (isValidationError<LoginFields>(validationError, setLoginError)) return;
 
-    await handleFormSubmit<LoginFields>({ apiCall: () => loginUser({ loginEmail, loginPassword }), setError: setLoginError });
+    const response = await handleFormSubmit<LoginFields>({
+      apiCall: () => loginUser({ loginEmail, loginPassword }),
+      setError: setLoginError,
+    });
+
+    if (response) {
+      userSignedIn();
+      setShowUserMenu(false);
+    }
   }
 
   return (

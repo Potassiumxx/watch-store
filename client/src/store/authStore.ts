@@ -12,6 +12,8 @@ interface AuthStore {
   loginErrorFields: LoginFields;
   registerErrorFields: RegisterFields;
 
+  isUserSignedIn: boolean;
+
   setLoginEmail: (email: string) => void;
   setLoginPassword: (password: string) => void;
 
@@ -21,6 +23,9 @@ interface AuthStore {
 
   setLoginError: (inputField: keyof LoginFields, message: string) => void;
   setRegisterError: (inputField: keyof RegisterFields, message: string) => void;
+
+  userSignedIn: () => void;
+  userSignedOut: () => void;
 
   clearLoginErrors: () => void;
   clearRegisterErrors: () => void;
@@ -36,6 +41,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   loginErrorFields: {},
   registerErrorFields: {},
+
+  isUserSignedIn: false,
 
   setLoginEmail: (email) => set({ loginEmail: email }),
   setLoginPassword: (password) => set({ loginPassword: password }),
@@ -53,6 +60,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
     set((state) => ({
       registerErrorFields: { ...state.registerErrorFields, [inputField]: message },
     })),
+
+  userSignedIn: () => set({ isUserSignedIn: true }),
+  userSignedOut: () => set({ isUserSignedIn: false }),
 
   clearLoginErrors: () => set({ loginErrorFields: {} }),
   clearRegisterErrors: () => set({ registerErrorFields: {} }),
