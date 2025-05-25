@@ -28,3 +28,9 @@ export interface LoginFields {
 export interface RegisterFields extends Partial<LoginFields> {
   username?: string;
 }
+
+export interface LoginResponse {
+  id: number;
+  email: string;
+  username: string;
+}
