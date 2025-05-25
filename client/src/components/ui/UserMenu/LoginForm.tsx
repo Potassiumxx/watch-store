@@ -4,9 +4,10 @@ import { loginUser } from "../../../services/api/authAPI";
 import Input from "../Input/Input";
 import { validateLoginForm } from "../../../utils/validateForm";
 import { ErrorMessage } from "../Error/ErrorMessage";
-import { DirtyFieldState, LoginFields } from "../../../types/form";
+import { DirtyFieldState, LoginFields, LoginResponse } from "../../../types/form";
 import useFormError from "../../../hooks/useForm";
 import { useSideBarStore } from "../../../store/uiStore";
+import { useUserStore } from "../../../store/userStore";
 
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
@@ -23,6 +24,8 @@ export default function LoginForm() {
   const userSignedIn = useAuthStore((state) => state.userSignedIn);
 
   const setShowUserMenu = useSideBarStore((state) => state.setShowUserMenu);
+
+  const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
 
   const initialDirtyFieldState: DirtyFieldState = {
     email: false,
@@ -71,7 +74,7 @@ export default function LoginForm() {
 
     if (isValidationError<LoginFields>(validationError, setLoginError)) return;
 
-    const response = await handleFormSubmit<LoginFields>({
+    const response = await handleFormSubmit<LoginFields, LoginResponse>({
       apiCall: () => loginUser({ loginEmail, loginPassword }),
       setError: setLoginError,
     });
@@ -79,6 +82,7 @@ export default function LoginForm() {
     if (response) {
       userSignedIn();
       setShowUserMenu(false);
+      setGlobalUsername(response.username);
     }
   }
 

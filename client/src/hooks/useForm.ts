@@ -4,8 +4,8 @@ import { ACTION_TYPES, GENERAL_ERROR_KEY } from "../utils/constants";
 import { applyFieldErrors, errorHandler } from "../utils/errorHandler";
 import { APIErrorReturnType } from "../types/form";
 
-interface HandleFormSubmitParameter<V> {
-  apiCall: () => Promise<unknown>;
+interface HandleFormSubmitParameter<V, R> {
+  apiCall: () => Promise<R>;
   setError: (field: keyof V, message: string) => void;
 }
 
@@ -70,14 +70,15 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
    * Handles authentication after successfully submitting the form
    *
    * @template V  The shape of the form field data (e.g., LoginFields, RegisterFields, etc.)
+   * @template R The return shape of the form field data (e,g, LoginResponse, RegiserResponse, etc.)
    * @param apiCall Function that sends data to the backend and returns response from the backend.
    * @param setError Function to set errors for the form of type V, called only if errors exist.
    * @returns Promise<void>
    */
-  async function handleFormSubmit<V extends { [K in keyof V]: string | undefined }>({
+  async function handleFormSubmit<V extends { [K in keyof V]: string | undefined }, R>({
     apiCall,
     setError,
-  }: HandleFormSubmitParameter<V>): Promise<unknown> {
+  }: HandleFormSubmitParameter<V, R>): Promise<R | undefined> {
     setGeneralError(null);
     try {
       const data = await apiCall();
@@ -89,7 +90,7 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
       const fieldErrorMessage = handleFormAPIError<V>(error);
       console.log(fieldErrorMessage);
       applyFieldErrors<V>(fieldErrorMessage, setError);
-      return error;
+      return undefined;
     }
   }
 

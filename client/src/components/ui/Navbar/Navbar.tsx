@@ -7,6 +7,7 @@ import * as React from "react";
 import UserMenu from "../UserMenu/UserMenu";
 import { useAuthStore } from "../../../store/authStore";
 import { useSideBarStore } from "../../../store/uiStore";
+import { useUserStore } from "../../../store/userStore";
 
 export default function Navbar() {
   const [openSearchBar, setOpenSearchBar] = React.useState<boolean>(false);
@@ -20,7 +21,8 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
-  const username = useAuthStore((state) => state.registerUsername);
+
+  const globalUsername = useUserStore((state) => state.globalUsername);
 
   const showUserMenu = useSideBarStore((state) => state.showUserMenu);
   const setShowUserMenu = useSideBarStore((state) => state.setShowUserMenu);
@@ -84,10 +86,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", updateNavbarBackgroundOnScroll);
   });
 
-  React.useEffect(() => {
-    console.log(username);
-  }, [isUserSignedIn]);
-
   return (
     <div className="fixed top-0 flex flex-col justify-between items-center z-20 w-full">
       <UserMenu isVisible={showUserMenu} onClose={() => setShowUserMenu(false)} />
@@ -113,7 +111,7 @@ export default function Navbar() {
             <span className="flex items-center text-[12px] font-bold px-[5px] py-[1px] rounded-[50%] bg-[#f28c26]">999</span>
           </button>
           {isUserSignedIn ? (
-            ""
+            globalUsername
           ) : (
             <button className="hover:cursor-pointer" aria-label="User" onClick={() => setShowUserMenu(!showUserMenu)}>
               <FaRegUser size={22} />
