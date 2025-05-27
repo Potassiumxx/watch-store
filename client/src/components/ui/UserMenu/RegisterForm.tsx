@@ -29,7 +29,7 @@ export function RegisterForm() {
     username: false,
   };
 
-  const { dirtyField, generalError, isValidationError, handleFormSubmit, handleFieldOnChange } =
+  const { dirtyField, generalError, isValidationError, handleFormSubmit, handleFieldOnChange, handleSuccessfulResponse } =
     useFormError(initialDirtyFieldState);
 
   function handleRegisterUsernameOnChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -88,10 +88,15 @@ export function RegisterForm() {
 
     if (isValidationError<RegisterFields>(validationError, setRegisterError)) return;
 
-    await handleFormSubmit<RegisterFields, LoginAndRegisterResponse>({
+    const response = await handleFormSubmit<RegisterFields, LoginAndRegisterResponse>({
       apiCall: () => registerUser({ registerEmail, registerPassword, registerUsername }),
       setError: setRegisterError,
     });
+
+    if (response) {
+      console.log(response);
+      await handleSuccessfulResponse(response);
+    }
   }
 
   return (

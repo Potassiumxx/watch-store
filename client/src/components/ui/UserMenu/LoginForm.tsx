@@ -73,8 +73,6 @@ export default function LoginForm() {
 
     if (response) {
       await handleSuccessfulResponse(response);
-    } else {
-      console.log("Error occured while logging in.");
     }
   }
 

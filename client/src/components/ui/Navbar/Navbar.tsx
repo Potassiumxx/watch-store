@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import UserMenu from "../UserMenu/UserMenu";
 import { useAuthStore } from "../../../store/authStore";
-import { useSideBarStore } from "../../../store/uiStore";
+import { useUIStore } from "../../../store/uiStore";
 import { useUserStore } from "../../../store/userStore";
 
 export default function Navbar() {
@@ -24,8 +24,8 @@ export default function Navbar() {
 
   const globalUsername = useUserStore((state) => state.globalUsername);
 
-  const showUserMenu = useSideBarStore((state) => state.showUserMenu);
-  const setShowUserMenu = useSideBarStore((state) => state.setShowUserMenu);
+  const showUserMenu = useUIStore((state) => state.showUserMenu);
+  const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
 
   function handleOpenSearchBar() {
     setOpenSearchBar(true);
