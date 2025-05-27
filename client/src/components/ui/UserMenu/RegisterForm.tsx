@@ -6,6 +6,7 @@ import { validateRegisterForm } from "../../../utils/validateForm";
 import useFormError from "../../../hooks/useForm";
 import { DirtyFieldState, LoginAndRegisterResponse, RegisterFields } from "../../../types/form";
 import { ErrorMessage } from "../Error/ErrorMessage";
+import Form from "../Form/Form";
 
 export function RegisterForm() {
   const registerEmail = useAuthStore((state) => state.registerEmail);
@@ -100,7 +101,7 @@ export function RegisterForm() {
   }
 
   return (
-    <form className="flex flex-col gap-4 text-black p-6" onSubmit={handleRegisterFormSubmit}>
+    <Form handleFormSubmit={handleRegisterFormSubmit}>
       <div>
         <Input
           type="name"
@@ -147,6 +148,6 @@ export function RegisterForm() {
       </button>
 
       {generalError && <ErrorMessage message={generalError} />}
-    </form>
+    </Form>
   );
 }

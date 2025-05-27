@@ -6,6 +6,7 @@ import { validateLoginForm } from "../../../utils/validateForm";
 import { ErrorMessage } from "../Error/ErrorMessage";
 import { DirtyFieldState, LoginFields, LoginAndRegisterResponse } from "../../../types/form";
 import useFormError from "../../../hooks/useForm";
+import Form from "../Form/Form";
 
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
@@ -77,7 +78,7 @@ export default function LoginForm() {
   }
 
   return (
-    <form className="flex flex-col gap-4 text-black p-6" onSubmit={handleLoginFormSubmit}>
+    <Form handleFormSubmit={handleLoginFormSubmit}>
       <Input
         type="email"
         placeholder="Email"
@@ -101,6 +102,6 @@ export default function LoginForm() {
       </button>
 
       {generalError && <ErrorMessage message={generalError} />}
-    </form>
+    </Form>
   );
 }
