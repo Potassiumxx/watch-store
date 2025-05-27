@@ -2,7 +2,10 @@ import * as React from "react";
 import useDirtyField from "./useDirtyField";
 import { ACTION_TYPES, GENERAL_ERROR_KEY } from "../utils/constants";
 import { applyFieldErrors, errorHandler } from "../utils/errorHandler";
-import { APIErrorReturnType } from "../types/form";
+import { APIErrorReturnType, LoginAndRegisterResponse } from "../types/form";
+import { useAuthStore } from "../store/authStore";
+import { useUIStore } from "../store/uiStore";
+import { useUserStore } from "../store/userStore";
 
 interface HandleFormSubmitParameter<V, R> {
   apiCall: () => Promise<R>;
@@ -28,6 +31,12 @@ interface handleFieldOnChangeParamter<InputFieldType> {
 export default function useFormError<T extends { [key: string]: boolean }>(initialState: T) {
   const [generalError, setGeneralError] = React.useState<string | null>();
   const [dirtyField, dispatchDirtyFieldReducer] = useDirtyField<T>(initialState);
+
+  const userSignedIn = useAuthStore((state) => state.userSignedIn);
+
+  const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
+
+  const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
 
   // Used 'V' instead of 'T' for generic type from now on so that it doesn't get confusing since there's a 'T' in parent too
 
@@ -136,6 +145,18 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
     }
   }
 
+  /**
+   * Handles the logic after successful response from the backend after login or register is successful.
+   * @param response Response sent from the backend. May include object with keys and values or undefined.
+   */
+  async function handleSuccessfulResponse(response: LoginAndRegisterResponse): Promise<void> {
+    if (response) {
+      userSignedIn();
+      setShowUserMenu(false);
+      setGlobalUsername(response.username);
+    }
+  }
+
   return {
     generalError,
     setGeneralError,
@@ -145,5 +166,6 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
     isValidationError,
     handleFormSubmit,
     handleFieldOnChange,
+    handleSuccessfulResponse,
   };
 }

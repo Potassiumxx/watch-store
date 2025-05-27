@@ -4,10 +4,8 @@ import { loginUser } from "../../../services/api/authAPI";
 import Input from "../Input/Input";
 import { validateLoginForm } from "../../../utils/validateForm";
 import { ErrorMessage } from "../Error/ErrorMessage";
-import { DirtyFieldState, LoginFields, LoginResponse } from "../../../types/form";
+import { DirtyFieldState, LoginFields, LoginAndRegisterResponse } from "../../../types/form";
 import useFormError from "../../../hooks/useForm";
-import { useSideBarStore } from "../../../store/uiStore";
-import { useUserStore } from "../../../store/userStore";
 
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
@@ -21,18 +19,12 @@ export default function LoginForm() {
 
   const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
 
-  const userSignedIn = useAuthStore((state) => state.userSignedIn);
-
-  const setShowUserMenu = useSideBarStore((state) => state.setShowUserMenu);
-
-  const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
-
   const initialDirtyFieldState: DirtyFieldState = {
     email: false,
     password: false,
   };
 
-  const { dirtyField, generalError, isValidationError, handleFormSubmit, handleFieldOnChange } =
+  const { dirtyField, generalError, isValidationError, handleFormSubmit, handleFieldOnChange, handleSuccessfulResponse } =
     useFormError<DirtyFieldState>(initialDirtyFieldState);
 
   function handleLoginEmailOnChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -74,15 +66,15 @@ export default function LoginForm() {
 
     if (isValidationError<LoginFields>(validationError, setLoginError)) return;
 
-    const response = await handleFormSubmit<LoginFields, LoginResponse>({
+    const response = await handleFormSubmit<LoginFields, LoginAndRegisterResponse>({
       apiCall: () => loginUser({ loginEmail, loginPassword }),
       setError: setLoginError,
     });
 
     if (response) {
-      userSignedIn();
-      setShowUserMenu(false);
-      setGlobalUsername(response.username);
+      await handleSuccessfulResponse(response);
+    } else {
+      console.log("Error occured while logging in.");
     }
   }
 

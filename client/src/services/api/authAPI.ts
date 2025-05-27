@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LoginResponse } from "../../types/form";
+import { LoginAndRegisterResponse } from "../../types/form";
 
 interface loginCredentials {
   loginEmail: string;
@@ -19,7 +19,7 @@ const BACKEND_API_URL = import.meta.env.VITE_APP_API_URL;
  *
  * @param credentials Login data, e.g., email and password values/data
  */
-export async function loginUser(credentials: loginCredentials): Promise<LoginResponse> {
+export async function loginUser(credentials: loginCredentials): Promise<LoginAndRegisterResponse> {
   try {
     const response = await axios.post(`${BACKEND_API_URL}/auth/login`, credentials);
     console.log(response);

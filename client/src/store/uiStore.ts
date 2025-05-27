@@ -5,7 +5,7 @@ interface SideBarStore {
   setShowUserMenu: (showUserMenu: boolean) => void;
 }
 
-export const useSideBarStore = create<SideBarStore>((set) => ({
+export const useUIStore = create<SideBarStore>((set) => ({
   showUserMenu: false,
   setShowUserMenu: (showUserMenu) => set({ showUserMenu: showUserMenu }),
 }));

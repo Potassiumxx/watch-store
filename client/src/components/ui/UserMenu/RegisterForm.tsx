@@ -4,7 +4,7 @@ import { useAuthStore } from "../../../store/authStore";
 import Input from "../Input/Input";
 import { validateRegisterForm } from "../../../utils/validateForm";
 import useFormError from "../../../hooks/useForm";
-import { DirtyFieldState, RegisterFields } from "../../../types/form";
+import { DirtyFieldState, LoginAndRegisterResponse, RegisterFields } from "../../../types/form";
 import { ErrorMessage } from "../Error/ErrorMessage";
 
 export function RegisterForm() {
@@ -88,7 +88,7 @@ export function RegisterForm() {
 
     if (isValidationError<RegisterFields>(validationError, setRegisterError)) return;
 
-    await handleFormSubmit<RegisterFields>({
+    await handleFormSubmit<RegisterFields, LoginAndRegisterResponse>({
       apiCall: () => registerUser({ registerEmail, registerPassword, registerUsername }),
       setError: setRegisterError,
     });
