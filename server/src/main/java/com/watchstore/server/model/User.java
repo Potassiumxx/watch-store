@@ -23,13 +23,17 @@ public class User {
     @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false, columnDefinition="TINYINT(1)")
+    private boolean isAdmin;
+
 
     // Constructors
     public User() {}
-    public User(String email, String password, String username) {
+    public User(String email, String password, String username, boolean isAdmin) {
         this.email = email;
         this.password = password;
         this.username = username;
+        this.isAdmin = isAdmin;
     }
 
     // Getters and setters
@@ -37,9 +41,11 @@ public class User {
     public String getEmail() { return email; }
     public String getPassword() { return password; }
     public String getUsername() { return username; }
+    public boolean getIsAdmin() {return isAdmin; }
 
     public void setId(Long id) { this.id = id; }
     public void setEmail(String email) { this.email = email; }
     public void setPassword(String password) { this.password = password; }
     public void setUsername(String username) { this.username = username; }
+    public void setIsAdmin(boolean isAdmin) { this.isAdmin = isAdmin; }
 }

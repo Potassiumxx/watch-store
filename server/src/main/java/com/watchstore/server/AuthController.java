@@ -56,7 +56,7 @@ public class AuthController {
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
 
-        User newUser = new User(registerRequest.getEmail(), registerRequest.getPassword(), registerRequest.getUsername());
+        User newUser = new User(registerRequest.getEmail(), registerRequest.getPassword(), registerRequest.getUsername(), false);
         userRepository.save(newUser);   // Save in database
 
         UserDTO userDTO = new UserDTO(newUser.getId(), newUser.getEmail(), newUser.getUsername());
