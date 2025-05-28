@@ -73,6 +73,11 @@ export default function Navbar() {
     }
   }
 
+  function getFirstAlphabetLetter(string: string): string {
+    const match = string.match(/[a-zA-Z]/);
+    return match ? match[0].toUpperCase() : "?";
+  }
+
   React.useEffect(() => {
     document.addEventListener("click", handleCloseSearchBar);
     return () => {
@@ -111,7 +116,9 @@ export default function Navbar() {
             <span className="flex items-center text-[12px] font-bold px-[5px] py-[1px] rounded-[50%] bg-[#f28c26]">999</span>
           </button>
           {isUserSignedIn ? (
-            globalUsername
+            <button className="bg-white text-black rounded-full w-[30px] h-[30px] text-center font-bold text-[19px] hover:bg-gray-500 hover:text-white duration-150">
+              {getFirstAlphabetLetter(globalUsername)}
+            </button>
           ) : (
             <button className="hover:cursor-pointer" aria-label="User" onClick={() => setShowUserMenu(!showUserMenu)}>
               <FaRegUser size={22} />
