@@ -32,7 +32,7 @@ public class AuthController {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if (user.getPassword().equals(loginRequest.getPassword())) {
-                UserDTO userDTO = new UserDTO(user.getId(), user.getEmail(), user.getPassword());
+                UserDTO userDTO = new UserDTO(user.getId(), user.getEmail(), user.getUsername());
                 return ResponseEntity.ok(userDTO);
             }
         }
