@@ -148,7 +148,7 @@ export function RegisterForm() {
         label="Password"
         id="register-password"
       />
-      <Button textValue={isLoading ? <Loader /> : "Sign Up"} className="formButtonStyle" />
+      <Button textValue={isLoading ? <Loader /> : "Sign Up"} className="formButtonStyle" disabled={isLoading} />
 
       {generalError && <ErrorMessage message={generalError} />}
     </Form>

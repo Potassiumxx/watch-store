@@ -102,7 +102,7 @@ export default function LoginForm() {
         label="Password"
         id="login-password"
       />
-      <Button textValue={isLoading ? <Loader /> : "Sign In"} className="formButtonStyle" />
+      <Button textValue={isLoading ? <Loader /> : "Sign In"} className="formButtonStyle" disabled={isLoading} />
 
       {generalError && <ErrorMessage message={generalError} />}
     </Form>

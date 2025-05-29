@@ -1,4 +1,4 @@
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   textValue: string | React.ReactNode;
 
   /**
@@ -19,8 +19,12 @@ interface ButtonProps {
   className: string;
 }
 
-export default function Button({ textValue = "This is a button", className }: ButtonProps) {
-  const defaultStyle = "flex justify-center p-[10px_25px] text-4 transition-all duration-200 ease";
+export default function Button({ textValue = "This is a button", className, ...attributes }: ButtonProps) {
+  const defaultStyle = "flex justify-center p-[10px_25px] text-4 transition-all duration-200 ease disabled:cursor-not-allowed";
 
-  return <button className={`${defaultStyle} ${className}`}>{textValue}</button>;
+  return (
+    <button className={`${defaultStyle} ${className}`} {...attributes}>
+      {textValue}
+    </button>
+  );
 }

@@ -4,6 +4,7 @@ import { useAuthStore } from "../../../store/authStore";
 import SidePanelContainer from "../SidePanel/SidePanelContainer";
 import LoginForm from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";
+import { useUIStore } from "../../../store/uiStore";
 
 interface UserMenuProps {
   isVisible: boolean;
@@ -27,6 +28,8 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
 
   const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
   const clearRegisterErrors = useAuthStore((state) => state.clearRegisterErrors);
+
+  const isLoading = useUIStore((state) => state.isLoading);
 
   // Commented out the useEffect code for now. Will use Zustand to manage states.
 
@@ -53,10 +56,10 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
       <SidePanelContainer isLoginMode={isLoginMode} isVisible={isVisible} onClose={onClose}>
         {isLoginMode ? <LoginForm /> : <RegisterForm />}
         <div className="flex justify-center">
-          <button onClick={() => setIsLoginMode(!isLoginMode)}>
+          <button onClick={() => setIsLoginMode(!isLoginMode)} disabled={isLoading} className="disabled:cursor-not-allowed">
             <div className="group flex gap-2 items-end text-[14px]">
               <span className="">{isLoginMode ? "Need an Account?" : "Already have an account?"}</span>
-              <span className="text-[#1bddf3] group-hover:underline underline-offset-4">
+              <span className={`text-[#1bddf3] ${!isLoading && "group-hover:underline underline-offset-4"}`}>
                 {isLoginMode ? "Sign Up" : "Sign In"}
               </span>
             </div>
