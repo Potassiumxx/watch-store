@@ -5,16 +5,27 @@ import { FaRegUser } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
 import UserMenu from "../UserMenu/UserMenu";
+import { useAuthStore } from "../../../store/authStore";
+import { useUIStore } from "../../../store/uiStore";
+import { useUserStore } from "../../../store/userStore";
 
 export default function Navbar() {
   const [openSearchBar, setOpenSearchBar] = React.useState<boolean>(false);
   const [isSearchBarVisible, setIsSearchBarVisible] = React.useState<boolean>(false);
   const [isNavbarBackgroundVisible, setIsNavbarBackgroundVisible] = React.useState<boolean>(false);
+
   const searchBarRef = React.useRef<HTMLInputElement | null>(null);
   const searchIconRef = React.useRef<HTMLButtonElement | null>(null);
   const bottomNavbarRef = React.useRef<HTMLDivElement | null>(null);
-  const [showUserMenu, setShowUserMenu] = React.useState<boolean>(false);
+
   const navigate = useNavigate();
+
+  const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
+
+  const globalUsername = useUserStore((state) => state.globalUsername);
+
+  const showUserMenu = useUIStore((state) => state.showUserMenu);
+  const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
 
   function handleOpenSearchBar() {
     setOpenSearchBar(true);
@@ -62,6 +73,11 @@ export default function Navbar() {
     }
   }
 
+  function getFirstAlphabetLetter(string: string): string {
+    const match = string.match(/[a-zA-Z]/);
+    return match ? match[0].toUpperCase() : "?";
+  }
+
   React.useEffect(() => {
     document.addEventListener("click", handleCloseSearchBar);
     return () => {
@@ -99,9 +115,15 @@ export default function Navbar() {
             <LiaShoppingCartSolid size={32} />
             <span className="flex items-center text-[12px] font-bold px-[5px] py-[1px] rounded-[50%] bg-[#f28c26]">999</span>
           </button>
-          <button className="hover:cursor-pointer" aria-label="User" onClick={() => setShowUserMenu(!showUserMenu)}>
-            <FaRegUser size={22} />
-          </button>
+          {isUserSignedIn ? (
+            <button className="bg-white text-black rounded-full w-[30px] h-[30px] text-center font-bold text-[19px] hover:bg-gray-500 hover:text-white duration-150">
+              {getFirstAlphabetLetter(globalUsername)}
+            </button>
+          ) : (
+            <button className="hover:cursor-pointer" aria-label="User" onClick={() => setShowUserMenu(!showUserMenu)}>
+              <FaRegUser size={22} />
+            </button>
+          )}
         </div>
       </div>
       <div
