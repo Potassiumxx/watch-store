@@ -92,7 +92,7 @@ export default function Navbar() {
   });
 
   return (
-    <div className="fixed top-0 flex flex-col justify-between items-center z-20 w-full">
+    <div className="fixed top-0 flex flex-col justify-between items-center z-20 w-full" data-testid="navbar">
       <UserMenu isVisible={showUserMenu} onClose={() => setShowUserMenu(false)} />
       <div className="flex justify-between w-full py-2 bg-[#1a1a1a] text-white items-center px-[50px]">
         <div>

@@ -55,7 +55,7 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
     <>
       <SidePanelContainer isLoginMode={isLoginMode} isVisible={isVisible} onClose={onClose}>
         {isLoginMode ? <LoginForm /> : <RegisterForm />}
-        <div className="flex justify-center">
+        <div className="flex justify-center" data-testid="user-menu">
           <button onClick={() => setIsLoginMode(!isLoginMode)} disabled={isLoading} className="disabled:cursor-not-allowed">
             <div className="group flex gap-2 items-end text-[14px]">
               <span className="">{isLoginMode ? "Need an Account?" : "Already have an account?"}</span>

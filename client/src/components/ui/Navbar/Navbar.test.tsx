@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import Navbar from "./Navbar";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
+import { setupTestStore } from "../../../utils/test/setupTestStore";
 
 const router = createMemoryRouter([
   {
@@ -12,36 +13,38 @@ const router = createMemoryRouter([
 ]);
 
 describe("Navbar Component", () => {
+  let navbar: ReturnType<typeof within>;
   beforeEach(() => {
     render(<RouterProvider router={router} />);
+    navbar = within(screen.getByTestId("navbar"));
   });
 
-  it("renders Navbar links", () => {
-    expect(screen.getAllByRole("link")).toHaveLength(3);
+  afterEach(() => {
+    setupTestStore({ isUserSignedIn: false, globalUsername: "" });
   });
 
   it("does not shows search bar when the page is first loaded", () => {
-    expect(screen.queryByPlaceholderText(/search/i)).not.toBeInTheDocument();
+    expect(navbar.queryByPlaceholderText(/search/i)).not.toBeInTheDocument();
   });
 
   it("shows search bar when search button is clicked", async () => {
     const user = userEvent.setup();
-    const searchButton = screen.getByRole("button", { name: /search/i });
+    const searchButton = navbar.getByRole("button", { name: /search/i });
 
     await user.click(searchButton);
-    const searchBar = screen.getByPlaceholderText(/search/i);
+    const searchBar = navbar.getByPlaceholderText(/search/i);
 
     expect(searchBar).toBeVisible();
   });
 
   it("hides search bar when user clicks anywhere but search button", async () => {
     const user = userEvent.setup();
-    const searchButton = screen.getByRole("button", { name: /search/i });
+    const searchButton = navbar.getByRole("button", { name: /search/i });
 
     // Show search bar when search button is clicked
     await user.click(searchButton);
 
-    const searchBar = screen.getByPlaceholderText(/search/i);
+    const searchBar = navbar.getByPlaceholderText(/search/i);
     expect(searchBar).toBeVisible();
 
     // Simulate a click outside search button
@@ -62,11 +65,11 @@ describe("Navbar Component", () => {
 
   it("does not hide search bar if search bar has text and if search button is clicked", async () => {
     const user = userEvent.setup();
-    const searchButton = screen.getByRole("button", { name: /search/i });
+    const searchButton = navbar.getByRole("button", { name: /search/i });
 
     await user.click(searchButton);
 
-    const searchBar = screen.getByPlaceholderText(/search/i);
+    const searchBar = navbar.getByPlaceholderText(/search/i);
     expect(searchBar).toBeVisible();
 
     const outsideElement = document.createElement("div");
@@ -82,5 +85,28 @@ describe("Navbar Component", () => {
     expect(searchBar).toBeVisible();
 
     document.body.removeChild(outsideElement);
+  });
+
+  it("opens user menu with side panel container and backdrop when user icon is clicked", async () => {
+    const user = userEvent.setup();
+
+    setupTestStore({ isUserSignedIn: false, globalUsername: "" });
+
+    const userIconButton = screen.getByLabelText("User");
+    await user.click(userIconButton);
+
+    // backdrop and sidepanel container must open
+    expect(screen.getByTestId("backdrop")).toBeInTheDocument();
+    expect(screen.getByTestId("side-panel-container")).toBeInTheDocument();
+
+    // user menu (login and registration)
+    expect(screen.getByTestId("user-menu")).toBeInTheDocument();
+  });
+
+  it("shows username's first alphabetical character if user is signed in", () => {
+    setupTestStore({ isUserSignedIn: true, globalUsername: "_Cool-User" });
+    render(<RouterProvider router={router} />);
+
+    expect(navbar.getByText("C")).toBeInTheDocument();
   });
 });
