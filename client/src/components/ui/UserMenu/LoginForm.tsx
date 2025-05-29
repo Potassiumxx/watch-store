@@ -8,7 +8,7 @@ import { DirtyFieldState, LoginFields, LoginAndRegisterResponse } from "../../..
 import useFormError from "../../../hooks/useForm";
 import Form from "../Form/Form";
 import Button from "../Button/Button";
-import Loader from "../../Loader/Loader";
+import Loader from "../Loader/Loader";
 import { useUIStore } from "../../../store/uiStore";
 
 export default function LoginForm() {
