@@ -40,7 +40,7 @@ export default function Input({ label, error, id, className, ...attributes }: In
         {...restAttributes}
       />
       {isPasswordField && (
-        <button className="text-white absolute right-2 bottom-2" onClick={togglePasswordVisible}>
+        <button className="text-white absolute right-2 bottom-2" onClick={togglePasswordVisible} type="button">
           {isPasswordVisible ? <VscEyeClosed size={22} /> : <VscEye size={22} />}
         </button>
       )}
