@@ -67,7 +67,7 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <Button textValue={"Shop Now"} className="rounded-sm hover:font-bold" />
+          <Button textValue={"Shop Now"} className="defaultButtonStyle" />
           <div className="absolute bottom-4 right-4 bg-white text-black rounded-sm hover:bg-[#3f3f3f] hover:text-white transition-all duration-150">
             <a
               href="https://www.pexels.com/photo/round-black-current-chronograph-watch-with-link-bracelet-1075189/"

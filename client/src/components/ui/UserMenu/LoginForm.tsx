@@ -7,6 +7,7 @@ import { ErrorMessage } from "../Error/ErrorMessage";
 import { DirtyFieldState, LoginFields, LoginAndRegisterResponse } from "../../../types/form";
 import useFormError from "../../../hooks/useForm";
 import Form from "../Form/Form";
+import Button from "../Button/Button";
 
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
@@ -97,9 +98,7 @@ export default function LoginForm() {
         label="Password"
         id="login-password"
       />
-      <button type="submit" className="bg-[#1bddf3] text-black py-2 rounded">
-        Sign In
-      </button>
+      <Button textValue="Sign In" className="formButtonStyle" />
 
       {generalError && <ErrorMessage message={generalError} />}
     </Form>

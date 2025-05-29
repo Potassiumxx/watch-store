@@ -7,6 +7,7 @@ import useFormError from "../../../hooks/useForm";
 import { DirtyFieldState, LoginAndRegisterResponse, RegisterFields } from "../../../types/form";
 import { ErrorMessage } from "../Error/ErrorMessage";
 import Form from "../Form/Form";
+import Button from "../Button/Button";
 
 export function RegisterForm() {
   const registerEmail = useAuthStore((state) => state.registerEmail);
@@ -143,9 +144,7 @@ export function RegisterForm() {
         label="Password"
         id="register-password"
       />
-      <button type="submit" className="bg-[#1bddf3] text-black py-2 rounded">
-        Sign Up
-      </button>
+      <Button textValue="Sign Up" className="formButtonStyle" />
 
       {generalError && <ErrorMessage message={generalError} />}
     </Form>
