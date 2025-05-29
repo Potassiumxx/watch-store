@@ -6,12 +6,12 @@ import LoginForm from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";
 import { useUIStore } from "../../../store/uiStore";
 
-interface UserMenuProps {
-  isVisible: boolean;
-  onClose: () => void;
-}
+// interface UserMenuProps {
+//   isVisible: boolean;
+//   // onClose: () => void;
+// }
 
-export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
+export default function UserMenu() {
   const [isLoginMode, setIsLoginMode] = React.useState<boolean>(true);
 
   const loginEmail = useAuthStore((state) => state.loginEmail);
@@ -30,6 +30,7 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
   const clearRegisterErrors = useAuthStore((state) => state.clearRegisterErrors);
 
   const isLoading = useUIStore((state) => state.isLoading);
+  const showUserMenu = useUIStore((state) => state.showUserMenu);
 
   // Commented out the useEffect code for now. Will use Zustand to manage states.
 
@@ -49,11 +50,11 @@ export default function UserMenu({ isVisible, onClose }: UserMenuProps) {
 
     clearLoginErrors();
     clearRegisterErrors();
-  }, [isVisible, isLoginMode]);
+  }, [showUserMenu, isLoginMode]);
 
   return (
     <>
-      <SidePanelContainer isLoginMode={isLoginMode} isVisible={isVisible} onClose={onClose}>
+      <SidePanelContainer panelTitle={isLoginMode ? "Sign in" : "Sign Up"}>
         {isLoginMode ? <LoginForm /> : <RegisterForm />}
         <div className="flex justify-center" data-testid="user-menu">
           <button onClick={() => setIsLoginMode(!isLoginMode)} disabled={isLoading} className="disabled:cursor-not-allowed">
