@@ -31,6 +31,12 @@ function customClassName({ addComponents }) {
       zIndex: -1,
       opacity: ".5",
     },
+    ".formButtonStyle": {
+      "@apply w-full py-2 bg-[#1bddf3] text-black rounded border-none hover:bg-opacity-80 hover:text-black": {},
+    },
+    ".defaultButtonStyle": {
+      "@apply w-[150px] text-white border-2 border-white rounded-sm hover:font-bold hover:bg-white hover:text-black": {},
+    },
   };
   addComponents(newComponents);
 }

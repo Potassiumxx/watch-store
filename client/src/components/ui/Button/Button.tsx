@@ -1,22 +1,26 @@
 interface ButtonProps {
   textValue: string;
+
   /**
-   * CSS classes to apply to the button.
+   * Tailwind CSS utility classes to style the button.
    *
-   * Try to apply the classes in this order:
+   * Predefined style presets:
+   * - `defaultButtonStyle`: General-purpose button style
+   * - `formButtonStyle`: Specifically for buttons used inside forms
    *
-   *  **width**, **paddings** and **margins**, **background** and **text colours**, **borders**, **font weight** and **size**, **duration** and **hover**. Apply any other additional classes at the end, after hover.
+   * You can also append any custom Tailwind classes as needed.
    *
-   * If any classes are not necessary to include, skip them and continue with the order.
-   * @example
-   * className="w-full bg-black text-white font-bold" // paddings, margins, borders and some other classes were skipped but continued with the order provided above.
+   * **Example**
+   * ```ts
+   * className="defaultButtonStyle bg-blue-500 hover:bg-blue-600"
+   * ```
+   * To add or modify custom class names, refer to `tailwind.config.js`.
    */
   className: string;
 }
 
 export default function Button({ textValue = "This is a button", className }: ButtonProps) {
-  const defaultStyle =
-    "max-w-[150px] p-[10px_25px] bg-[transparent] text-white border-2 border-white font-normal text-4 transition-all duration-200 ease hover:bg-white hover:text-black";
+  const defaultStyle = "p-[10px_25px] text-4 transition-all duration-200 ease";
 
   return <button className={`${defaultStyle} ${className}`}>{textValue}</button>;
 }
