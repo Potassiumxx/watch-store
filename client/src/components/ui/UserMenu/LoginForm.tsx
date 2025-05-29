@@ -8,6 +8,8 @@ import { DirtyFieldState, LoginFields, LoginAndRegisterResponse } from "../../..
 import useFormError from "../../../hooks/useForm";
 import Form from "../Form/Form";
 import Button from "../Button/Button";
+import Loader from "../../Loader/Loader";
+import { useUIStore } from "../../../store/uiStore";
 
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
@@ -20,6 +22,8 @@ export default function LoginForm() {
   const setLoginError = useAuthStore((state) => state.setLoginError);
 
   const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
+
+  const isLoading = useUIStore((state) => state.isLoading);
 
   const initialDirtyFieldState: DirtyFieldState = {
     email: false,
@@ -98,7 +102,7 @@ export default function LoginForm() {
         label="Password"
         id="login-password"
       />
-      <Button textValue="Sign In" className="formButtonStyle" />
+      <Button textValue={isLoading ? <Loader /> : "Sign In"} className="formButtonStyle" />
 
       {generalError && <ErrorMessage message={generalError} />}
     </Form>

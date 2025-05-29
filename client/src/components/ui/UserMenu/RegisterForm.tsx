@@ -8,6 +8,8 @@ import { DirtyFieldState, LoginAndRegisterResponse, RegisterFields } from "../..
 import { ErrorMessage } from "../Error/ErrorMessage";
 import Form from "../Form/Form";
 import Button from "../Button/Button";
+import Loader from "../../Loader/Loader";
+import { useUIStore } from "../../../store/uiStore";
 
 export function RegisterForm() {
   const registerEmail = useAuthStore((state) => state.registerEmail);
@@ -22,6 +24,8 @@ export function RegisterForm() {
   const regiserErrorFields = useAuthStore((state) => state.registerErrorFields);
 
   const clearRegisterErrors = useAuthStore((state) => state.clearRegisterErrors);
+
+  const isLoading = useUIStore((state) => state.isLoading);
 
   const [isUsernameFocused, setIsUsernameFocused] = React.useState<boolean>(false);
 
@@ -144,7 +148,7 @@ export function RegisterForm() {
         label="Password"
         id="register-password"
       />
-      <Button textValue="Sign Up" className="formButtonStyle" />
+      <Button textValue={isLoading ? <Loader /> : "Sign Up"} className="formButtonStyle" />
 
       {generalError && <ErrorMessage message={generalError} />}
     </Form>

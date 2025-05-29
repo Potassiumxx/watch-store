@@ -1,5 +1,5 @@
 interface ButtonProps {
-  textValue: string;
+  textValue: string | React.ReactNode;
 
   /**
    * Tailwind CSS utility classes to style the button.
@@ -20,7 +20,7 @@ interface ButtonProps {
 }
 
 export default function Button({ textValue = "This is a button", className }: ButtonProps) {
-  const defaultStyle = "p-[10px_25px] text-4 transition-all duration-200 ease";
+  const defaultStyle = "flex justify-center p-[10px_25px] text-4 transition-all duration-200 ease";
 
   return <button className={`${defaultStyle} ${className}`}>{textValue}</button>;
 }

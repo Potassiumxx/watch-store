@@ -35,6 +35,7 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
   const userSignedIn = useAuthStore((state) => state.userSignedIn);
 
   const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
+  const setIsLoading = useUIStore((state) => state.setIsLoading);
 
   const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
 
@@ -89,6 +90,7 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
     setError,
   }: HandleFormSubmitParameter<V, R>): Promise<R | undefined> {
     setGeneralError(null);
+    setIsLoading(true);
     try {
       const data = await apiCall();
       dispatchDirtyFieldReducer({ type: "RESET_ALL" });
@@ -100,6 +102,8 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
       console.log(fieldErrorMessage);
       applyFieldErrors<V>(fieldErrorMessage, setError);
       return undefined;
+    } finally {
+      setIsLoading(false);
     }
   }
 
