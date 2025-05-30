@@ -3,7 +3,7 @@ import * as React from "react";
 import { useAuthStore } from "../../../store/authStore";
 import SidePanelContainer from "../SidePanel/SidePanelContainer";
 import LoginForm from "./LoginForm/LoginForm";
-import { RegisterForm } from "./RegisterForm";
+import RegisterForm from "./RegisterForm/RegisterForm";
 import { useUIStore } from "../../../store/uiStore";
 
 // interface UserMenuProps {

@@ -1,17 +1,17 @@
 import * as React from "react";
-import { registerUser } from "../../../services/api/authAPI";
-import { useAuthStore } from "../../../store/authStore";
-import Input from "../Input/Input";
-import { validateRegisterForm } from "../../../utils/validateForm";
-import useFormError from "../../../hooks/useForm";
-import { DirtyFieldState, LoginAndRegisterResponse, RegisterFields } from "../../../types/form";
-import { ErrorMessage } from "../Error/ErrorMessage";
-import Form from "../Form/Form";
-import Button from "../Button/Button";
-import Loader from "../Loader/Loader";
-import { useUIStore } from "../../../store/uiStore";
+import { useAuthStore } from "../../../../store/authStore";
+import { registerUser } from "../../../../services/api/authAPI";
+import Input from "../../Input/Input";
+import { validateRegisterForm } from "../../../../utils/validateForm";
+import { ErrorMessage } from "../../Error/ErrorMessage";
+import { DirtyFieldState, RegisterFields, LoginAndRegisterResponse } from "../../../../types/form";
+import useFormError from "../../../../hooks/useForm";
+import Form from "../../Form/Form";
+import Button from "../../Button/Button";
+import Loader from "../../Loader/Loader";
+import { useUIStore } from "../../../../store/uiStore";
 
-export function RegisterForm() {
+export default function RegisterForm() {
   const registerEmail = useAuthStore((state) => state.registerEmail);
   const registerPassword = useAuthStore((state) => state.registerPassword);
   const registerUsername = useAuthStore((state) => state.registerUsername);
