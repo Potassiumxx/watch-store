@@ -2,7 +2,7 @@
 import * as React from "react";
 import { useAuthStore } from "../../../store/authStore";
 import SidePanelContainer from "../SidePanel/SidePanelContainer";
-import LoginForm from "./LoginForm";
+import LoginForm from "./LoginForm/LoginForm";
 import { RegisterForm } from "./RegisterForm";
 import { useUIStore } from "../../../store/uiStore";
 
