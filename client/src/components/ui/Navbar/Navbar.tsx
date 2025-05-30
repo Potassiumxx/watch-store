@@ -4,7 +4,7 @@ import { LiaShoppingCartSolid } from "react-icons/lia";
 import { FaRegUser } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
-import UserMenu from "../UserMenu/UserMenu";
+import UserMenu from "../UserFormMenu/UserFormMenu";
 import { useAuthStore } from "../../../store/authStore";
 import { useUIStore } from "../../../store/uiStore";
 import { useUserStore } from "../../../store/userStore";
