@@ -1,12 +1,14 @@
 import Input from "./Input";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { setupUIStoreTest } from "../../../utils/test/setupTestStore";
 import userEvent from "@testing-library/user-event";
 
 describe("Input component", () => {
   beforeEach(() => {
     // Reset loading state to false before each test
-    setupUIStoreTest({ isLoading: false });
+    act(() => {
+      setupUIStoreTest({ isLoading: false });
+    });
   });
 
   it("renders label correctly", () => {
@@ -45,7 +47,9 @@ describe("Input component", () => {
   });
 
   it("disables input when loading", () => {
-    setupUIStoreTest({ isLoading: true }); // Set loading true before render
+    act(() => {
+      setupUIStoreTest({ isLoading: true }); // Set loading true before render
+    });
 
     render(<Input id="test" data-testid="test-input" />);
 

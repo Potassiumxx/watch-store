@@ -3,7 +3,8 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import Navbar from "./Navbar";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
-import { setupTestStore } from "../../../utils/test/setupTestStore";
+import { setupUserDataTest } from "../../../utils/test/setupTestStore";
+import { act } from "react";
 
 const router = createMemoryRouter([
   {
@@ -20,7 +21,9 @@ describe("Navbar Component", () => {
   });
 
   afterEach(() => {
-    setupTestStore({ isUserSignedIn: false, globalUsername: "" });
+    act(() => {
+      setupUserDataTest({ isUserSignedIn: false, globalUsername: "" });
+    });
   });
 
   it("does not shows search bar when the page is first loaded", () => {
@@ -90,7 +93,7 @@ describe("Navbar Component", () => {
   it("opens user menu with side panel container and backdrop when user icon is clicked", async () => {
     const user = userEvent.setup();
 
-    setupTestStore({ isUserSignedIn: false, globalUsername: "" });
+    setupUserDataTest({ isUserSignedIn: false, globalUsername: "" });
 
     const userIconButton = screen.getByLabelText("User");
     await user.click(userIconButton);
@@ -104,7 +107,9 @@ describe("Navbar Component", () => {
   });
 
   it("shows username's first alphabetical character if user is signed in", () => {
-    setupTestStore({ isUserSignedIn: true, globalUsername: "_Cool-User" });
+    act(() => {
+      setupUserDataTest({ isUserSignedIn: true, globalUsername: "_Cool-User" });
+    });
     render(<RouterProvider router={router} />);
 
     expect(navbar.getByText("C")).toBeInTheDocument();

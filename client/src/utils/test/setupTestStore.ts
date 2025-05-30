@@ -11,7 +11,7 @@ type UIStoreTestState = {
   isLoading?: boolean;
 };
 
-export function setupTestStore({ isUserSignedIn = false, globalUsername = "" }: TestStoreState = {}) {
+export function setupUserDataTest({ isUserSignedIn = false, globalUsername = "" }: TestStoreState = {}) {
   useAuthStore.setState({ isUserSignedIn });
   useUserStore.setState({ globalUsername });
 }
