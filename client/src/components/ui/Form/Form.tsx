@@ -10,7 +10,12 @@ export default function Form({ children, handleFormSubmit, className, ...attribu
   const defaultClassName = "flex flex-col gap-4 text-black p-6";
 
   return (
-    <form className={`${defaultClassName} ${className}`} onSubmit={handleFormSubmit} noValidate {...attributes}>
+    <form
+      className={`${defaultClassName} ${className}`}
+      onSubmit={handleFormSubmit}
+      noValidate
+      {...attributes}
+      data-testid="form">
       {children}
     </form>
   );
