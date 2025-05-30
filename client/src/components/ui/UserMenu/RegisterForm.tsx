@@ -8,7 +8,7 @@ import { DirtyFieldState, LoginAndRegisterResponse, RegisterFields } from "../..
 import { ErrorMessage } from "../Error/ErrorMessage";
 import Form from "../Form/Form";
 import Button from "../Button/Button";
-import Loader from "../../Loader/Loader";
+import Loader from "../Loader/Loader";
 import { useUIStore } from "../../../store/uiStore";
 
 export function RegisterForm() {
