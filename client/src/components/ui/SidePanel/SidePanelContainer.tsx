@@ -42,7 +42,10 @@ export default function SidePanelContainer({ children, panelTitle = "Title" }: S
         data-testid="side-panel-container">
         <div className="flex w-full border-b-white border-b-2">
           <h1 className="text-2xl my-2 mx-6">{panelTitle}</h1>
-          <button className="right-0 absolute mx-6 my-2 hover:text-red-500 duration-150" onClick={hideSidePanelClosing}>
+          <button
+            className="right-0 absolute mx-6 my-2 hover:text-red-500 duration-150"
+            onClick={hideSidePanelClosing}
+            data-testid="close-sidepanel-btn">
             <RxCross1 size={25} />
           </button>
         </div>

@@ -1,4 +1,5 @@
 import { useAuthStore } from "../../store/authStore";
+import { useUIStore } from "../../store/uiStore";
 import { useUserStore } from "../../store/userStore";
 
 type TestStoreState = {
@@ -6,7 +7,15 @@ type TestStoreState = {
   globalUsername?: string;
 };
 
-export function setupTestStore({ isUserSignedIn = false, globalUsername = "" }: TestStoreState = {}) {
+type UIStoreTestState = {
+  isLoading?: boolean;
+};
+
+export function setupUserDataTest({ isUserSignedIn = false, globalUsername = "" }: TestStoreState = {}) {
   useAuthStore.setState({ isUserSignedIn });
   useUserStore.setState({ globalUsername });
+}
+
+export function setupUIStoreTest({ isLoading = false }: UIStoreTestState) {
+  useUIStore.setState({ isLoading });
 }

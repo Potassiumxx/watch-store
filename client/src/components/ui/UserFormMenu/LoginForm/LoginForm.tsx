@@ -1,15 +1,15 @@
 import * as React from "react";
-import { useAuthStore } from "../../../store/authStore";
-import { loginUser } from "../../../services/api/authAPI";
-import Input from "../Input/Input";
-import { validateLoginForm } from "../../../utils/validateForm";
-import { ErrorMessage } from "../Error/ErrorMessage";
-import { DirtyFieldState, LoginFields, LoginAndRegisterResponse } from "../../../types/form";
-import useFormError from "../../../hooks/useForm";
-import Form from "../Form/Form";
-import Button from "../Button/Button";
-import Loader from "../Loader/Loader";
-import { useUIStore } from "../../../store/uiStore";
+import { useAuthStore } from "../../../../store/authStore";
+import { loginUser } from "../../../../services/api/authAPI";
+import Input from "../../Input/Input";
+import { validateLoginForm } from "../../../../utils/validateForm";
+import { ErrorMessage } from "../../Error/ErrorMessage";
+import { DirtyFieldState, LoginFields, LoginAndRegisterResponse } from "../../../../types/form";
+import useFormError from "../../../../hooks/useForm";
+import Form from "../../Form/Form";
+import Button from "../../Button/Button";
+import Loader from "../../Loader/Loader";
+import { useUIStore } from "../../../../store/uiStore";
 
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
@@ -102,7 +102,12 @@ export default function LoginForm() {
         label="Password"
         id="login-password"
       />
-      <Button textValue={isLoading ? <Loader /> : "Sign In"} className="formButtonStyle" disabled={isLoading} />
+      <Button
+        textValue={isLoading ? <Loader /> : "Sign In"}
+        className="formButtonStyle"
+        disabled={isLoading}
+        data-testid="login-submit-btn"
+      />
 
       {generalError && <ErrorMessage message={generalError} />}
     </Form>

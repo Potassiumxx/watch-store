@@ -11,7 +11,7 @@ const collectionArray = [
 
 export default function Collection() {
   return (
-    <div id="collection" className="bg-black/[.95] component-x-axis-padding text-4xl font-semibold py-7">
+    <div id="collection" className="bg-black/[.95] component-x-axis-padding text-4xl font-semibold py-7" data-testid="collection">
       <h1 className="text-white text-center">Our Collections</h1>
       <div className="grid grid-cols-3 justify-between gap-5 h-[500px] mt-10">
         {collectionArray.map((watch) => {
