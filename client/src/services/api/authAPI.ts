@@ -22,7 +22,6 @@ const BACKEND_API_URL = import.meta.env.VITE_APP_API_URL;
 export async function loginUser(credentials: loginCredentials): Promise<LoginAndRegisterResponse> {
   try {
     const response = await axios.post(`${BACKEND_API_URL}/auth/login`, credentials);
-    console.log(response);
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
@@ -40,13 +39,20 @@ export async function loginUser(credentials: loginCredentials): Promise<LoginAnd
  *
  * @param credentials Registration data, e.g., email, password and username
  */
-export async function registerUser(credentials: registerCredentials) {
+export async function registerUser(credentials: registerCredentials): Promise<LoginAndRegisterResponse> {
   try {
-    console.log(credentials);
     const response = await axios.post(`${BACKEND_API_URL}/auth/register`, credentials);
     return response.data;
   } catch (error) {
-    console.error("Signup failed", error);
-    throw error;
+    if (axios.isAxiosError(error)) {
+      console.log("Axios error:", error.response?.data);
+      console.error(
+        "If you're a user reading this, the error you're seeing is most likely not my fault. You can try blaming Axios or your ISP. Unless I turned the server off, in that case, try again later!"
+      );
+      throw error;
+    } else {
+      console.error("Signup failed", error);
+      throw error;
+    }
   }
 }
