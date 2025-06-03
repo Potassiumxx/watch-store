@@ -11,9 +11,6 @@ public class AuthResponseUtil {
 
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("token", jwtToken);
-        responseBody.put("username", userDTO.getUsername());
-        responseBody.put("email", userDTO.getEmail());
-        responseBody.put("id", userDTO.getId());
 
         return responseBody;
     }
