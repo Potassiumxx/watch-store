@@ -37,6 +37,12 @@ function customClassName({ addComponents }) {
     ".defaultButtonStyle": {
       "@apply w-[150px] text-white border-2 border-white rounded-sm hover:font-bold hover:bg-white hover:text-black": {},
     },
+    ".outerDivBackgroundColour": {
+      "@apply bg-[#1a1a1a]": {},
+    },
+    ".innerDivBackgroundColour": {
+      "@apply bg-black/[.95]": {},
+    },
   };
   addComponents(newComponents);
 }
