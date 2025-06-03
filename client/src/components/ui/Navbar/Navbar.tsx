@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import { FaRegUser } from "react-icons/fa6";
@@ -142,15 +142,23 @@ export default function Navbar() {
         </button>
         <div className="flex w-full justify-center">
           <div className="flex gap-[8rem]">
-            <Link to={"/"} className="navbar-link-style">
+            <NavLink
+              to={"/"}
+              className={({ isActive }) => {
+                return isActive ? "navbar-link-style border-b-2 border-white" : "navbar-link-style";
+              }}>
               Home
-            </Link>
+            </NavLink>
             <button className="navbar-link-style" onClick={handleGoToCollection}>
               Collection
             </button>
-            <Link to={"about"} className="navbar-link-style">
+            <NavLink
+              to={"about"}
+              className={({ isActive }) => {
+                return isActive ? "navbar-link-style border-b-2 border-white" : "navbar-link-style";
+              }}>
               About Us
-            </Link>
+            </NavLink>
           </div>
         </div>
       </div>

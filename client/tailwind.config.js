@@ -11,7 +11,7 @@ function customClassName({ addComponents }) {
       "@apply text-center border-white uppercase font-semibold tracking-wider": {},
     },
     ".navbar-link-style:hover": {
-      "@apply underline underline-offset-8": {},
+      "@apply border-t-2 border-t-white duration-100 ease-in-out": {},
     },
     ".navbar-link-padding": {
       "@apply px-[50px] py-[10px]": {},
