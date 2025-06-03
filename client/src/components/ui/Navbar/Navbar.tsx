@@ -94,7 +94,7 @@ export default function Navbar() {
   return (
     <div className="fixed top-0 flex flex-col justify-between items-center z-20 w-full" data-testid="navbar">
       {showUserMenu && <UserMenu />}
-      <div className="flex justify-between w-full py-2 bg-[#1a1a1a] text-white items-center px-[50px]">
+      <div className="flex justify-between w-full py-2 outerDivBackgroundColour text-white items-center px-[50px]">
         <div>
           <span className="text-[10px] italic capitalize text-[#898989]">Buy best watches with free shipping & returns</span>
         </div>
