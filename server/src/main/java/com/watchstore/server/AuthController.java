@@ -16,6 +16,7 @@ import com.watchstore.server.dto.RegisterRequest;
 import com.watchstore.server.dto.UserDTO;
 import com.watchstore.server.model.User;
 import com.watchstore.server.repository.UserRepository;
+import com.watchstore.server.util.AuthResponseUtil;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -33,7 +34,7 @@ public class AuthController {
             User user = userOptional.get();
             if (user.getPassword().equals(loginRequest.getPassword())) {
                 UserDTO userDTO = new UserDTO(user.getId(), user.getEmail(), user.getUsername());
-                return ResponseEntity.ok(userDTO);
+                return ResponseEntity.ok(AuthResponseUtil.buildAuthResponse((userDTO)));
             }
         }
         
@@ -60,6 +61,7 @@ public class AuthController {
         userRepository.save(newUser);   // Save in database
 
         UserDTO userDTO = new UserDTO(newUser.getId(), newUser.getEmail(), newUser.getUsername());
-        return new ResponseEntity<>(userDTO, HttpStatus.CREATED);
+
+        return new ResponseEntity<>(AuthResponseUtil.buildAuthResponse(userDTO), HttpStatus.CREATED);
     }
 }
