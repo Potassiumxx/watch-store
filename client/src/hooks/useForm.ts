@@ -157,8 +157,6 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
   async function handleSuccessfulResponse(response: LoginAndRegisterResponse): Promise<void> {
     if (response) {
       localStorage.setItem("token", response.token);
-      localStorage.setItem("username", response.username);
-      localStorage.setItem("email", response.email);
 
       userSignedIn();
       setShowUserMenu(false);

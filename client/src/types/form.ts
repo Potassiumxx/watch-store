@@ -29,9 +29,15 @@ export interface RegisterFields extends Partial<LoginFields> {
   username?: string;
 }
 
-export interface LoginAndRegisterResponse {
-  id: number;
+export interface DecodedJWT {
+  /**
+   * **sub is 'id' of the user**
+   */
+  sub: string;
   email: string;
   username: string;
+}
+
+export interface LoginAndRegisterResponse {
   token: string;
 }
