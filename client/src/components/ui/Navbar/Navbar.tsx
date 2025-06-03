@@ -116,7 +116,9 @@ export default function Navbar() {
             <span className="flex items-center text-[12px] font-bold px-[5px] py-[1px] rounded-[50%] bg-[#f28c26]">999</span>
           </button>
           {isUserSignedIn ? (
-            <button className="bg-white text-black rounded-full w-[30px] h-[30px] text-center font-bold text-[19px] hover:bg-gray-500 hover:text-white duration-150">
+            <button
+              className="bg-white text-black rounded-full w-[30px] h-[30px] text-center font-bold text-[19px] hover:bg-gray-500 hover:text-white duration-150"
+              onClick={() => navigate("/profile")}>
               {getFirstAlphabetLetter(globalUsername)}
             </button>
           ) : (
