@@ -38,6 +38,7 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
   const setIsLoading = useUIStore((state) => state.setIsLoading);
 
   const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
+  const setGlobalEmail = useUserStore((state) => state.setGlobalEmail);
 
   // Used 'V' instead of 'T' for generic type from now on so that it doesn't get confusing since there's a 'T' in parent too
 
@@ -158,6 +159,7 @@ export default function useFormError<T extends { [key: string]: boolean }>(initi
       userSignedIn();
       setShowUserMenu(false);
       setGlobalUsername(response.username);
+      setGlobalEmail(response.email);
     }
   }
 
