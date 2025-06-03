@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Outlet } from "react-router-dom";
 import Footer from "./components/ui/Footer/Footer";
 import Navbar from "./components/ui/Navbar/Navbar";
@@ -9,6 +10,7 @@ import { DecodedJWT } from "./types/form";
 
 function App() {
   const userSignedIn = useAuthStore((state) => state.userSignedIn);
+  const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
   const setIsJWTChecked = useAuthStore((state) => state.setIsJWTChecked);
 
   const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
@@ -36,7 +38,7 @@ function App() {
 
   React.useEffect(() => {
     decodeJWT();
-  }, []);
+  }, [isUserSignedIn]);
   return (
     <>
       <Navbar />
