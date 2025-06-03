@@ -14,6 +14,8 @@ interface AuthStore {
 
   isUserSignedIn: boolean;
 
+  isJWTChecked: boolean;
+
   setLoginEmail: (email: string) => void;
   setLoginPassword: (password: string) => void;
 
@@ -26,6 +28,8 @@ interface AuthStore {
 
   userSignedIn: () => void;
   userSignedOut: () => void;
+
+  setIsJWTChecked: (isJWTChecked: boolean) => void;
 
   clearLoginErrors: () => void;
   clearRegisterErrors: () => void;
@@ -43,6 +47,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
   registerErrorFields: {},
 
   isUserSignedIn: false,
+
+  isJWTChecked: false,
 
   setLoginEmail: (email) => set({ loginEmail: email }),
   setLoginPassword: (password) => set({ loginPassword: password }),
@@ -63,6 +69,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   userSignedIn: () => set({ isUserSignedIn: true }),
   userSignedOut: () => set({ isUserSignedIn: false }),
+
+  setIsJWTChecked: (isJWTChecked) => set({ isJWTChecked: isJWTChecked }),
 
   clearLoginErrors: () => set({ loginErrorFields: {} }),
   clearRegisterErrors: () => set({ registerErrorFields: {} }),

@@ -9,6 +9,7 @@ import { DecodedJWT } from "./types/form";
 
 function App() {
   const userSignedIn = useAuthStore((state) => state.userSignedIn);
+  const setIsJWTChecked = useAuthStore((state) => state.setIsJWTChecked);
 
   const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
   const setGlobalEmail = useUserStore((state) => state.setGlobalEmail);
@@ -28,8 +29,9 @@ function App() {
       userSignedIn();
       setGlobalUsername(decodedToken.username);
       setGlobalEmail(decodedToken.email);
-      console.log(decodedToken);
     }
+
+    setIsJWTChecked(true);
   }
 
   React.useEffect(() => {
