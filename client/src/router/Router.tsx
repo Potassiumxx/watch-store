@@ -3,6 +3,8 @@ import App from "../App";
 import Home from "../pages/Home/Home";
 import ErrorPage from "../pages/ErrorPage";
 import UserProfile from "../pages/Profile/UserProfile";
+import AdminProductPage from "../pages/Profile/admin/AdminProductPage";
+import UserAccount from "../pages/Profile/account/UserAccount";
 
 export default function Router() {
   const router = createBrowserRouter(
@@ -12,7 +14,14 @@ export default function Router() {
         children: [
           { path: "*", element: <ErrorPage /> },
           { path: "/", element: <Home /> },
-          { path: "/profile", element: <UserProfile /> },
+          {
+            path: "/profile",
+            element: <UserProfile />,
+            children: [
+              { index: true, element: <UserAccount /> },
+              { path: "product-management", element: <AdminProductPage /> },
+            ],
+          },
         ],
       },
     ],
