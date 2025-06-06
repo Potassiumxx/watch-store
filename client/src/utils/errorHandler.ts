@@ -18,7 +18,10 @@ export function errorHandler(error: unknown): Record<string, string> {
 
     if (typeof error.response?.data == "object" && "errors" in error.response.data) return error.response.data.errors;
 
-    return { [GENERAL_ERROR_KEY]: error.response?.data ?? "Unknown error from server." };
+    return {
+      [GENERAL_ERROR_KEY]:
+        error.response?.data === "" || !error.response?.data ? "Unknown error from server." : error.response?.data,
+    };
   } else {
     return { [GENERAL_ERROR_KEY]: "Something went wrong. Please try again later." };
   }

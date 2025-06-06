@@ -5,13 +5,12 @@ import UserProfileMenu from "./menu/UserProfileMenu";
 import { useAuthStore } from "../../store/authStore";
 
 export default function UserProfile() {
-  const isJWTChecked = useAuthStore((state) => state.isJWTChecked);
   const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
 
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (!isUserSignedIn && isJWTChecked) {
+    if (!isUserSignedIn) {
       navigate("/");
     }
   }, [isUserSignedIn]);
