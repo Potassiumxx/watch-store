@@ -1,4 +1,4 @@
-import { LoginFields, RegisterFields } from "../types/form";
+import { LoginFields, ProductFormFields, RegisterFields } from "../types/form";
 
 function isEmpty(value?: string): boolean {
   return !value?.trim();
@@ -53,6 +53,24 @@ export function validateRegisterForm({ email, password, username }: RegisterFiel
   } else if (username && !/^[A-Za-z0-9_-]+$/.test(username)) {
     errors.username = "Invalid character for username";
   }
+
+  return errors;
+}
+
+export function validateAddProductForm({
+  productName,
+  productPrice,
+  productCategory,
+  productDescription,
+  productImage,
+}: ProductFormFields): Partial<ProductFormFields> {
+  const errors: Partial<ProductFormFields> = {};
+
+  if (isEmpty(productName)) errors.productName = "This field cannot be empty";
+  if (isEmpty(productPrice)) errors.productPrice = "This field cannot be empty";
+  if (isEmpty(productCategory)) errors.productCategory = "This field cannot be empty";
+  if (isEmpty(productDescription)) errors.productDescription = "This field cannot be empty";
+  if (isEmpty(productImage)) errors.productImage = "Product image must be uploaded";
 
   return errors;
 }
