@@ -20,7 +20,7 @@ export default function ProfileContentContainer({ children, title, isLoading }: 
       {isLoading ? (
         <Loader size={20} className="m-auto border-white mt-40" />
       ) : (
-        <div className="flex justify-center mt-20 w-full">{children}</div>
+        <div className="flex justify-center mt-14 w-full">{children}</div>
       )}
     </div>
   );
