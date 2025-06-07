@@ -13,7 +13,7 @@ export default function AdminProductPage() {
     if (file) setFileName(file.name);
   }
 
-  async function handleAddProductSubmit(e) {
+  async function handleAddProductSubmit(e: React.FormEvent) {
     e.preventDefault();
     console.log("ok");
   }
@@ -23,7 +23,14 @@ export default function AdminProductPage() {
         <div className="innerDivBackgroundColour shadow-lg shadow-black rounded-md px-20">
           <Form handleFormSubmit={handleAddProductSubmit} className="gap-12">
             <Input id="product-name" label="Product Name" parentClassName={parentClassStyle} placeholder="Rolex" />
-            <Input id="product-price" label="Product Price" parentClassName={parentClassStyle} placeholder="199" />
+            <Input
+              id="product-price"
+              label="Product Price"
+              parentClassName={parentClassStyle}
+              placeholder="199"
+              type="number"
+              inputClassName="no-spinner"
+            />
             <Input
               id="product-category"
               label="Product Category"
