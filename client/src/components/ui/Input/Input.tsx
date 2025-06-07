@@ -12,10 +12,15 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   labelClassName?: string;
   inputClassName?: string;
   fileName?: string | null;
+  useVerticalLabelErrorStyle?: boolean;
 }
 
 interface FileNameContainerProps {
   fileName: string | null | undefined;
+}
+
+interface LabelProps extends InputProps {
+  isInputTypeFile: boolean;
 }
 
 /**
@@ -27,6 +32,10 @@ interface FileNameContainerProps {
  * @param labelClassName className for label element's styling. If none is provided, default or provided `className`'s value will be used.
  * @param inputClassName className for input element's styling. If none is provided, default or provided `className`'s value will be used.
  * @param fileName only for inputs with type `file`. This is used to show the file's name after uploading a file.
+ * @param useVerticalLabelErrorStyle To either use vertical styling or horizontal styling to show error.
+ * **Vertical styling** would put the label on top of the error in two different rows and **horizontal styling** (which is also deafult) would put the label and error side by side in a single row.
+ *
+ * `true` value will use vertical styling.
  * @ Other **input** field attributes can be provided as well if needed. Currently, attributes for label field is not available.
  */
 export default function Input({
@@ -37,6 +46,7 @@ export default function Input({
   labelClassName,
   inputClassName,
   fileName,
+  useVerticalLabelErrorStyle,
   ...attributes
 }: InputProps) {
   const isLoading = useUIStore((state) => state.isLoading);
@@ -53,19 +63,17 @@ export default function Input({
 
   const baseInputClass: string = `bg-black/[0.5] text-white p-2 border-2 border-white/[0.5] rounded-border duration-200 disabled:cursor-not-allowed focus:border-[#1bddf3]/[0.7] focus:outline-none focus:ring-0`;
 
-  const fileInputStyle: string =
-    "cursor-pointer border-2 border-white/[0.5] p-2 rounded-border bg-black/[0.5] text-white hover:border-[#1bddf3]/[0.7] duration-200 text-center w-[50%] self-center";
-
   return (
     <div className={parentClassName ?? `relative flex flex-col gap-2`}>
       {isInputTypeFile && <FileNameContainer fileName={fileName} />}
-      <label
-        htmlFor={id}
-        className={`font-semibold text-[14px] uppercase ${isInputTypeFile && fileInputStyle} ${labelClassName ?? null} ${
-          error ? "text-red-600" : "text-white"
-        }`}>
-        {label} {error && <ErrorMessage message={error} isInputFieldError={true} className="normal-case" />}
-      </label>
+      <Label
+        id={id}
+        isInputTypeFile={isInputTypeFile}
+        labelClassName={labelClassName}
+        error={error}
+        label={label}
+        useVerticalLabelErrorStyle={useVerticalLabelErrorStyle}
+      />
       <input
         className={`${isInputTypeFile ? "hidden" : baseInputClass} ${inputClassName ?? null} ${
           error ? "border-2 border-red-800 focus:border-red-600" : null
@@ -86,6 +94,34 @@ export default function Input({
         </button>
       )}
     </div>
+  );
+}
+
+/**
+ * @description Renders label element
+ */
+function Label({ id, isInputTypeFile, labelClassName, error, label, useVerticalLabelErrorStyle }: LabelProps): React.ReactNode {
+  const fileInputStyle: string =
+    "cursor-pointer border-2 border-white/[0.5] p-2 rounded-border bg-black/[0.5] text-white hover:border-[#1bddf3]/[0.7] duration-200 text-center w-[50%] self-center";
+  return (
+    <>
+      <label
+        htmlFor={id}
+        className={`font-semibold text-[14px] uppercase ${isInputTypeFile && fileInputStyle} ${labelClassName ?? null} ${
+          error ? "text-red-600" : "text-white"
+        }`}>
+        {useVerticalLabelErrorStyle === true ? (
+          <div className="flex flex-col">
+            <span>{label}</span>
+            <span>{error && <ErrorMessage message={error} isInputFieldError={false} className="normal-case" />}</span>
+          </div>
+        ) : (
+          <>
+            {label} {error && <ErrorMessage message={error} isInputFieldError={true} className="normal-case" />}
+          </>
+        )}
+      </label>
+    </>
   );
 }
 
