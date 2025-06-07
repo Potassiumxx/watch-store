@@ -41,3 +41,11 @@ export interface DecodedJWT {
 export interface LoginAndRegisterResponse {
   token: string;
 }
+
+export interface ProductFormFields {
+  productName: string;
+  productPrice: string;
+  productCategory: string;
+  productDescription: string;
+  productImage: string;
+}
