@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 import { LoginFields, RegisterFields } from "../types/form";
 
 interface AuthStore {
@@ -35,43 +36,53 @@ interface AuthStore {
   clearRegisterErrors: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  loginEmail: "",
-  loginPassword: "",
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set) => ({
+      loginEmail: "",
+      loginPassword: "",
 
-  registerEmail: "",
-  registerPassword: "",
-  registerUsername: "",
+      registerEmail: "",
+      registerPassword: "",
+      registerUsername: "",
 
-  loginErrorFields: {},
-  registerErrorFields: {},
+      loginErrorFields: {},
+      registerErrorFields: {},
 
-  isUserSignedIn: false,
+      isUserSignedIn: false,
 
-  isJWTChecked: false,
+      isJWTChecked: false,
 
-  setLoginEmail: (email) => set({ loginEmail: email }),
-  setLoginPassword: (password) => set({ loginPassword: password }),
+      setLoginEmail: (email) => set({ loginEmail: email }),
+      setLoginPassword: (password) => set({ loginPassword: password }),
 
-  setRegisterEmail: (email) => set({ registerEmail: email }),
-  setRegisterPassword: (password) => set({ registerPassword: password }),
-  setRegisterUsername: (username) => set({ registerUsername: username }),
+      setRegisterEmail: (email) => set({ registerEmail: email }),
+      setRegisterPassword: (password) => set({ registerPassword: password }),
+      setRegisterUsername: (username) => set({ registerUsername: username }),
 
-  setLoginError: (inputField, message) =>
-    set((state) => ({
-      loginErrorFields: { ...state.loginErrorFields, [inputField]: message },
-    })),
+      setLoginError: (inputField, message) =>
+        set((state) => ({
+          loginErrorFields: { ...state.loginErrorFields, [inputField]: message },
+        })),
 
-  setRegisterError: (inputField, message) =>
-    set((state) => ({
-      registerErrorFields: { ...state.registerErrorFields, [inputField]: message },
-    })),
+      setRegisterError: (inputField, message) =>
+        set((state) => ({
+          registerErrorFields: { ...state.registerErrorFields, [inputField]: message },
+        })),
 
-  userSignedIn: () => set({ isUserSignedIn: true }),
-  userSignedOut: () => set({ isUserSignedIn: false }),
+      userSignedIn: () => set({ isUserSignedIn: true }),
+      userSignedOut: () => set({ isUserSignedIn: false }),
 
-  setIsJWTChecked: (isJWTChecked) => set({ isJWTChecked: isJWTChecked }),
+      setIsJWTChecked: (isJWTChecked) => set({ isJWTChecked: isJWTChecked }),
 
-  clearLoginErrors: () => set({ loginErrorFields: {} }),
-  clearRegisterErrors: () => set({ registerErrorFields: {} }),
-}));
+      clearLoginErrors: () => set({ loginErrorFields: {} }),
+      clearRegisterErrors: () => set({ registerErrorFields: {} }),
+    }),
+    {
+      name: "user",
+      partialize: (state) => ({
+        isUserSignedIn: state.isUserSignedIn,
+      }),
+    }
+  )
+);
