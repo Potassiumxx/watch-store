@@ -108,7 +108,7 @@ export default function AdminProductPage() {
           <Input
             id="product-image"
             label="Upload Product Image"
-            parentClassName="flex flex-col justify-center gap-10 mt-5"
+            parentClassName="flex flex-col text-center gap-2 mt-4"
             placeholder="Upload product image"
             type="file"
             fileName={fileName}

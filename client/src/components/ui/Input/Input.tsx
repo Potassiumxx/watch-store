@@ -61,7 +61,7 @@ export default function Input({
     setIsPasswordVisible(!isPasswordVisible);
   }
 
-  const baseInputClass: string = `bg-black/[0.5] text-white p-2 border-2 border-white/[0.5] rounded-border duration-200 disabled:cursor-not-allowed focus:border-[#1bddf3]/[0.7] focus:outline-none focus:ring-0`;
+  const baseInputClass: string = `bg-black/[0.5] w-full text-white p-2 border-2 border-white/[0.5] rounded-border duration-200 disabled:cursor-not-allowed focus:border-[#1bddf3]/[0.7] focus:outline-none focus:ring-0`;
 
   return (
     <div className={parentClassName ?? `relative flex flex-col gap-2`}>
@@ -74,16 +74,23 @@ export default function Input({
         label={label}
         useVerticalLabelErrorStyle={useVerticalLabelErrorStyle}
       />
-      <input
-        className={`${isInputTypeFile ? "hidden" : baseInputClass} ${inputClassName ?? null} ${
-          error ? "border-2 border-red-800 focus:border-red-600" : null
-        }`}
-        id={id}
-        autoComplete="off"
-        disabled={isLoading}
-        type={inputType}
-        {...restAttributes}
-      />
+      <div className="w-full">
+        {useVerticalLabelErrorStyle && (
+          <div className="flex flex-col ml-2">
+            <span>{error && <ErrorMessage message={error} isInputFieldError={false} className="normal-case" />}</span>
+          </div>
+        )}
+        <input
+          className={`${isInputTypeFile ? "hidden" : baseInputClass} ${inputClassName ?? null} ${
+            error ? "border-2 border-red-800 focus:border-red-600" : null
+          }`}
+          id={id}
+          autoComplete="off"
+          disabled={isLoading}
+          type={inputType}
+          {...restAttributes}
+        />
+      </div>
       {isPasswordField && (
         <button
           className="text-white absolute right-2 bottom-2"
@@ -110,16 +117,14 @@ function Label({ id, isInputTypeFile, labelClassName, error, label, useVerticalL
         className={`font-semibold text-[14px] uppercase ${isInputTypeFile && fileInputStyle} ${labelClassName ?? null} ${
           error ? "text-red-600" : "text-white"
         }`}>
-        {useVerticalLabelErrorStyle === true ? (
-          <div className="flex flex-col">
-            <span>{label}</span>
-            <span>{error && <ErrorMessage message={error} isInputFieldError={false} className="normal-case" />}</span>
-          </div>
-        ) : (
+        {
           <>
-            {label} {error && <ErrorMessage message={error} isInputFieldError={true} className="normal-case" />}
+            {label}{" "}
+            {error && !useVerticalLabelErrorStyle && (
+              <ErrorMessage message={error} isInputFieldError={true} className="normal-case" />
+            )}
           </>
-        )}
+        }
       </label>
     </>
   );
