@@ -1,5 +1,6 @@
 import axios from "axios";
 import { LoginAndRegisterResponse } from "../../types/form";
+import { BACKEND_API_URL } from "../../utils/constants";
 
 interface loginCredentials {
   loginEmail: string;
@@ -11,8 +12,6 @@ interface registerCredentials {
   registerPassword: string;
   registerUsername: string;
 }
-
-const BACKEND_API_URL = import.meta.env.VITE_APP_API_URL;
 
 /**
  * API function - Send login data to the backend

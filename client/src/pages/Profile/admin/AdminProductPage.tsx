@@ -7,6 +7,7 @@ import { validateAddProductForm } from "../../../utils/validateForm";
 import { useProductStore } from "../../../store/productStore";
 import useFormError from "../../../hooks/useForm";
 import { DirtyFieldState, ProductFormFields } from "../../../types/form";
+import { addProduct } from "../../../services/api/productAPI";
 
 export default function AdminProductPage() {
   const parentClassStyle = "grid grid-cols-[1fr_2.5fr] gap-10 items-center";
@@ -57,7 +58,8 @@ export default function AdminProductPage() {
     });
 
     if (isValidationError<Partial<ProductFormFields>>(error, setProductFormError)) return;
-    console.log(error || "No validation errors.");
+
+    addProduct({ productName, productPrice, productCategory, productDescription, productImage });
   }
 
   return (
