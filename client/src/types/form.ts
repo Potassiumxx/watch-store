@@ -5,11 +5,11 @@ import { GENERAL_ERROR_KEY } from "../utils/constants";
  * Represents the "dirty" state of form fields used in validation.
  *
  * - Each key is a field name (as a string), and the value is a boolean indicating whether the field has been interacted with.
- * - This interface is intentionally generic and flexible, allowing it to be used with any form shape.
+ * - This type is intentionally generic and flexible, allowing it to be used with any form shape.
  */
-export interface DirtyFieldState {
-  [key: string]: boolean;
-}
+export type DirtyFieldState<T> = {
+  [key in keyof T]: boolean;
+};
 
 /**
  * Represents the shape of API error responses for forms.
@@ -43,9 +43,9 @@ export interface LoginAndRegisterResponse {
 }
 
 export interface ProductFormFields {
-  productName: string;
-  productPrice: string;
-  productCategory: string;
-  productDescription: string;
-  productImage: string;
+  productName?: string;
+  productPrice?: string;
+  productCategory?: string;
+  productDescription?: string;
+  productImage?: string;
 }

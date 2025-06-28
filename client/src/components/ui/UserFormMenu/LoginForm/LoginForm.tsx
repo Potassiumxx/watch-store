@@ -25,13 +25,13 @@ export default function LoginForm() {
 
   const isLoading = useUIStore((state) => state.isLoading);
 
-  const initialDirtyFieldState: DirtyFieldState = {
+  const initialDirtyFieldState: DirtyFieldState<LoginFields> = {
     email: false,
     password: false,
   };
 
   const { dirtyField, generalError, isValidationError, handleFormSubmit, handleFieldOnChange, handleSuccessfulResponse } =
-    useFormError<DirtyFieldState>(initialDirtyFieldState);
+    useFormError<DirtyFieldState<LoginFields>>(initialDirtyFieldState);
 
   function handleLoginEmailOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     const email = event.target.value;

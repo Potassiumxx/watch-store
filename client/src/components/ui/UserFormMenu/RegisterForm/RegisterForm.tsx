@@ -29,14 +29,14 @@ export default function RegisterForm() {
 
   const [isUsernameFocused, setIsUsernameFocused] = React.useState<boolean>(false);
 
-  const initialDirtyFieldState: DirtyFieldState = {
+  const initialDirtyFieldState: DirtyFieldState<RegisterFields> = {
     email: false,
     password: false,
     username: false,
   };
 
   const { dirtyField, generalError, isValidationError, handleFormSubmit, handleFieldOnChange, handleSuccessfulResponse } =
-    useFormError(initialDirtyFieldState);
+    useFormError<DirtyFieldState<RegisterFields>>(initialDirtyFieldState);
 
   function handleRegisterUsernameOnChange(event: React.ChangeEvent<HTMLInputElement>): void {
     const username = event.target.value;
