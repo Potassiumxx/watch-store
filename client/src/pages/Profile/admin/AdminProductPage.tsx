@@ -96,7 +96,7 @@ export default function AdminProductPage() {
   return (
     <ProfileContentContainer title="Add Product">
       <div className="innerDivBackgroundColour shadow-lg shadow-black rounded-md px-20">
-        <Form handleFormSubmit={handleAddProductSubmit} className="gap-12">
+        <Form handleFormSubmit={handleAddProductSubmit} className="gap-[2rem]">
           <Input
             id="product-name"
             label="Product Name"

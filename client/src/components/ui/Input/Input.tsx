@@ -75,11 +75,6 @@ export default function Input({
         useVerticalLabelErrorStyle={useVerticalLabelErrorStyle}
       />
       <div className="w-full">
-        {useVerticalLabelErrorStyle && (
-          <div className="flex flex-col ml-2">
-            <span>{error && <ErrorMessage message={error} isInputFieldError={false} className="normal-case" />}</span>
-          </div>
-        )}
         <input
           className={`${isInputTypeFile ? "hidden" : baseInputClass} ${inputClassName ?? null} ${
             error ? "border-2 border-red-800 focus:border-red-600" : null
@@ -90,6 +85,11 @@ export default function Input({
           type={inputType}
           {...restAttributes}
         />
+        {useVerticalLabelErrorStyle && error && (
+          <div className="flex flex-col ml-2 h-0">
+            <span>{error && <ErrorMessage message={error} isInputFieldError={false} className="normal-case" />}</span>
+          </div>
+        )}
       </div>
       {isPasswordField && (
         <button
