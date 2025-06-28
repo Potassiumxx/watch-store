@@ -17,6 +17,8 @@ interface ProductStore {
   setProductImage: (image: string) => void;
 
   setProductFormError: (inputField: keyof ProductFormFields, message: string) => void;
+
+  clearProductFormError: () => void;
 }
 
 export const useProductStore = create<ProductStore>((set) => ({
@@ -38,4 +40,6 @@ export const useProductStore = create<ProductStore>((set) => ({
     set((state) => ({
       productErrorFields: { ...state.productErrorFields, [inputField]: message },
     })),
+
+  clearProductFormError: () => set({ productErrorFields: {} }),
 }));

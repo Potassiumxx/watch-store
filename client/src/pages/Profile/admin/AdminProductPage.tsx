@@ -14,7 +14,7 @@ export default function AdminProductPage() {
 
   const [fileName, setFileName] = React.useState<string | null>(null);
 
-  const initialDirtyFieldState: DirtyFieldState = {
+  const initialDirtyFieldState: DirtyFieldState<ProductFormFields> = {
     productName: false,
     productPrice: false,
     productCategory: false,
@@ -22,7 +22,8 @@ export default function AdminProductPage() {
     productImage: false,
   };
 
-  const { isValidationError } = useFormError(initialDirtyFieldState);
+  const { isValidationError, handleFieldOnChange, dirtyField } =
+    useFormError<DirtyFieldState<ProductFormFields>>(initialDirtyFieldState);
 
   const {
     productName,
@@ -37,6 +38,7 @@ export default function AdminProductPage() {
     setProductDescription,
     setProductImage,
     setProductFormError,
+    clearProductFormError,
   } = useProductStore();
 
   function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -62,6 +64,35 @@ export default function AdminProductPage() {
     addProduct({ productName, productPrice, productCategory, productDescription, productImage });
   }
 
+  const productSetters: Record<keyof ProductFormFields, (value: string) => void> = {
+    productName: setProductName,
+    productPrice: setProductPrice,
+    productCategory: setProductCategory,
+    productDescription: setProductDescription,
+    productImage: setProductImage,
+  };
+
+  function handleProductFieldOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { value, name } = event.target;
+
+    handleFieldOnChange<ProductFormFields>({
+      fieldKey: name as keyof ProductFormFields,
+      newValue: value,
+      allFormValues: {
+        productName,
+        productPrice,
+        productCategory,
+        productDescription,
+        productImage,
+      },
+      formValueSetter: (v) => productSetters[name as keyof ProductFormFields](v),
+      validateFunction: validateAddProductForm,
+      setFieldErrorFunction: setProductFormError,
+      clearErrorsFunction: clearProductFormError,
+      dirtyField: dirtyField,
+    });
+  }
+
   return (
     <ProfileContentContainer title="Add Product">
       <div className="innerDivBackgroundColour shadow-lg shadow-black rounded-md px-20">
@@ -69,47 +100,52 @@ export default function AdminProductPage() {
           <Input
             id="product-name"
             label="Product Name"
+            name="productName"
             parentClassName={parentClassStyle}
             placeholder="Rolex"
             value={productName}
-            onChange={(e) => setProductName(e.target.value)}
+            onChange={(e) => handleProductFieldOnChange(e)}
             error={productErrorFields.productName}
             useVerticalLabelErrorStyle={true}
           />
           <Input
             id="product-price"
             label="Product Price"
+            name="productPrice"
             parentClassName={parentClassStyle}
             placeholder="199"
             type="number"
             value={productPrice}
-            onChange={(e) => setProductPrice(e.target.value)}
+            onChange={(e) => handleProductFieldOnChange(e)}
             error={productErrorFields.productPrice}
             useVerticalLabelErrorStyle={true}
           />
           <Input
             id="product-category"
             label="Product Category"
+            name="productCategory"
             parentClassName={parentClassStyle}
             placeholder="Digital Watch"
             value={productCategory}
-            onChange={(e) => setProductCategory(e.target.value)}
+            onChange={(e) => handleProductFieldOnChange(e)}
             error={productErrorFields.productCategory}
             useVerticalLabelErrorStyle={true}
           />
           <Input
             id="product-description"
             label="Product Description"
+            name="productDescription"
             parentClassName={parentClassStyle}
             placeholder="Description of the product"
             value={productDescription}
-            onChange={(e) => setProductDescription(e.target.value)}
+            onChange={(e) => handleProductFieldOnChange(e)}
             error={productErrorFields.productDescription}
             useVerticalLabelErrorStyle={true}
           />
           <Input
             id="product-image"
             label="Upload Product Image"
+            name="productImage"
             parentClassName="flex flex-col text-center gap-2 mt-4"
             placeholder="Upload product image"
             type="file"
