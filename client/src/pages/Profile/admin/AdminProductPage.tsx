@@ -8,6 +8,7 @@ import { useProductStore } from "../../../store/productStore";
 import useFormError from "../../../hooks/useForm";
 import { DirtyFieldState, ProductFormFields } from "../../../types/form";
 import { addProduct } from "../../../services/api/productAPI";
+import { ErrorMessage } from "../../../components/ui/Error/ErrorMessage";
 
 export default function AdminProductPage() {
   const parentClassStyle = "grid grid-cols-[1fr_2.5fr] gap-10 items-center";
@@ -22,7 +23,7 @@ export default function AdminProductPage() {
     productImage: false,
   };
 
-  const { isValidationError, handleFieldOnChange, dirtyField } =
+  const { isValidationError, handleFieldOnChange, dirtyField, handleFormSubmit, generalError } =
     useFormError<DirtyFieldState<ProductFormFields>>(initialDirtyFieldState);
 
   const {
@@ -63,7 +64,12 @@ export default function AdminProductPage() {
 
     if (isValidationError<Partial<ProductFormFields>>(error, setProductFormError)) return;
 
-    addProduct({ productName, productPrice, productCategory, productDescription, productImage });
+    const response = await handleFormSubmit<ProductFormFields, Record<string, string>>({
+      apiCall: () => addProduct({ productName, productPrice, productCategory, productDescription, productImage }),
+      setError: setProductFormError,
+    });
+
+    if (response) console.log("done");
   }
 
   const productSetters: Record<keyof ProductFormFields, (value: string) => void> = {
@@ -98,7 +104,7 @@ export default function AdminProductPage() {
   return (
     <ProfileContentContainer title="Add Product">
       <div className="innerDivBackgroundColour shadow-lg shadow-black rounded-md px-20">
-        <Form handleFormSubmit={handleAddProductSubmit} className="gap-[2rem]">
+        <Form handleFormSubmit={handleAddProductSubmit} className="gap-[2rem] relative">
           <Input
             id="product-name"
             label="Product Name"
@@ -156,6 +162,8 @@ export default function AdminProductPage() {
             error={productErrorFields.productImage}
             useVerticalLabelErrorStyle={true}
           />
+
+          {generalError && <ErrorMessage message={generalError} className="absolute bottom-[5.5rem]" />}
           <Button className="formButtonStyle w-[40%] self-center mt-7" textValue="Submit" />
         </Form>
       </div>

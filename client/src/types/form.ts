@@ -43,9 +43,9 @@ export interface LoginAndRegisterResponse {
 }
 
 export interface ProductFormFields {
-  productName?: string;
-  productPrice?: string;
-  productCategory?: string;
-  productDescription?: string;
-  productImage?: string;
+  productName: string;
+  productPrice: string;
+  productCategory: string;
+  productDescription: string;
+  productImage: string;
 }
