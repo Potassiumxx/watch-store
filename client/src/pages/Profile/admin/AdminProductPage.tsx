@@ -47,6 +47,8 @@ export default function AdminProductPage() {
       setFileName(file.name);
       setProductImage(file.name);
     }
+
+    handleProductFieldOnChange(e); // For dirty state
   }
 
   async function handleAddProductSubmit(e: React.FormEvent) {
