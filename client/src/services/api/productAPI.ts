@@ -1,8 +1,8 @@
 import axios from "axios";
 import { BACKEND_API_URL } from "../../utils/constants";
-import { ProductFormFields } from "../../types/form";
+import { ProductFormFields, ProductFormResponse } from "../../types/form";
 
-export async function addProduct(productData: ProductFormFields) {
+export async function addProduct(productData: ProductFormFields): Promise<ProductFormResponse> {
   const formData = new FormData();
   formData.append("productName", productData.productName);
   formData.append("productPrice", productData.productPrice);
@@ -13,7 +13,7 @@ export async function addProduct(productData: ProductFormFields) {
   try {
     const response = await axios.post(`${BACKEND_API_URL}/admin/add-product`, formData);
     console.log(response);
-    return response;
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Axios error:", error.response?.data);

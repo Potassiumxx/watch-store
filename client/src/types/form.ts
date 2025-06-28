@@ -49,3 +49,7 @@ export interface ProductFormFields {
   productDescription: string;
   productImage: string;
 }
+
+export interface ProductFormResponse {
+  message: string;
+}

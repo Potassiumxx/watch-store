@@ -6,7 +6,7 @@ import ProfileContentContainer from "../container/ProfileContentContainer";
 import { validateAddProductForm } from "../../../utils/validateForm";
 import { useProductStore } from "../../../store/productStore";
 import useFormError from "../../../hooks/useForm";
-import { DirtyFieldState, ProductFormFields } from "../../../types/form";
+import { DirtyFieldState, ProductFormFields, ProductFormResponse } from "../../../types/form";
 import { addProduct } from "../../../services/api/productAPI";
 import { ErrorMessage } from "../../../components/ui/Error/ErrorMessage";
 
@@ -64,7 +64,7 @@ export default function AdminProductPage() {
 
     if (isValidationError<Partial<ProductFormFields>>(error, setProductFormError)) return;
 
-    const response = await handleFormSubmit<ProductFormFields, Record<string, string>>({
+    const response = await handleFormSubmit<ProductFormFields, ProductFormResponse>({
       apiCall: () => addProduct({ productName, productPrice, productCategory, productDescription, productImage }),
       setError: setProductFormError,
     });
