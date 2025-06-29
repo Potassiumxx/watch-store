@@ -5,7 +5,7 @@ import Input from "../../Input/Input";
 import { validateLoginForm } from "../../../../utils/validateForm";
 import { ErrorMessage } from "../../Error/ErrorMessage";
 import { DirtyFieldState, LoginFields, LoginAndRegisterResponse } from "../../../../types/form";
-import useFormError from "../../../../hooks/useForm";
+import useForm from "../../../../hooks/useForm";
 import Form from "../../Form/Form";
 import Button from "../../Button/Button";
 import Loader from "../../Loader/Loader";
@@ -31,7 +31,7 @@ export default function LoginForm() {
   };
 
   const { dirtyField, generalError, isValidationError, handleFormSubmit, handleFieldOnChange, handleSuccessfulResponse } =
-    useFormError<DirtyFieldState<LoginFields>>(initialDirtyFieldState);
+    useForm<DirtyFieldState<LoginFields>>(initialDirtyFieldState);
 
   function handleLoginEmailOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     const email = event.target.value;

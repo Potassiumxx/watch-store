@@ -5,7 +5,7 @@ import Input from "../../Input/Input";
 import { validateRegisterForm } from "../../../../utils/validateForm";
 import { ErrorMessage } from "../../Error/ErrorMessage";
 import { DirtyFieldState, RegisterFields, LoginAndRegisterResponse } from "../../../../types/form";
-import useFormError from "../../../../hooks/useForm";
+import useForm from "../../../../hooks/useForm";
 import Form from "../../Form/Form";
 import Button from "../../Button/Button";
 import Loader from "../../Loader/Loader";
@@ -36,7 +36,7 @@ export default function RegisterForm() {
   };
 
   const { dirtyField, generalError, isValidationError, handleFormSubmit, handleFieldOnChange, handleSuccessfulResponse } =
-    useFormError<DirtyFieldState<RegisterFields>>(initialDirtyFieldState);
+    useForm<DirtyFieldState<RegisterFields>>(initialDirtyFieldState);
 
   function handleRegisterUsernameOnChange(event: React.ChangeEvent<HTMLInputElement>): void {
     const username = event.target.value;

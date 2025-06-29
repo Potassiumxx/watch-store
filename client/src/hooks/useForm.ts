@@ -24,11 +24,12 @@ interface handleFieldOnChangeParamter<InputFieldType> {
 }
 
 /**
+ * Custom hook that contains form's error, submit and its field's onChange handling.
  *
  * @param initialState Initial state of form in **object** with keys as **string** and values as **boolean**.
  * @returns
  */
-export default function useFormError<T extends { [key: string]: boolean }>(initialState: T) {
+export default function useForm<T extends { [key: string]: boolean }>(initialState: T) {
   const [generalError, setGeneralError] = React.useState<string | null>();
   const [dirtyField, dispatchDirtyFieldReducer] = useDirtyField<T>(initialState);
 

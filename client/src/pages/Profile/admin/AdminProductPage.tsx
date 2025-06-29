@@ -5,7 +5,7 @@ import Input from "../../../components/ui/Input/Input";
 import ProfileContentContainer from "../container/ProfileContentContainer";
 import { validateAddProductForm } from "../../../utils/validateForm";
 import { useProductStore } from "../../../store/productStore";
-import useFormError from "../../../hooks/useForm";
+import useForm from "../../../hooks/useForm";
 import { DirtyFieldState, ProductFormFields, ProductFormResponse } from "../../../types/form";
 import { addProduct } from "../../../services/api/productAPI";
 import { ErrorMessage } from "../../../components/ui/Error/ErrorMessage";
@@ -24,7 +24,7 @@ export default function AdminProductPage() {
   };
 
   const { isValidationError, handleFieldOnChange, dirtyField, handleFormSubmit, generalError } =
-    useFormError<DirtyFieldState<ProductFormFields>>(initialDirtyFieldState);
+    useForm<DirtyFieldState<ProductFormFields>>(initialDirtyFieldState);
 
   const {
     productName,
