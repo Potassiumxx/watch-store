@@ -3,6 +3,7 @@ import { useAuthStore } from "../../../store/authStore";
 import { useUserStore } from "../../../store/userStore";
 import { useNavigate } from "react-router-dom";
 import ProfileContentContainer from "../container/ProfileContentContainer";
+import * as React from "react";
 
 export default function UserAccount() {
   const globalUsername = useUserStore((state) => state.globalUsername);
@@ -12,6 +13,8 @@ export default function UserAccount() {
   const userSignedOut = useAuthStore((state) => state.userSignedOut);
   const setIsJWTChecked = useAuthStore((state) => state.setIsJWTChecked);
 
+  const [isEmailRevealed, setIsEmailRevealed] = React.useState<boolean>(false);
+
   const navigate = useNavigate();
 
   function handleLogOut(): void {
@@ -19,6 +22,14 @@ export default function UserAccount() {
     setIsJWTChecked(false);
     userSignedOut();
     navigate("/");
+  }
+
+  function modifiedEmail(email: string): string {
+    if (isEmailRevealed) {
+      return email;
+    }
+    const index = email.indexOf("@");
+    return "*****" + email.substring(index);
   }
 
   return (
@@ -36,12 +47,22 @@ export default function UserAccount() {
         <div className="innerDivBackgroundColour p-6 rounded-2xl shadow-lg border border-white/10 w-1/2">
           <div className="flex flex-col gap-7 text-white">
             <div>
-              <h3 className="text-lg mb-1">Display Name</h3>
-              <div className="font-normal text-white/90">{globalUsername ?? "No user"}</div>
+              <h3 className="text-lg mb-1">Username</h3>
+              <div className="flex justify-between items-center">
+                <div className="font-normal text-white/90">{globalUsername ?? "No username"}</div>
+                <Button textValue="Edit" className="border-2 border-white py-1 hover:bg-white hover:text-black" />
+              </div>
             </div>
             <div>
               <h3 className="text-lg mb-1">Email</h3>
-              <div className="font-normal text-white/90">{globalEmail}</div>
+              <div className="flex justify-between items-center">
+                <div className="font-normal text-white/90">{modifiedEmail(globalEmail)}</div>
+                <Button
+                  textValue={isEmailRevealed ? "Hide" : "Show"}
+                  className="border-2 border-white py-1 hover:bg-white hover:text-black"
+                  onClick={() => setIsEmailRevealed(!isEmailRevealed)}
+                />
+              </div>
             </div>
             <div className="flex justify-end border-t-2 border-t-white/20 mt-20">
               <Button
