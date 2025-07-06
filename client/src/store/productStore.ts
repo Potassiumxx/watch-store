@@ -4,7 +4,7 @@ import {
   ProductFormFileField,
   ProductStringFormValidationReturnType,
   ProductFileFormValidationReturnType,
-} from "../types/form";
+} from "../types/productType";
 
 interface ProductStore extends ProductFormStringFields, ProductFormFileField {
   productStringErrorFields: Partial<ProductStringFormValidationReturnType>;

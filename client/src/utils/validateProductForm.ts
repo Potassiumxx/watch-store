@@ -2,7 +2,7 @@ import {
   ProductFormStringFields,
   ProductStringFormValidationReturnType,
   ProductFileFormValidationReturnType,
-} from "../types/form";
+} from "../types/productType";
 
 import { isEmpty } from "./helpers";
 

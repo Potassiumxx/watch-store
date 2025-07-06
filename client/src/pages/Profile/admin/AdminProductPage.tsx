@@ -6,14 +6,14 @@ import ProfileContentContainer from "../container/ProfileContentContainer";
 import { validateAddProductForm, validateFileField } from "../../../utils/validateProductForm";
 import { useProductStore } from "../../../store/productStore";
 import useForm from "../../../hooks/useForm";
+import { DirtyFieldState } from "../../../types/form";
 import {
-  DirtyFieldState,
   ProductFileFormValidationReturnType,
   ProductFormFields,
   ProductFormResponse,
   ProductFormStringFields,
   ProductStringFormValidationReturnType,
-} from "../../../types/form";
+} from "../../../types/productType";
 import { addProduct } from "../../../services/api/productAPI";
 import { ErrorMessage } from "../../../components/ui/Error/ErrorMessage";
 
