@@ -1,4 +1,10 @@
-import { LoginFields, ProductFormFields, RegisterFields } from "../types/form";
+import {
+  LoginFields,
+  ProductFormStringFields,
+  ProductStringFormValidationReturnType,
+  ProductFileFormValidationReturnType,
+  RegisterFields,
+} from "../types/form";
 
 function isEmpty(value?: string): boolean {
   return !value?.trim();
@@ -57,20 +63,48 @@ export function validateRegisterForm({ email, password, username }: RegisterFiel
   return errors;
 }
 
+/**
+ * Only validate string form fields which means it only takes these arguments:
+ *
+ * **This function does not validate file fields**
+ *
+ * @param productName
+ * @param productPrice
+ * @param productCategory
+ * @param productDescription
+ *
+ * @returns Object with error message for the `ProductFormStringFields` type.
+ */
+
 export function validateAddProductForm({
   productName,
   productPrice,
   productCategory,
   productDescription,
-  productImage,
-}: ProductFormFields): Partial<ProductFormFields> {
-  const errors: Partial<ProductFormFields> = {};
+}: ProductFormStringFields): Partial<ProductStringFormValidationReturnType> {
+  const errors: Partial<ProductFormStringFields> = {};
 
   if (isEmpty(productName)) errors.productName = "This field cannot be empty";
   if (isEmpty(productPrice)) errors.productPrice = "This field cannot be empty";
   if (isEmpty(productCategory)) errors.productCategory = "This field cannot be empty";
   if (isEmpty(productDescription)) errors.productDescription = "This field cannot be empty";
-  if (isEmpty(productImage)) errors.productImage = "Product image must be uploaded";
 
   return errors;
+}
+
+/**
+ * Only validates file fields.
+ *
+ * @param file File to be validated.
+ * @param message Error message to be displayed.
+ *
+ * @returns Object with error message for file field only.
+ */
+
+export function validateFileField(
+  file: File | null | undefined,
+  fieldName: string
+): Partial<ProductFileFormValidationReturnType> {
+  if (!file) return { [fieldName]: "Image must be uploaded" };
+  return {};
 }

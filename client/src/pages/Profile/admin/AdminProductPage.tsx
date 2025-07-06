@@ -3,10 +3,17 @@ import Button from "../../../components/ui/Button/Button";
 import Form from "../../../components/ui/Form/Form";
 import Input from "../../../components/ui/Input/Input";
 import ProfileContentContainer from "../container/ProfileContentContainer";
-import { validateAddProductForm } from "../../../utils/validateForm";
+import { validateAddProductForm, validateFileField } from "../../../utils/validateForm";
 import { useProductStore } from "../../../store/productStore";
 import useForm from "../../../hooks/useForm";
-import { DirtyFieldState, ProductFormFields, ProductFormResponse } from "../../../types/form";
+import {
+  DirtyFieldState,
+  ProductFileFormValidationReturnType,
+  ProductFormFields,
+  ProductFormResponse,
+  ProductFormStringFields,
+  ProductStringFormValidationReturnType,
+} from "../../../types/form";
 import { addProduct } from "../../../services/api/productAPI";
 import { ErrorMessage } from "../../../components/ui/Error/ErrorMessage";
 
@@ -32,71 +39,81 @@ export default function AdminProductPage() {
     productCategory,
     productDescription,
     productImage,
-    productErrorFields,
+    productStringErrorFields,
+    productFileErrorFields,
     setProductName,
     setProductPrice,
     setProductCategory,
     setProductDescription,
     setProductImage,
-    setProductFormError,
-    clearProductFormError,
+    setProductStringFormError,
+    setProductFileFormError,
+    clearProductStringFormError,
   } = useProductStore();
 
   function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
+
     if (file) {
       setFileName(file.name);
-      setProductImage(file.name);
+      setProductImage(file);
     }
 
-    handleProductFieldOnChange(e); // For dirty state
+    const fileError = validateFileField(file, "productImage");
+    setProductFileFormError("productImage", fileError.productImage!);
+
+    if (isValidationError<Partial<ProductFileFormValidationReturnType>>(fileError, setProductFileFormError)) return;
   }
 
   async function handleAddProductSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const error = validateAddProductForm({
+    const stringError = validateAddProductForm({
       productName,
       productPrice,
       productCategory,
       productDescription,
-      productImage,
     });
 
-    if (isValidationError<Partial<ProductFormFields>>(error, setProductFormError)) return;
+    const fileError = validateFileField(productImage, "productImage");
+    setProductFileFormError("productImage", fileError.productImage!);
 
-    const response = await handleFormSubmit<ProductFormFields, ProductFormResponse>({
+    if (
+      isValidationError<Partial<ProductStringFormValidationReturnType>>(stringError, setProductStringFormError) ||
+      isValidationError<Partial<ProductFileFormValidationReturnType>>(fileError, setProductFileFormError)
+    )
+      return;
+
+    const response = await handleFormSubmit<ProductStringFormValidationReturnType, ProductFormResponse>({
       apiCall: () => addProduct({ productName, productPrice, productCategory, productDescription, productImage }),
-      setError: setProductFormError,
+      setError: setProductStringFormError,
     });
 
     if (response) console.log("done");
   }
 
-  const productSetters: Record<keyof ProductFormFields, (value: string) => void> = {
-    productName: setProductName,
-    productPrice: setProductPrice,
-    productCategory: setProductCategory,
-    productDescription: setProductDescription,
-    productImage: setProductImage,
-  };
-
   function handleProductFieldOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { value, name } = event.target;
 
-    handleFieldOnChange<ProductFormFields>({
-      fieldKey: name as keyof ProductFormFields,
+    const productSetters: Record<keyof ProductFormStringFields, (value: string) => void> = {
+      productName: setProductName,
+      productPrice: setProductPrice,
+      productCategory: setProductCategory,
+      productDescription: setProductDescription,
+    };
+
+    handleFieldOnChange<ProductFormStringFields>({
+      fieldKey: name as keyof ProductFormStringFields,
       newValue: value,
       allFormValues: {
         productName,
         productPrice,
         productCategory,
         productDescription,
-        productImage,
       },
-      formValueSetter: (v) => productSetters[name as keyof ProductFormFields](v),
+      formValueSetter: (v) => productSetters[name as keyof ProductFormStringFields](v),
       validateFunction: validateAddProductForm,
-      setFieldErrorFunction: setProductFormError,
-      clearErrorsFunction: clearProductFormError,
+      setFieldErrorFunction: setProductStringFormError,
+      clearErrorsFunction: clearProductStringFormError,
       dirtyField: dirtyField,
     });
   }
@@ -113,7 +130,7 @@ export default function AdminProductPage() {
             placeholder="Rolex"
             value={productName}
             onChange={(e) => handleProductFieldOnChange(e)}
-            error={productErrorFields.productName}
+            error={productStringErrorFields.productName}
             useVerticalLabelErrorStyle={true}
           />
           <Input
@@ -125,7 +142,7 @@ export default function AdminProductPage() {
             type="number"
             value={productPrice}
             onChange={(e) => handleProductFieldOnChange(e)}
-            error={productErrorFields.productPrice}
+            error={productStringErrorFields.productPrice}
             useVerticalLabelErrorStyle={true}
           />
           <Input
@@ -136,7 +153,7 @@ export default function AdminProductPage() {
             placeholder="Digital Watch"
             value={productCategory}
             onChange={(e) => handleProductFieldOnChange(e)}
-            error={productErrorFields.productCategory}
+            error={productStringErrorFields.productCategory}
             useVerticalLabelErrorStyle={true}
           />
           <Input
@@ -147,7 +164,7 @@ export default function AdminProductPage() {
             placeholder="Description of the product"
             value={productDescription}
             onChange={(e) => handleProductFieldOnChange(e)}
-            error={productErrorFields.productDescription}
+            error={productStringErrorFields.productDescription}
             useVerticalLabelErrorStyle={true}
           />
           <Input
@@ -159,7 +176,7 @@ export default function AdminProductPage() {
             type="file"
             fileName={fileName}
             onChange={handleFileUpload}
-            error={productErrorFields.productImage}
+            error={productFileErrorFields.productImage}
             useVerticalLabelErrorStyle={true}
           />
 

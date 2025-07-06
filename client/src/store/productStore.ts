@@ -1,24 +1,25 @@
 import { create } from "zustand";
-import { ProductFormFields } from "../types/form";
+import {
+  ProductFormStringFields,
+  ProductFormFileField,
+  ProductStringFormValidationReturnType,
+  ProductFileFormValidationReturnType,
+} from "../types/form";
 
-interface ProductStore {
-  productName: string;
-  productPrice: string;
-  productCategory: string;
-  productDescription: string;
-  productImage: string;
-
-  productErrorFields: Partial<ProductFormFields>;
+interface ProductStore extends ProductFormStringFields, ProductFormFileField {
+  productStringErrorFields: Partial<ProductStringFormValidationReturnType>;
+  productFileErrorFields: { productImage?: string };
 
   setProductName: (name: string) => void;
   setProductPrice: (price: string) => void;
   setProductCategory: (category: string) => void;
   setProductDescription: (description: string) => void;
-  setProductImage: (image: string) => void;
+  setProductImage: (image: File | null) => void;
 
-  setProductFormError: (inputField: keyof ProductFormFields, message: string) => void;
+  setProductStringFormError: (inputField: keyof ProductStringFormValidationReturnType, message: string) => void;
+  setProductFileFormError: (inputField: keyof ProductFileFormValidationReturnType, message: string) => void;
 
-  clearProductFormError: () => void;
+  clearProductStringFormError: () => void;
 }
 
 export const useProductStore = create<ProductStore>((set) => ({
@@ -26,9 +27,10 @@ export const useProductStore = create<ProductStore>((set) => ({
   productPrice: "",
   productCategory: "",
   productDescription: "",
-  productImage: "",
+  productImage: null,
 
-  productErrorFields: {},
+  productStringErrorFields: {},
+  productFileErrorFields: {},
 
   setProductName: (name) => set({ productName: name }),
   setProductPrice: (price) => set({ productPrice: price }),
@@ -36,10 +38,16 @@ export const useProductStore = create<ProductStore>((set) => ({
   setProductDescription: (description) => set({ productDescription: description }),
   setProductImage: (image) => set({ productImage: image }),
 
-  setProductFormError: (inputField, message) =>
+  setProductStringFormError: (inputField, message) =>
     set((state) => ({
-      productErrorFields: { ...state.productErrorFields, [inputField]: message },
+      productStringErrorFields: { ...state.productStringErrorFields, [inputField]: message },
     })),
 
-  clearProductFormError: () => set({ productErrorFields: {} }),
+  setProductFileFormError: (inputField, message) => {
+    set(() => ({
+      productFileErrorFields: { [inputField]: message },
+    }));
+  },
+
+  clearProductStringFormError: () => set({ productStringErrorFields: {} }),
 }));
