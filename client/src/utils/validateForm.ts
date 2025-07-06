@@ -85,7 +85,15 @@ export function validateAddProductForm({
   const errors: Partial<ProductFormStringFields> = {};
 
   if (isEmpty(productName)) errors.productName = "This field cannot be empty";
-  if (isEmpty(productPrice)) errors.productPrice = "This field cannot be empty";
+
+  if (isEmpty(productPrice)) {
+    errors.productPrice = "This field cannot be empty";
+  } else if (isNaN(parseFloat(productPrice))) {
+    errors.productPrice = "Price has to be a valid number";
+  } else if (parseFloat(productPrice) < 0) {
+    errors.productPrice = "Price has to be a positive value";
+  }
+
   if (isEmpty(productCategory)) errors.productCategory = "This field cannot be empty";
   if (isEmpty(productDescription)) errors.productDescription = "This field cannot be empty";
 
