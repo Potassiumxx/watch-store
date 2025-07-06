@@ -3,7 +3,7 @@ import Button from "../../../components/ui/Button/Button";
 import Form from "../../../components/ui/Form/Form";
 import Input from "../../../components/ui/Input/Input";
 import ProfileContentContainer from "../container/ProfileContentContainer";
-import { validateAddProductForm, validateFileField } from "../../../utils/validateForm";
+import { validateAddProductForm, validateFileField } from "../../../utils/validateProductForm";
 import { useProductStore } from "../../../store/productStore";
 import useForm from "../../../hooks/useForm";
 import {

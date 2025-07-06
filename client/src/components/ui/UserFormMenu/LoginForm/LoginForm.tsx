@@ -2,7 +2,7 @@ import * as React from "react";
 import { useAuthStore } from "../../../../store/authStore";
 import { loginUser } from "../../../../services/api/authAPI";
 import Input from "../../Input/Input";
-import { validateLoginForm } from "../../../../utils/validateForm";
+import { validateLoginForm } from "../../../../utils/validateAuthForm";
 import { ErrorMessage } from "../../Error/ErrorMessage";
 import { DirtyFieldState, LoginFields, LoginAndRegisterResponse } from "../../../../types/form";
 import useForm from "../../../../hooks/useForm";

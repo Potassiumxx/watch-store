@@ -1,6 +1,6 @@
 import RegisterForm from "./RegisterForm";
 import { cleanup, render, screen } from "@testing-library/react";
-import * as validationModule from "../../../../utils/validateForm";
+import * as validationModule from "../../../../utils/validateAuthForm";
 import userEvent from "@testing-library/user-event";
 
 describe("Login Form component", () => {
