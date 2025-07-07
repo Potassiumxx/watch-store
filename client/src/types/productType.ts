@@ -6,6 +6,7 @@ export interface ProductFormStringFields {
   productPrice: string;
   productCategory: string;
   productDescription: string;
+  productQuantity: string;
 }
 
 /**

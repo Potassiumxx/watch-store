@@ -14,6 +14,7 @@ interface ProductStore extends ProductFormStringFields, ProductFormFileField {
   setProductPrice: (price: string) => void;
   setProductCategory: (category: string) => void;
   setProductDescription: (description: string) => void;
+  setProductQuantity: (quantity: string) => void;
   setProductImage: (image: File | null) => void;
 
   setProductStringFormError: (inputField: keyof ProductStringFormValidationReturnType, message: string) => void;
@@ -27,6 +28,7 @@ export const useProductStore = create<ProductStore>((set) => ({
   productPrice: "",
   productCategory: "",
   productDescription: "",
+  productQuantity: "",
   productImage: null,
 
   productStringErrorFields: {},
@@ -36,6 +38,7 @@ export const useProductStore = create<ProductStore>((set) => ({
   setProductPrice: (price) => set({ productPrice: price }),
   setProductCategory: (category) => set({ productCategory: category }),
   setProductDescription: (description) => set({ productDescription: description }),
+  setProductQuantity: (quantity) => set({ productQuantity: quantity }),
   setProductImage: (image) => set({ productImage: image }),
 
   setProductStringFormError: (inputField, message) =>

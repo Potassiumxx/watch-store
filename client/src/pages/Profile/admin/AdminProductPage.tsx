@@ -27,6 +27,7 @@ export default function AdminProductPage() {
     productPrice: false,
     productCategory: false,
     productDescription: false,
+    productQuantity: false,
     productImage: false,
   };
 
@@ -38,6 +39,7 @@ export default function AdminProductPage() {
     productPrice,
     productCategory,
     productDescription,
+    productQuantity,
     productImage,
     productStringErrorFields,
     productFileErrorFields,
@@ -45,6 +47,7 @@ export default function AdminProductPage() {
     setProductPrice,
     setProductCategory,
     setProductDescription,
+    setProductQuantity,
     setProductImage,
     setProductStringFormError,
     setProductFileFormError,
@@ -72,6 +75,7 @@ export default function AdminProductPage() {
       productPrice,
       productCategory,
       productDescription,
+      productQuantity,
     });
 
     const fileError = validateFileField(productImage, "productImage");
@@ -84,7 +88,8 @@ export default function AdminProductPage() {
       return;
 
     const response = await handleFormSubmit<ProductStringFormValidationReturnType, ProductFormResponse>({
-      apiCall: () => addProduct({ productName, productPrice, productCategory, productDescription, productImage }),
+      apiCall: () =>
+        addProduct({ productName, productPrice, productCategory, productDescription, productQuantity, productImage }),
       setError: setProductStringFormError,
     });
 
@@ -99,6 +104,7 @@ export default function AdminProductPage() {
       productPrice: setProductPrice,
       productCategory: setProductCategory,
       productDescription: setProductDescription,
+      productQuantity: setProductQuantity,
     };
 
     handleFieldOnChange<ProductFormStringFields>({
@@ -109,6 +115,7 @@ export default function AdminProductPage() {
         productPrice,
         productCategory,
         productDescription,
+        productQuantity,
       },
       formValueSetter: (v) => productSetters[name as keyof ProductFormStringFields](v),
       validateFunction: validateAddProductForm,
@@ -165,6 +172,18 @@ export default function AdminProductPage() {
             value={productDescription}
             onChange={(e) => handleProductFieldOnChange(e)}
             error={productStringErrorFields.productDescription}
+            useVerticalLabelErrorStyle={true}
+          />
+          <Input
+            id="product-quantity"
+            label="Product Quantity"
+            name="productQuantity"
+            parentClassName={parentClassStyle}
+            placeholder="Quantity"
+            type="number"
+            value={productQuantity}
+            onChange={(e) => handleProductFieldOnChange(e)}
+            error={productStringErrorFields.productQuantity}
             useVerticalLabelErrorStyle={true}
           />
           <Input

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BACKEND_API_URL } from "../../utils/constants";
-import { ProductFormFields, ProductFormResponse } from "../../types/form";
+import { ProductFormFields, ProductFormResponse } from "../../types/productType";
 
 export async function addProduct(productData: ProductFormFields): Promise<ProductFormResponse> {
   const formData = new FormData();
@@ -8,7 +8,8 @@ export async function addProduct(productData: ProductFormFields): Promise<Produc
   formData.append("productPrice", productData.productPrice);
   formData.append("productCategory", productData.productCategory);
   formData.append("productDescription", productData.productDescription);
-  formData.append("productImage", productData.productImage);
+  formData.append("productDescription", productData.productQuantity);
+  formData.append("productImage", productData.productImage!);
 
   try {
     const response = await axios.post(`${BACKEND_API_URL}/admin/add-product`, formData);

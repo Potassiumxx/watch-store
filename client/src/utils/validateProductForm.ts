@@ -24,6 +24,7 @@ export function validateAddProductForm({
   productPrice,
   productCategory,
   productDescription,
+  productQuantity,
 }: ProductFormStringFields): Partial<ProductStringFormValidationReturnType> {
   const errors: Partial<ProductFormStringFields> = {};
 
@@ -39,6 +40,14 @@ export function validateAddProductForm({
 
   if (isEmpty(productCategory)) errors.productCategory = "This field cannot be empty";
   if (isEmpty(productDescription)) errors.productDescription = "This field cannot be empty";
+
+  if (isEmpty(productQuantity)) {
+    errors.productQuantity = "This field cannot be empty";
+  } else if (isNaN(parseFloat(productQuantity))) {
+    errors.productQuantity = "Quantity has to be a valid number";
+  } else if (parseFloat(productQuantity) <= 0) {
+    errors.productQuantity = "Quantity has to be a greater than zero";
+  }
 
   return errors;
 }
