@@ -8,7 +8,7 @@ export async function addProduct(productData: ProductFormFields): Promise<Produc
   formData.append("productPrice", productData.productPrice);
   formData.append("productCategory", productData.productCategory);
   formData.append("productDescription", productData.productDescription);
-  formData.append("productDescription", productData.productQuantity);
+  formData.append("productQuantity", productData.productQuantity);
   formData.append("productImage", productData.productImage!);
 
   try {
