@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.watchstore.server.dto.ProductRequest;
 import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Product;
+import com.watchstore.server.repository.InventoryRepository;
 import com.watchstore.server.repository.ProductRepository;
 
 @RestController
@@ -23,6 +24,8 @@ import com.watchstore.server.repository.ProductRepository;
 public class AdminController {
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private InventoryRepository inventoryRepository;
 
     private String generateRandomFileName(String originalFileName) {
         int dotIndex = originalFileName.lastIndexOf(".");
@@ -52,13 +55,17 @@ public class AdminController {
         product.setPrice(productRequest.getProductPrice());
         product.setCategory(productRequest.getProductCategory());
         product.setDescription(productRequest.getProductDescription());
-        product.setImage(fileName);
+        product.setImage(randomeFileName);
+        
+        productRepository.save(product);
 
         Inventory inventory = new Inventory();
         inventory.setQuantity(productRequest.getProductQuantity());
+        inventory.setProduct(product);
 
-        // productRepository.save(product);
-        System.out.println("Product Quantity: " + productRequest.getProductQuantity());
+        inventoryRepository.save(inventory);
+
+        // System.out.println("Product Quantity: " + productRequest.getProductQuantity());
 
         return new ResponseEntity<>("Finished", HttpStatus.CREATED);
     }
