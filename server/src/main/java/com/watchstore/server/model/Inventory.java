@@ -1,7 +1,6 @@
 package com.watchstore.server.model;
 
 import java.time.LocalDate;
-import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
