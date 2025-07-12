@@ -5,6 +5,7 @@ import ErrorPage from "../pages/ErrorPage";
 import UserProfile from "../pages/Profile/UserProfile";
 import AdminProductPage from "../pages/Profile/admin/AdminProductPage";
 import UserAccount from "../pages/Profile/account/UserAccount";
+import Products from "../pages/Products/Products";
 
 export default function Router() {
   const router = createBrowserRouter(
@@ -14,6 +15,7 @@ export default function Router() {
         children: [
           { path: "*", element: <ErrorPage /> },
           { path: "/", element: <Home /> },
+          { path: "/products", element: <Products /> },
           {
             path: "/profile",
             element: <UserProfile />,

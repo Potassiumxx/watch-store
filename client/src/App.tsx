@@ -6,7 +6,7 @@ import * as React from "react";
 import { useAuthStore } from "./store/authStore";
 import { jwtDecode } from "jwt-decode";
 import { useUserStore } from "./store/userStore";
-import { DecodedJWT } from "./types/form";
+import { DecodedJWT } from "./types/authType";
 
 function App() {
   const userSignedIn = useAuthStore((state) => state.userSignedIn);
@@ -42,7 +42,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <div className="min-h-dvh mt-12">
+      <div className="min-h-dvh outerDivBackgroundColour">
         <Outlet />
       </div>
       <Footer />

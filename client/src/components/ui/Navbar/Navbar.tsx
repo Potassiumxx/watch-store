@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { NavLink } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
 import { LiaShoppingCartSolid } from "react-icons/lia";
@@ -17,6 +18,7 @@ export default function Navbar() {
   const searchBarRef = React.useRef<HTMLInputElement | null>(null);
   const searchIconRef = React.useRef<HTMLButtonElement | null>(null);
   const bottomNavbarRef = React.useRef<HTMLDivElement | null>(null);
+  const navbarRef = React.useRef<HTMLDivElement | null>(null);
 
   const navigate = useNavigate();
 
@@ -26,6 +28,7 @@ export default function Navbar() {
 
   const showUserMenu = useUIStore((state) => state.showUserMenu);
   const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
+  const setNavbarHeight = useUIStore((state) => state.setNavbarHeight);
 
   function handleOpenSearchBar() {
     setOpenSearchBar(true);
@@ -88,11 +91,13 @@ export default function Navbar() {
   React.useEffect(() => {
     window.addEventListener("scroll", updateNavbarBackgroundOnScroll);
 
+    setNavbarHeight(navbarRef.current!.clientHeight);
+
     return () => window.removeEventListener("scroll", updateNavbarBackgroundOnScroll);
-  });
+  }, []);
 
   return (
-    <div className="fixed top-0 flex flex-col justify-between items-center z-20 w-full" data-testid="navbar">
+    <div ref={navbarRef} className="fixed top-0 flex flex-col justify-between items-center z-20 w-full" data-testid="navbar">
       {showUserMenu && <UserMenu />}
       <div className="flex justify-between w-full py-2 outerDivBackgroundColour text-white items-center px-[50px]">
         <div>
