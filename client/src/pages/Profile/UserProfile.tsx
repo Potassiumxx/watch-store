@@ -4,7 +4,6 @@ import { Outlet, useNavigate } from "react-router-dom";
 import UserProfileMenu from "./menu/UserProfileMenu";
 import { useAuthStore } from "../../store/authStore";
 import Loader from "../../components/ui/Loader/Loader";
-import { useUIStore } from "../../store/uiStore";
 
 export default function UserProfile() {
   const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
@@ -15,8 +14,6 @@ export default function UserProfile() {
    * Once it finishes doing those tasks above, update the states causing re-render and finally loading the page.
    */
   const [hasHydrated, setHasHydrated] = React.useState<boolean>(() => useAuthStore.persist.hasHydrated());
-
-  const navbarHeight = useUIStore((state) => state.navbarHeight);
 
   const navigate = useNavigate();
 
@@ -36,7 +33,7 @@ export default function UserProfile() {
 
   return (
     <div className="relative min-h-dvh outerDivBackgroundColour">
-      <div className={`flex`} style={{ paddingTop: `${navbarHeight ?? 121}px` }}>
+      <div className={`flex`}>
         <UserProfileMenu />
         <Outlet />
       </div>

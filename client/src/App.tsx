@@ -7,6 +7,7 @@ import { useAuthStore } from "./store/authStore";
 import { jwtDecode } from "jwt-decode";
 import { useUserStore } from "./store/userStore";
 import { DecodedJWT } from "./types/authType";
+import { useUIStore } from "./store/uiStore";
 
 function App() {
   const userSignedIn = useAuthStore((state) => state.userSignedIn);
@@ -15,6 +16,8 @@ function App() {
 
   const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
   const setGlobalEmail = useUserStore((state) => state.setGlobalEmail);
+
+  const navbarHeight = useUIStore((state) => state.navbarHeight);
 
   /**
    * Decode the JWT stored in local storage on initial render.
@@ -42,7 +45,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <div className="min-h-dvh outerDivBackgroundColour">
+      <div className="min-h-dvh outerDivBackgroundColour" style={{ paddingTop: `${navbarHeight ?? 121}px` }}>
         <Outlet />
       </div>
       <Footer />
