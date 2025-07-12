@@ -11,6 +11,7 @@ import Form from "../../Form/Form";
 import Button from "../../Button/Button";
 import Loader from "../../Loader/Loader";
 import { useUIStore } from "../../../../store/uiStore";
+import FormFieldWrapper from "../../FormFieldWrapper/FormFieldWrapper";
 
 export default function LoginForm() {
   const loginEmail = useAuthStore((state) => state.loginEmail);
@@ -85,24 +86,26 @@ export default function LoginForm() {
 
   return (
     <Form handleFormSubmit={handleLoginFormSubmit}>
-      <Input
-        type="email"
-        placeholder="Email"
-        value={loginEmail}
-        onChange={(e) => handleLoginEmailOnChange(e)}
-        error={loginErrorFields.email}
-        label="Email"
-        id="login-email"
-      />
-      <Input
-        type="password"
-        placeholder="Password"
-        value={loginPassword}
-        onChange={(e) => handleLoginPasswordOnChange(e)}
-        error={loginErrorFields.password}
-        label="Password"
-        id="login-password"
-      />
+      <FormFieldWrapper error={loginErrorFields.email} label="Email" id="login-email">
+        <Input
+          type="email"
+          placeholder="Email"
+          value={loginEmail}
+          onChange={(e) => handleLoginEmailOnChange(e)}
+          error={loginErrorFields.email}
+          id="login-email"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper error={loginErrorFields.password} label="Password" id="login-password">
+        <Input
+          type="password"
+          placeholder="Password"
+          value={loginPassword}
+          onChange={(e) => handleLoginPasswordOnChange(e)}
+          error={loginErrorFields.password}
+          id="login-password"
+        />
+      </FormFieldWrapper>
       <Button
         textValue={isLoading ? <Loader /> : "Sign In"}
         className="formButtonStyle"

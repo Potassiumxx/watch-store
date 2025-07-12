@@ -16,10 +16,9 @@ import {
 } from "../../../types/productType";
 import { addProduct } from "../../../services/api/productAPI";
 import { ErrorMessage } from "../../../components/ui/Error/ErrorMessage";
+import FormFieldWrapper from "../../../components/ui/FormFieldWrapper/FormFieldWrapper";
 
 export default function AdminProductPage() {
-  const parentClassStyle = "grid grid-cols-[1fr_2.5fr] gap-10 items-center";
-
   const [fileName, setFileName] = React.useState<string | null>(null);
 
   const initialDirtyFieldState: DirtyFieldState<ProductFormFields> = {
@@ -129,75 +128,101 @@ export default function AdminProductPage() {
     <ProfileContentContainer title="Add Product">
       <div className="innerDivBackgroundColour shadow-lg shadow-black rounded-md px-20">
         <Form handleFormSubmit={handleAddProductSubmit} className="gap-[2rem] relative">
-          <Input
-            id="product-name"
+          <FormFieldWrapper
             label="Product Name"
-            name="productName"
-            parentClassName={parentClassStyle}
-            placeholder="Rolex"
-            value={productName}
-            onChange={(e) => handleProductFieldOnChange(e)}
+            id="product-name"
+            useVerticalLabelErrorStyle={true}
             error={productStringErrorFields.productName}
-            useVerticalLabelErrorStyle={true}
-          />
-          <Input
-            id="product-price"
+            positionRow={true}>
+            <Input
+              id="product-name"
+              name="productName"
+              placeholder="Rolex"
+              value={productName}
+              onChange={(e) => handleProductFieldOnChange(e)}
+              error={productStringErrorFields.productName}
+            />
+          </FormFieldWrapper>
+          <FormFieldWrapper
             label="Product Price"
-            name="productPrice"
-            parentClassName={parentClassStyle}
-            placeholder="199"
-            type="number"
-            value={productPrice}
-            onChange={(e) => handleProductFieldOnChange(e)}
+            id="product-price"
+            useVerticalLabelErrorStyle={true}
             error={productStringErrorFields.productPrice}
-            useVerticalLabelErrorStyle={true}
-          />
-          <Input
-            id="product-category"
+            positionRow={true}>
+            <Input
+              id="product-price"
+              name="productPrice"
+              placeholder="199"
+              type="number"
+              value={productPrice}
+              onChange={(e) => handleProductFieldOnChange(e)}
+              error={productStringErrorFields.productPrice}
+            />
+          </FormFieldWrapper>
+          <FormFieldWrapper
             label="Product Category"
-            name="productCategory"
-            parentClassName={parentClassStyle}
-            placeholder="Digital Watch"
-            value={productCategory}
-            onChange={(e) => handleProductFieldOnChange(e)}
+            id="product-category"
+            useVerticalLabelErrorStyle={true}
             error={productStringErrorFields.productCategory}
-            useVerticalLabelErrorStyle={true}
-          />
-          <Input
-            id="product-description"
+            positionRow={true}>
+            <Input
+              id="product-category"
+              name="productCategory"
+              placeholder="Digital Watch"
+              value={productCategory}
+              onChange={(e) => handleProductFieldOnChange(e)}
+              error={productStringErrorFields.productCategory}
+            />
+          </FormFieldWrapper>
+          <FormFieldWrapper
             label="Product Description"
-            name="productDescription"
-            parentClassName={parentClassStyle}
-            placeholder="Description of the product"
-            value={productDescription}
-            onChange={(e) => handleProductFieldOnChange(e)}
+            id="product-description"
+            useVerticalLabelErrorStyle={true}
             error={productStringErrorFields.productDescription}
-            useVerticalLabelErrorStyle={true}
-          />
-          <Input
-            id="product-quantity"
+            positionRow={true}>
+            <Input
+              id="product-description"
+              name="productDescription"
+              placeholder="Description of the product"
+              value={productDescription}
+              onChange={(e) => handleProductFieldOnChange(e)}
+              error={productStringErrorFields.productDescription}
+            />
+          </FormFieldWrapper>
+          <FormFieldWrapper
             label="Product Quantity"
-            name="productQuantity"
-            parentClassName={parentClassStyle}
-            placeholder="Quantity"
-            type="number"
-            value={productQuantity}
-            onChange={(e) => handleProductFieldOnChange(e)}
+            id="product-quantity"
+            useVerticalLabelErrorStyle={true}
             error={productStringErrorFields.productQuantity}
-            useVerticalLabelErrorStyle={true}
-          />
-          <Input
-            id="product-image"
+            positionRow={true}>
+            <Input
+              id="product-quantity"
+              name="productQuantity"
+              placeholder="Quantity"
+              type="number"
+              value={productQuantity}
+              onChange={(e) => handleProductFieldOnChange(e)}
+              error={productStringErrorFields.productQuantity}
+            />
+          </FormFieldWrapper>
+          <FormFieldWrapper
             label="Upload Product Image"
-            name="productImage"
-            parentClassName="flex flex-col text-center gap-2 mt-4"
-            placeholder="Upload product image"
-            type="file"
-            fileName={fileName}
-            onChange={handleFileUpload}
-            error={productFileErrorFields.productImage}
+            id="product-image"
             useVerticalLabelErrorStyle={true}
-          />
+            error={productFileErrorFields.productImage}
+            isInputTypeFile={true}
+            labelClassName="w-full"
+            errorStyleClass="text-center">
+            <Input
+              id="product-image"
+              name="productImage"
+              placeholder="Upload product image"
+              type="file"
+              fileName={fileName}
+              onChange={handleFileUpload}
+              error={productFileErrorFields.productImage}
+            />
+          </FormFieldWrapper>
 
           {generalError && <ErrorMessage message={generalError} className="absolute bottom-[5.5rem]" />}
           <Button className="formButtonStyle w-[40%] self-center mt-7" textValue="Submit" />

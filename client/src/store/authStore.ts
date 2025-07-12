@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { LoginFields, RegisterFields } from "../types/form";
+import { LoginFields, RegisterFields } from "../types/authType";
 
 interface AuthStore {
   loginEmail: string;

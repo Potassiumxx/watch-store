@@ -19,3 +19,13 @@ export type DirtyFieldState<T> = {
 export type APIErrorReturnType<T> = T & {
   [GENERAL_ERROR_KEY]?: string;
 };
+
+/**
+ * Represents the shape of every form field. These values must be present in every form field (e.g. input, textarea, etc)
+ */
+export interface BaseFormFieldProps {
+  id: string;
+  error: string | undefined;
+  // label: string;
+  useVerticalLabelErrorStyle?: boolean;
+}

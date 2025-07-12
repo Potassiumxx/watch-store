@@ -11,6 +11,7 @@ import Form from "../../Form/Form";
 import Button from "../../Button/Button";
 import Loader from "../../Loader/Loader";
 import { useUIStore } from "../../../../store/uiStore";
+import FormFieldWrapper from "../../FormFieldWrapper/FormFieldWrapper";
 
 export default function RegisterForm() {
   const registerEmail = useAuthStore((state) => state.registerEmail);
@@ -109,17 +110,18 @@ export default function RegisterForm() {
   return (
     <Form handleFormSubmit={handleRegisterFormSubmit}>
       <div>
-        <Input
-          type="name"
-          placeholder="Username"
-          value={registerUsername}
-          onChange={(e) => handleRegisterUsernameOnChange(e)}
-          onFocus={() => setIsUsernameFocused(true)}
-          onBlur={() => setIsUsernameFocused(false)}
-          error={regiserErrorFields.username}
-          label="Username"
-          id="register-username"
-        />
+        <FormFieldWrapper error={regiserErrorFields.username} label="Username" id="register-username">
+          <Input
+            type="name"
+            placeholder="Username"
+            value={registerUsername}
+            onChange={(e) => handleRegisterUsernameOnChange(e)}
+            onFocus={() => setIsUsernameFocused(true)}
+            onBlur={() => setIsUsernameFocused(false)}
+            error={regiserErrorFields.username}
+            id="register-username"
+          />
+        </FormFieldWrapper>
         {
           <div
             className={`${
@@ -131,24 +133,26 @@ export default function RegisterForm() {
           </div>
         }
       </div>
-      <Input
-        type="email"
-        placeholder="Email"
-        value={registerEmail}
-        onChange={(e) => handleRegisterEmailOnChange(e)}
-        error={regiserErrorFields.email}
-        label="Email"
-        id="register-email"
-      />
-      <Input
-        type="password"
-        placeholder="Password"
-        value={registerPassword}
-        onChange={(e) => handleRegisterPasswordOnChange(e)}
-        error={regiserErrorFields.password}
-        label="Password"
-        id="register-password"
-      />
+      <FormFieldWrapper error={regiserErrorFields.email} label="Email" id="register-email">
+        <Input
+          type="email"
+          placeholder="Email"
+          value={registerEmail}
+          onChange={(e) => handleRegisterEmailOnChange(e)}
+          error={regiserErrorFields.email}
+          id="register-email"
+        />
+      </FormFieldWrapper>
+      <FormFieldWrapper error={regiserErrorFields.password} label="Password" id="register-password">
+        <Input
+          type="password"
+          placeholder="Password"
+          value={registerPassword}
+          onChange={(e) => handleRegisterPasswordOnChange(e)}
+          error={regiserErrorFields.password}
+          id="register-password"
+        />
+      </FormFieldWrapper>
       <Button textValue={isLoading ? <Loader /> : "Sign Up"} className="formButtonStyle" disabled={isLoading} />
 
       {generalError && <ErrorMessage message={generalError} />}
