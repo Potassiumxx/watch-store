@@ -26,6 +26,5 @@ export type APIErrorReturnType<T> = T & {
 export interface BaseFormFieldProps {
   id: string;
   error: string | undefined;
-  // label: string;
   useVerticalLabelErrorStyle?: boolean;
 }

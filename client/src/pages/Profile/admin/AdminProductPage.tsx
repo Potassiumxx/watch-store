@@ -17,6 +17,7 @@ import {
 import { addProduct } from "../../../services/api/productAPI";
 import { ErrorMessage } from "../../../components/ui/Error/ErrorMessage";
 import FormFieldWrapper from "../../../components/ui/FormFieldWrapper/FormFieldWrapper";
+import Textarea from "../../../components/ui/Textarea/Textarea";
 
 export default function AdminProductPage() {
   const [fileName, setFileName] = React.useState<string | null>(null);
@@ -95,7 +96,7 @@ export default function AdminProductPage() {
     if (response) console.log("done");
   }
 
-  function handleProductFieldOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleProductFieldOnChange(event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) {
     const { value, name } = event.target;
 
     const productSetters: Record<keyof ProductFormStringFields, (value: string) => void> = {
@@ -180,7 +181,7 @@ export default function AdminProductPage() {
             useVerticalLabelErrorStyle={true}
             error={productStringErrorFields.productDescription}
             positionRow={true}>
-            <Input
+            <Textarea
               id="product-description"
               name="productDescription"
               placeholder="Description of the product"

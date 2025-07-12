@@ -43,23 +43,13 @@ export default function Input({ id, error, parentClassName, inputClassName, file
     setIsPasswordVisible(!isPasswordVisible);
   }
 
-  const baseInputClass: string = `bg-black/[0.5] w-full text-white p-2 border-2 border-white/[0.5] rounded-border duration-200 disabled:cursor-not-allowed focus:border-[#1bddf3]/[0.7] focus:outline-none focus:ring-0`;
-
   return (
     <div className={parentClassName ?? `relative flex flex-col gap-2`}>
       {isInputTypeFile && <FileNameContainer fileName={fileName} />}
-      {/* <Label
-        id={id}
-        isInputTypeFile={isInputTypeFile}
-        labelClassName={labelClassName}
-        error={error}
-        label={label}
-        useVerticalLabelErrorStyle={useVerticalLabelErrorStyle}
-      /> */}
       <div className="w-full">
         <input
-          className={`${isInputTypeFile ? "hidden" : baseInputClass} ${inputClassName ?? null} ${
-            error ? "border-2 border-red-800 focus:border-red-600" : null
+          className={`${isInputTypeFile ? "hidden" : "formElementDefaultStyling"} ${inputClassName ?? null} ${
+            error ? "formElementErrorStyling" : null
           }`}
           id={id}
           autoComplete="off"
@@ -67,11 +57,6 @@ export default function Input({ id, error, parentClassName, inputClassName, file
           type={inputType}
           {...restAttributes}
         />
-        {/* {useVerticalLabelErrorStyle && error && (
-          <div className="flex flex-col ml-2 h-0">
-            <span>{error && <ErrorMessage message={error} isInputFieldError={false} className="normal-case" />}</span>
-          </div>
-        )} */}
       </div>
       {isPasswordField && (
         <button

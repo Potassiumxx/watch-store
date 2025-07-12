@@ -43,6 +43,13 @@ function customClassName({ addComponents }) {
     ".innerDivBackgroundColour": {
       "@apply bg-black/[.95]": {},
     },
+    ".formElementDefaultStyling": {
+      "@apply bg-black/[0.5] w-full text-white p-2 border-2 border-white/[0.5] duration-200 disabled:cursor-not-allowed focus:border-[#1bddf3]/[0.7] focus:outline-none focus:ring-0":
+        {},
+    },
+    ".formElementErrorStyling": {
+      "@apply border-2 border-red-800 focus:border-red-600": {},
+    },
   };
   addComponents(newComponents);
 }
