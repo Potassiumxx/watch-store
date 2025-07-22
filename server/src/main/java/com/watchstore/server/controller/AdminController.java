@@ -18,56 +18,22 @@ import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Product;
 import com.watchstore.server.repository.InventoryRepository;
 import com.watchstore.server.repository.ProductRepository;
+import com.watchstore.server.service.ProductService;
+import com.watchstore.server.util.FileStorageUtil;
 
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
-  @Autowired
-  private ProductRepository productRepository;
-  @Autowired
-  private InventoryRepository inventoryRepository;
-
-  private String generateRandomFileName(String originalFileName) {
-    int dotIndex = originalFileName.lastIndexOf(".");
-    String fileExtension = originalFileName.substring(dotIndex);
-    return UUID.randomUUID().toString() + fileExtension;
-  }
+  private ProductService productService;
 
   @PostMapping("/add-product")
   public ResponseEntity<Object> addProduct(@ModelAttribute ProductRequest productRequest) {
-    MultipartFile file = productRequest.getProductImage();
-    String fileName = file.getOriginalFilename();
-    String uploadDirectory = "/home/asus/Pictures";
-    String randomeFileName = generateRandomFileName(fileName);
-
-    File destination = new File(uploadDirectory, randomeFileName);
-
     try {
-      file.transferTo(destination);
-      System.out.println("Saved file to " + destination.getAbsolutePath());
-    } catch (IllegalStateException | IOException e) {
+      productService.createProductWithInventory(productRequest);
+      return new ResponseEntity<>("Finished", HttpStatus.CREATED);
+    } catch (Exception e) {
       e.printStackTrace();
-      return new ResponseEntity<>("Image upload file", HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>("Something went wrong. Please try again later", HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    Product product = new Product();
-    product.setName(productRequest.getProductName());
-    product.setPrice(productRequest.getProductPrice());
-    product.setCategory(productRequest.getProductCategory());
-    product.setDescription(productRequest.getProductDescription());
-    product.setImage(randomeFileName);
-
-    productRepository.save(product);
-
-    Inventory inventory = new Inventory();
-    inventory.setQuantity(productRequest.getProductQuantity());
-    inventory.setProduct(product);
-
-    inventoryRepository.save(inventory);
-
-    // System.out.println("Product Quantity: " +
-    // productRequest.getProductQuantity());
-
-    return new ResponseEntity<>("Finished", HttpStatus.CREATED);
   }
 }
