@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LoginAndRegisterResponse } from "../../types/form";
+import { LoginAndRegisterResponse } from "../../types/authType";
 import { BACKEND_API_URL } from "../../utils/constants";
 
 interface loginCredentials {
