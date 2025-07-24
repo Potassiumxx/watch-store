@@ -25,3 +25,12 @@ export async function addProduct(productData: ProductFormFields): Promise<Produc
     }
   }
 }
+
+export async function getAllProducts() {
+  try {
+    const response = await axios.get(`${BACKEND_API_URL}/products`);
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+}

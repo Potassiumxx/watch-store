@@ -1,4 +1,12 @@
+import * as React from "react";
+import { getAllProducts } from "../../services/api/productAPI";
+
 export default function Products() {
+
+  React.useEffect(() => {
+    getAllProducts()
+  }, [])
+
   return (
     <div className={`text-white`}>
       <h1 className="text-center">Products</h1>

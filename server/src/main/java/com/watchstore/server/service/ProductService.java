@@ -1,11 +1,14 @@
 package com.watchstore.server.service;
 
+import java.util.List;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.watchstore.server.dto.product.ProductDTO;
 import com.watchstore.server.dto.product.ProductRequest;
 import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Product;
@@ -45,5 +48,14 @@ public class ProductService {
 
     productRepository.save(product);
     inventoryRepository.save(inventory);
+  }
+
+  public List<ProductDTO> getAllProducts() {
+    List<Product> products = productRepository.findAll();
+
+    return products.stream().map(product -> {
+      Inventory inventory = inventoryRepository.findByProduct(product);
+      return new ProductDTO(product, inventory);
+    }).collect(Collectors.toList());
   }
 }
