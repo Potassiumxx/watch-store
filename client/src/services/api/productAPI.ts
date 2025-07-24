@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BACKEND_API_URL } from "../../utils/constants";
-import { ProductFormFields, ProductFormResponse } from "../../types/productType";
+import { ProductDTO, ProductFormFields, ProductFormResponse } from "../../types/productType";
 
 export async function addProduct(productData: ProductFormFields): Promise<ProductFormResponse> {
   const formData = new FormData();
@@ -26,11 +26,13 @@ export async function addProduct(productData: ProductFormFields): Promise<Produc
   }
 }
 
-export async function getAllProducts() {
+export async function getAllProducts(): Promise<ProductDTO[]> {
   try {
     const response = await axios.get(`${BACKEND_API_URL}/products`);
     console.log(response);
+    return response.data;
   } catch (error) {
     console.log(error);
+    return [];
   }
 }

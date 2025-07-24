@@ -33,3 +33,13 @@ export type ProductFormFields = ProductFormStringFields & ProductFormFileField;
 export interface ProductFormResponse {
   message: string;
 }
+
+export interface ProductDTO {
+  id: number;
+  name: string;
+  category: string;
+  price: number;
+  description: string;
+  quantity: number;
+  imageURL: string;
+}
