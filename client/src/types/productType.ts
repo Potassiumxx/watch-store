@@ -41,5 +41,5 @@ export interface ProductDTO {
   price: number;
   description: string;
   quantity: number;
-  imageURL: string;
+  imagePath: string;
 }
