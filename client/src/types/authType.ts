@@ -14,6 +14,7 @@ export interface DecodedJWT {
   sub: string;
   email: string;
   username: string;
+  role: string;
 }
 
 export interface LoginAndRegisterResponse {

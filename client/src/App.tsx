@@ -16,6 +16,7 @@ function App() {
 
   const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
   const setGlobalEmail = useUserStore((state) => state.setGlobalEmail);
+  const setRole = useUserStore((state) => state.setRole);
 
   const navbarHeight = useUIStore((state) => state.navbarHeight);
 
@@ -34,6 +35,7 @@ function App() {
       userSignedIn();
       setGlobalUsername(decodedToken.username);
       setGlobalEmail(decodedToken.email);
+      setRole(decodedToken.role);
     }
 
     setIsJWTChecked(true);

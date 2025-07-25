@@ -2,9 +2,13 @@ import * as React from "react";
 import { getAllProducts } from "../../services/api/productAPI";
 import { ProductDTO } from "../../types/productType";
 import { Link } from "react-router-dom";
+import Button from "../../components/ui/Button/Button";
+import { useUserStore } from "../../store/userStore";
+import { ROLES } from "../../utils/constants";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
+  const role = useUserStore((state) => state.role);
 
   React.useEffect(() => {
     async function fetchProducts() {
@@ -24,12 +28,20 @@ export default function Products() {
           {
             products.length > 0 ? products.map((product, index) => (
               <Link to={""}
-                className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md duration-200 ease-in-out transition-transform hover:-translate-y-2`}
+                className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}
                 key={product.id}
               >
-                <div className="flex flex-col gap-1 pt-4 px-4">
-                  <h1 className="font-black text-3xl">{product.name}</h1>
-                  <h1 className="font-semibold text-sm tracking-wide text-[#c7c7c7]">{product.category}</h1>
+                <div className="flex justify-between pt-4 px-4 items-center">
+                  <div className="flex flex-col gap-1">
+                    <h1 className="font-black text-3xl">{product.name}</h1>
+                    <h1 className="font-semibold text-sm tracking-wide text-[#c7c7c7]">{product.category}</h1>
+                  </div>
+                  {role === ROLES.ADMIN &&
+                    <div className="flex gap-5">
+                      <Button textValue="Edit" className="defaultButtonStyle h-[35px] w-[60px] items-center" />
+                      <Button textValue="Delete" className="defaultButtonStyle h-[35px] w-[70px] items-center bg-red-600 hover:bg-red-800 hover:text-white" />
+                    </div>
+                  }
                 </div>
 
                 <img

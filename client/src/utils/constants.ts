@@ -8,3 +8,8 @@ export const ACTION_TYPES = {
   SET_ALL_DIRTY: "SET_ALL_DIRTY",
   RESET_ALL: "RESET_ALL",
 } as const;
+
+export const ROLES = {
+  ADMIN: "ADMIN",
+  USER: "USER",
+};
