@@ -19,6 +19,7 @@ public class JWTUtil {
         .setSubject(userDTO.getId().toString())
         .claim("username", userDTO.getUsername())
         .claim("email", userDTO.getEmail())
+        .claim("role", userDTO.getRole())
         .signWith(key, SignatureAlgorithm.HS256)
         .compact();
   }

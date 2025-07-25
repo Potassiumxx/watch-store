@@ -21,7 +21,7 @@ public class AuthService {
 
     if (userOptional.isPresent() && userOptional.get().getPassword().equals(loginRequest.getPassword())) {
       User user = userOptional.get();
-      return (new UserDTO(user.getId(), user.getEmail(), user.getUsername()));
+      return (new UserDTO(user.getId(), user.getEmail(), user.getUsername(), user.getRole()));
     }
 
     throw new Exception("Invalid email or password");
@@ -33,10 +33,10 @@ public class AuthService {
     }
 
     User user = new User(registerRequest.getEmail(), registerRequest.getPassword(), registerRequest.getUsername(),
-        false);
+        "USER");
 
     userRepository.save(user);
 
-    return new UserDTO(user.getId(), user.getEmail(), user.getUsername());
+    return new UserDTO(user.getId(), user.getEmail(), user.getUsername(), user.getRole());
   }
 }

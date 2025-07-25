@@ -26,8 +26,9 @@ public class StartupService {
     }
 
     userRepository.findByEmail(adminEmail).ifPresentOrElse(user -> {
-      if (!user.getIsAdmin()) {
-        user.setIsAdmin(true);
+      if (!user.getRole().equals("ADMIN")) {
+        user.setRole("ADMIN");
+        ;
         userRepository.save(user);
         System.out.println("Promoted user " + adminEmail + " to admin.");
       } else {
