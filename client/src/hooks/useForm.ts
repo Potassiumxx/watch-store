@@ -7,6 +7,8 @@ import { LoginAndRegisterResponse } from "../types/authType";
 import { useAuthStore } from "../store/authStore";
 import { useUIStore } from "../store/uiStore";
 import { useUserStore } from "../store/userStore";
+import { useProductStore } from "../store/productStore";
+import { ProductFileFormValidationReturnType, ProductFormFileField } from "../types/productType";
 
 interface HandleFormSubmitParameter<V, R> {
   apiCall: () => Promise<R>;
@@ -22,6 +24,15 @@ interface handleFieldOnChangeParamter<InputFieldType> {
   setFieldErrorFunction: (inputField: keyof InputFieldType, errorMessage: string) => void;
   clearErrorsFunction: () => void;
   dirtyField: { [K in keyof InputFieldType]: boolean };
+}
+
+interface HandleFileUploadParameter {
+  e: React.ChangeEvent<HTMLInputElement>;
+  validateFileFieldFunc: (
+    file: File | undefined,
+    field: keyof ProductFormFileField
+  ) => Partial<ProductFileFormValidationReturnType>;
+  setProductFormFileErrorFunc: (field: keyof ProductFormFileField, errorMessage: string) => void;
 }
 
 /**
@@ -42,6 +53,8 @@ export default function useForm<T extends { [key: string]: boolean }>(initialSta
   const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
   const setGlobalEmail = useUserStore((state) => state.setGlobalEmail);
 
+  const setProductFileName = useProductStore((state) => state.setProductFileName);
+  const setProductImage = useProductStore((state) => state.setProductImage);
   // Used 'V' instead of 'T' for generic type from now on so that it doesn't get confusing since there's a 'T' in parent too
 
   /**
@@ -167,6 +180,20 @@ export default function useForm<T extends { [key: string]: boolean }>(initialSta
     }
   }
 
+  function handleFileUpload({ e, validateFileFieldFunc, setProductFormFileErrorFunc }: HandleFileUploadParameter) {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      setProductFileName(file.name);
+      setProductImage(file);
+    }
+
+    const fileError = validateFileFieldFunc(file, "productImage");
+    setProductFormFileErrorFunc("productImage", fileError.productImage!);
+
+    if (isValidationError<Partial<ProductFileFormValidationReturnType>>(fileError, setProductFormFileErrorFunc)) return;
+  }
+
   return {
     generalError,
     setGeneralError,
@@ -177,5 +204,6 @@ export default function useForm<T extends { [key: string]: boolean }>(initialSta
     handleFormSubmit,
     handleFieldOnChange,
     handleSuccessfulResponse,
+    handleFileUpload,
   };
 }

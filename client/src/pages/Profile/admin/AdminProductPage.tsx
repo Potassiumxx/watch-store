@@ -15,8 +15,6 @@ import { addProduct } from "../../../services/api/productAPI";
 import ProductForm from "../../../components/ui/ProductForms/ProductForm";
 
 export default function AdminProductPage() {
-  const [fileName, setFileName] = React.useState<string | null>(null);
-
   const initialDirtyFieldState: DirtyFieldState<ProductFormFields> = {
     productName: false,
     productPrice: false,
@@ -26,7 +24,7 @@ export default function AdminProductPage() {
     productImage: false,
   };
 
-  const { isValidationError, handleFieldOnChange, dirtyField, handleFormSubmit, generalError } =
+  const { isValidationError, handleFieldOnChange, handleFileUpload, dirtyField, handleFormSubmit, generalError } =
     useForm<DirtyFieldState<ProductFormFields>>(initialDirtyFieldState);
 
   const {
@@ -43,25 +41,12 @@ export default function AdminProductPage() {
     setProductCategory,
     setProductDescription,
     setProductQuantity,
-    setProductImage,
     setProductStringFormError,
     setProductFileFormError,
     clearProductStringFormError,
+    clearProductFileFormError
   } = useProductStore();
 
-  function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-
-    if (file) {
-      setFileName(file.name);
-      setProductImage(file);
-    }
-
-    const fileError = validateFileField(file, "productImage");
-    setProductFileFormError("productImage", fileError.productImage!);
-
-    if (isValidationError<Partial<ProductFileFormValidationReturnType>>(fileError, setProductFileFormError)) return;
-  }
 
   async function handleAddProductSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -118,7 +103,13 @@ export default function AdminProductPage() {
       clearErrorsFunction: clearProductStringFormError,
       dirtyField: dirtyField,
     });
+
   }
+
+  React.useEffect(() => {
+    clearProductStringFormError();
+    clearProductFileFormError();
+  }, [])
 
   return (
     <ProfileContentContainer title="Add Product">
@@ -126,9 +117,12 @@ export default function AdminProductPage() {
         <ProductForm
           onSubmit={handleAddProductSubmit}
           onChange={(e) => handleProductFieldOnChange(e)}
-          onFileChange={handleFileUpload}
+          onFileChange={(e) => handleFileUpload({
+            e,
+            validateFileFieldFunc: validateFileField,
+            setProductFormFileErrorFunc: setProductFileFormError
+          })}
           values={{ productName, productPrice, productCategory, productDescription, productQuantity }}
-          fileName={fileName}
           stringFieldError={productStringErrorFields}
           fileFieldError={productFileErrorFields}
           generalError={generalError}

@@ -3,12 +3,12 @@ import { useUIStore } from "../../../store/uiStore";
 import { VscEye } from "react-icons/vsc";
 import { VscEyeClosed } from "react-icons/vsc";
 import { BaseFormFieldProps } from "../../../types/form";
+import { useProductStore } from "../../../store/productStore";
 
 interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "id">, BaseFormFieldProps {
   parentClassName?: string;
   labelClassName?: string;
   inputClassName?: string;
-  fileName?: string | null;
 }
 
 interface FileNameContainerProps {
@@ -30,8 +30,10 @@ interface FileNameContainerProps {
  * `true` value will use vertical styling.
  * @ Other **input** field attributes can be provided as well if needed. Currently, attributes for label field is not available.
  */
-export default function Input({ id, error, parentClassName, inputClassName, fileName, ...attributes }: InputProps) {
+export default function Input({ id, error, parentClassName, inputClassName, ...attributes }: InputProps) {
   const isLoading = useUIStore((state) => state.isLoading);
+  const productFileName = useProductStore((state) => state.productFileName);
+
   const { type, ...restAttributes } = { ...attributes };
   const isPasswordField: boolean = type === "password";
   const [isPasswordVisible, setIsPasswordVisible] = React.useState<boolean>(false);
@@ -45,12 +47,11 @@ export default function Input({ id, error, parentClassName, inputClassName, file
 
   return (
     <div className={parentClassName ?? `relative flex flex-col gap-2`}>
-      {isInputTypeFile && <FileNameContainer fileName={fileName} />}
+      {isInputTypeFile && <FileNameContainer fileName={productFileName} />}
       <div className="w-full">
         <input
-          className={`${isInputTypeFile ? "hidden" : "formElementDefaultStyling"} ${inputClassName ?? null} ${
-            error ? "formElementErrorStyling" : null
-          }`}
+          className={`${isInputTypeFile ? "hidden" : "formElementDefaultStyling"} ${inputClassName ?? null} ${error ? "formElementErrorStyling" : null
+            }`}
           id={id}
           autoComplete="off"
           disabled={isLoading}

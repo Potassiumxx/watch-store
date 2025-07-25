@@ -8,6 +8,7 @@ import {
 
 interface ProductStore extends ProductFormStringFields, ProductFormFileField {
   productStringErrorFields: Partial<ProductStringFormValidationReturnType>;
+  productFileName: string;
   productFileErrorFields: { productImage?: string };
 
   setProductName: (name: string) => void;
@@ -19,8 +20,10 @@ interface ProductStore extends ProductFormStringFields, ProductFormFileField {
 
   setProductStringFormError: (inputField: keyof ProductStringFormValidationReturnType, message: string) => void;
   setProductFileFormError: (inputField: keyof ProductFileFormValidationReturnType, message: string) => void;
+  setProductFileName: (fileName: string) => void;
 
   clearProductStringFormError: () => void;
+  clearProductFileFormError: () => void;
 }
 
 export const useProductStore = create<ProductStore>((set) => ({
@@ -30,6 +33,7 @@ export const useProductStore = create<ProductStore>((set) => ({
   productDescription: "",
   productQuantity: "",
   productImage: null,
+  productFileName: "",
 
   productStringErrorFields: {},
   productFileErrorFields: {},
@@ -52,5 +56,8 @@ export const useProductStore = create<ProductStore>((set) => ({
     }));
   },
 
+  setProductFileName: (fileName) => set({ productFileName: fileName }),
+
   clearProductStringFormError: () => set({ productStringErrorFields: {} }),
+  clearProductFileFormError: () => set({ productFileErrorFields: {} }),
 }));

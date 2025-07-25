@@ -14,7 +14,6 @@ interface ProductFormProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void;
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   generalError?: string | null;
-  fileName: string | null;
   buttonTextValue?: string
 }
 
@@ -23,7 +22,6 @@ export default function ProductForm({
   onChange,
   onFileChange,
   values,
-  fileName,
   stringFieldError,
   fileFieldError,
   generalError,
@@ -122,7 +120,6 @@ export default function ProductForm({
           name="productImage"
           placeholder="Upload product image"
           type="file"
-          fileName={fileName}
           onChange={onFileChange}
           error={fileFieldError.productImage}
         />
