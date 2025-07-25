@@ -5,9 +5,13 @@ import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button/Button";
 import { useUserStore } from "../../store/userStore";
 import { ROLES } from "../../utils/constants";
+import UpdateProductForm from "../../components/ui/ProductForms/UpdateProductForm";
+import { IoCloseOutline } from "react-icons/io5";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
+  const [showUpdateForm, setShowUpdateForm] = React.useState<boolean>(false);
+
   const role = useUserStore((state) => state.role);
 
   React.useEffect(() => {
@@ -38,7 +42,9 @@ export default function Products() {
                   </div>
                   {role === ROLES.ADMIN &&
                     <div className="flex gap-5">
-                      <Button textValue="Edit" className="defaultButtonStyle h-[35px] w-[60px] items-center" />
+                      <Button textValue="Edit"
+                        className="defaultButtonStyle h-[35px] w-[60px] items-center"
+                        onClick={() => setShowUpdateForm(true)} />
                       <Button textValue="Delete" className="defaultButtonStyle h-[35px] w-[70px] items-center bg-red-600 hover:bg-red-800 hover:text-white" />
                     </div>
                   }
@@ -62,6 +68,19 @@ export default function Products() {
               : <h1 className="text-white text-[32px]">No Products</h1>}
         </div>
       </div>
+      {
+        showUpdateForm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center outerDivBackgroundColour">
+            <div className="relative innerDivBackgroundColour rounded-md shadow-lg shadow-gray-800">
+              <div className="flex py-4 px-6 items-center border-b-[1px] border-white">
+                <h2 className="w-full text-white justify-self-center text-3xl font-semibold text-center">Update Product</h2>
+                <button className="absolute right-6 text-red-600 z-50 hover:text-red-400 duration-200" onClick={() => setShowUpdateForm(false)}>{<IoCloseOutline size={45} />}</button>
+              </div>
+              <UpdateProductForm />
+            </div>
+          </div>
+        )
+      }
     </div>
   );
 }
