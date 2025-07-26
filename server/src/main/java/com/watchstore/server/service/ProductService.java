@@ -52,34 +52,36 @@ public class ProductService {
     inventoryRepository.save(inventory);
   }
 
-  public void updateProduct(Long id, ProductRequest request) throws IOException {
+  public void updateProduct(Long id, ProductRequest productRequest) throws IOException {
     Product existingProduct = productRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Product not found"));
 
-    MultipartFile file = request.getProductImage();
+    MultipartFile file = productRequest.getProductImage();
     String randomFileName;
 
     try {
       if (file != null && !file.isEmpty()) {
         FileStorageUtil.deleteFile(existingProduct.getImage(), uploadDirectory);
+        randomFileName = FileStorageUtil.saveFile(file, uploadDirectory);
+        existingProduct.setImage(randomFileName);
       }
-
-      randomFileName = FileStorageUtil.saveFile(file, uploadDirectory);
     } catch (IllegalStateException | IOException e) {
       e.printStackTrace();
       throw new IOException(e.getMessage());
     }
 
-    existingProduct.setName(request.getProductName());
-    existingProduct.setCategory(request.getProductCategory());
-    existingProduct.setDescription(request.getProductDescription());
-    existingProduct.setPrice(request.getProductPrice());
-    existingProduct.setImage(randomFileName);
+    existingProduct.setName(productRequest.getProductName());
+    existingProduct.setCategory(productRequest.getProductCategory());
+    existingProduct.setDescription(productRequest.getProductDescription());
+    existingProduct.setPrice(productRequest.getProductPrice());
 
     Inventory inventory = inventoryRepository.findByProduct(existingProduct)
         .orElseThrow(() -> new RuntimeException("Inventory not found"));
 
-    inventory.setQuantity(request.getProductQuantity());
+    inventory.setQuantity(productRequest.getProductQuantity());
+
+    productRepository.save(existingProduct);
+    inventoryRepository.save(inventory);
   }
 
   public List<ProductDTO> getAllProducts() {

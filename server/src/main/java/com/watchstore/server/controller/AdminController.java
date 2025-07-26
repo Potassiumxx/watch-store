@@ -40,8 +40,12 @@ public class AdminController {
       System.out.println("New image uploaded: " + productRequest.getProductImage().getOriginalFilename());
     }
 
-    System.out.println(productRequest.getProductName());
-    return new ResponseEntity<>("Update? from backend", HttpStatus.OK);
-
+    try {
+      productService.updateProduct(productID, productRequest);
+      return new ResponseEntity<>("Updated!", HttpStatus.OK);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResponseEntity<>("Could not update product", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
