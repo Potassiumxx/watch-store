@@ -45,10 +45,12 @@ export interface ProductDTO {
 }
 
 export interface ProductStore extends ProductFormStringFields, ProductFormFileField {
+  productID: string;
   productStringErrorFields: Partial<ProductStringFormValidationReturnType>;
   productFileName: string;
   productFileErrorFields: { productImage?: string };
 
+  setProductID: (id: string) => void;
   setProductName: (name: string) => void;
   setProductPrice: (price: string) => void;
   setProductCategory: (category: string) => void;

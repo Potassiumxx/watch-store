@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { ProductStore } from "../../types/productType";
 
 export const useUpdateProductStore = create<ProductStore>((set) => ({
+  productID: "",
   productName: "",
   productPrice: "",
   productCategory: "",
@@ -13,6 +14,7 @@ export const useUpdateProductStore = create<ProductStore>((set) => ({
   productStringErrorFields: {},
   productFileErrorFields: {},
 
+  setProductID: (id) => set({ productID: id }),
   setProductName: (name) => set({ productName: name }),
   setProductPrice: (price) => set({ productPrice: price }),
   setProductCategory: (category) => set({ productCategory: category }),

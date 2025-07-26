@@ -1,18 +1,19 @@
 import * as React from "react";
 import useForm from "../../../hooks/useForm";
-import { ProductDTO, ProductFormStringFields } from "../../../types/productType";
+import { ProductDTO, ProductFormResponse, ProductFormStringFields, ProductStringFormValidationReturnType } from "../../../types/productType";
 import { initialProductDirtyFieldState, validateProductFormStringFields, validateFileField } from "../../../utils/validateProductForm";
 import ProductForm from "./ProductForm";
 import useProductForm from "../../../hooks/useProductForm";
 import { useUpdateProductStore } from "../../../store/productStore/useUpdateProductStore";
 import { useProductStore } from "../../../store/productStore";
+import { updateProduct } from "../../../services/api/productAPI";
 
 interface UpdateProductFormProps {
   selectedProduct: ProductDTO;
 }
 
 export default function UpdateProductForm({ selectedProduct }: UpdateProductFormProps) {
-  const { dirtyField, handleFieldOnChange, generalError, isValidationError } = useForm(initialProductDirtyFieldState);
+  const { dirtyField, handleFieldOnChange, generalError, isValidationError, handleFormSubmit } = useForm(initialProductDirtyFieldState);
   const { handleFileUpload, validateProductFormFields, handleProductFieldOnChange } = useProductForm({
     setProductName: useUpdateProductStore.getState().setProductName,
     setProductPrice: useUpdateProductStore.getState().setProductPrice,
@@ -24,6 +25,7 @@ export default function UpdateProductForm({ selectedProduct }: UpdateProductForm
   });
 
   const {
+    productID,
     productName,
     productPrice,
     productCategory,
@@ -32,6 +34,7 @@ export default function UpdateProductForm({ selectedProduct }: UpdateProductForm
     productImage,
     productStringErrorFields,
     productFileErrorFields,
+    setProductID,
     setProductName,
     setProductPrice,
     setProductCategory,
@@ -67,10 +70,18 @@ export default function UpdateProductForm({ selectedProduct }: UpdateProductForm
       isValidationError: isValidationError
     })) return;
 
+    const response = await handleFormSubmit<ProductStringFormValidationReturnType, ProductFormResponse>({
+      apiCall: () => updateProduct(productID, { productName, productPrice, productCategory, productDescription, productQuantity, productImage }),
+      setError: setProductStringFormError
+    });
+
+    if (response) console.log("done");
+
     console.log(selectedProduct);
   }
 
   React.useEffect(() => {
+    setProductID(selectedProduct.id.toString());
     setProductName(selectedProduct.name);
     setProductPrice(selectedProduct.price.toString());
     setProductCategory(selectedProduct.category);
