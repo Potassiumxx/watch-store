@@ -44,6 +44,8 @@ export default function AdminProductPage() {
     clearProductFileFormError
   } = useAddProductStore();
 
+  const fileName = useProductStore((state) => state.productFileName);
+
   async function handleAddProductSubmit(e: React.FormEvent) {
     e.preventDefault();
 
@@ -55,7 +57,10 @@ export default function AdminProductPage() {
         productDescription,
         productQuantity
       },
-      fileField: productImage,
+      fileProperties: {
+        file: productImage,
+        fileName
+      },
       setStringError: setProductStringFormError,
       setFileError: setProductFileFormError,
       isValidationError: isValidationError

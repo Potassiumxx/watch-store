@@ -32,7 +32,7 @@ interface FileNameContainerProps {
  */
 export default function Input({ id, error, parentClassName, inputClassName, ...attributes }: InputProps) {
   const isLoading = useUIStore((state) => state.isLoading);
-  const productFileName = useProductStore((state) => state.productFileName);
+  const productFileName = useProductStore.getState().productFileName;
 
   const { type, ...restAttributes } = { ...attributes };
   const isPasswordField: boolean = type === "password";

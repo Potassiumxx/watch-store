@@ -7,6 +7,7 @@ import { useUserStore } from "../../store/userStore";
 import { ROLES } from "../../utils/constants";
 import UpdateProductForm from "../../components/ui/ProductForms/UpdateProductForm";
 import { IoCloseOutline } from "react-icons/io5";
+import { useProductStore } from "../../store/productStore";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
@@ -22,6 +23,16 @@ export default function Products() {
   });
 
   const role = useUserStore((state) => state.role);
+
+  const setProductFileName = useProductStore((state) => state.setProductFileName);
+
+  function handleFormClose() {
+    setShowUpdateForm(false);
+
+    // Reset the file name on close so that it does not get carried to the add product page.
+    // Add product page sould initially be empty. More information about this will be provided in the future.
+    setProductFileName("");
+  }
 
   React.useEffect(() => {
     async function fetchProducts() {
@@ -86,7 +97,7 @@ export default function Products() {
             <div className="relative innerDivBackgroundColour rounded-md shadow-lg shadow-gray-800">
               <div className="flex py-4 px-6 items-center border-b-[1px] border-white">
                 <h2 className="w-full text-white justify-self-center text-3xl font-semibold text-center">Update Product</h2>
-                <button className="absolute right-6 text-red-600 z-50 hover:text-red-400 duration-200" onClick={() => setShowUpdateForm(false)}>{<IoCloseOutline size={45} />}</button>
+                <button className="absolute right-6 text-red-600 z-50 hover:text-red-400 duration-200" onClick={handleFormClose}>{<IoCloseOutline size={45} />}</button>
               </div>
               <UpdateProductForm selectedProduct={selectedProduct} />
             </div>

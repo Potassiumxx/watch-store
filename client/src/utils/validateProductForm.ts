@@ -4,6 +4,7 @@ import {
   ProductStringFormValidationReturnType,
   ProductFileFormValidationReturnType,
   ProductFormFields,
+  ProductFormFileField,
 } from "../types/productType";
 
 import { isEmpty } from "./helpers";
@@ -16,6 +17,12 @@ export const initialProductDirtyFieldState: DirtyFieldState<ProductFormFields> =
   productQuantity: false,
   productImage: false,
 };
+
+interface ValidateFileFieldProps {
+  file: File | null | undefined;
+  fileName: string;
+  fieldName: keyof ProductFormFileField;
+}
 
 /**
  * Only validate string form fields which means it only takes these arguments:
@@ -72,10 +79,11 @@ export function validateProductFormStringFields({
  * @returns Object with error message for file field only.
  */
 
-export function validateFileField(
-  file: File | null | undefined,
-  fieldName: string
-): Partial<ProductFileFormValidationReturnType> {
-  if (!file) return { [fieldName]: "Image must be uploaded" };
+export function validateFileField({
+  file,
+  fileName,
+  fieldName,
+}: ValidateFileFieldProps): Partial<ProductFileFormValidationReturnType> {
+  if (!file && !fileName) return { [fieldName]: "Image must be uploaded" };
   return {};
 }

@@ -5,6 +5,7 @@ import { initialProductDirtyFieldState, validateProductFormStringFields, validat
 import ProductForm from "./ProductForm";
 import useProductForm from "../../../hooks/useProductForm";
 import { useUpdateProductStore } from "../../../store/productStore/useUpdateProductStore";
+import { useProductStore } from "../../../store/productStore";
 
 interface UpdateProductFormProps {
   selectedProduct: ProductDTO;
@@ -43,6 +44,8 @@ export default function UpdateProductForm({ selectedProduct }: UpdateProductForm
     clearProductFileFormError
   } = useUpdateProductStore();
 
+  const setProductFileName = useProductStore((state) => state.setProductFileName);
+  const fileName = useProductStore((state) => state.productFileName);
 
   async function handleUpdateProductSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -55,7 +58,10 @@ export default function UpdateProductForm({ selectedProduct }: UpdateProductForm
         productDescription,
         productQuantity
       },
-      fileField: productImage,
+      fileProperties: {
+        file: productImage,
+        fileName
+      },
       setStringError: setProductStringFormError,
       setFileError: setProductFileFormError,
       isValidationError: isValidationError
@@ -70,7 +76,8 @@ export default function UpdateProductForm({ selectedProduct }: UpdateProductForm
     setProductCategory(selectedProduct.category);
     setProductDescription(selectedProduct.description);
     setProductQuantity(selectedProduct.quantity.toString());
-    //setProductImage(selectedProduct.imagePath);   // Use image name as a placeholder to validate for now instead of actual image
+
+    setProductFileName(selectedProduct.imagePath);
 
     clearProductStringFormError();
     clearProductFileFormError();

@@ -1,3 +1,4 @@
+import { useProductStore } from "../store/productStore";
 import { DirtyFieldState, HandleFieldOnChangeParamter } from "../types/form";
 import {
   ProductFileFormValidationReturnType,
@@ -8,9 +9,18 @@ import {
 import { validateFileField, validateProductFormStringFields } from "../utils/validateProductForm";
 import { IsValidationErrorType } from "./useForm";
 
+interface FileProperties {
+  file: File | null | undefined;
+  fileName: string;
+}
+
+interface ValidateFileFieldProps extends FileProperties {
+  fieldName: keyof ProductFormFileField;
+}
+
 interface ValidateProductFormFieldsProps {
   stringFields: ProductFormStringFields;
-  fileField: File | null;
+  fileProperties: FileProperties;
   setStringError: (field: keyof ProductStringFormValidationReturnType, error: string) => void;
   setFileError: (field: keyof ProductFileFormValidationReturnType, error: string) => void;
   isValidationError: IsValidationErrorType;
@@ -28,10 +38,7 @@ interface HandleProductFieldOnChangeProps<T> {
 
 interface HandleFileUploadParameter {
   e: React.ChangeEvent<HTMLInputElement>;
-  validateFileFieldFunc: (
-    file: File | undefined,
-    field: keyof ProductFormFileField
-  ) => Partial<ProductFileFormValidationReturnType>;
+  validateFileFieldFunc: (params: ValidateFileFieldProps) => Partial<ProductFileFormValidationReturnType>;
   setProductFormFileErrorFunc: (field: keyof ProductFormFileField, errorMessage: string) => void;
   isValidationError: IsValidationErrorType;
 }
@@ -47,7 +54,7 @@ interface StoreSettersType {
 }
 
 export default function useProductForm(storeSetters: StoreSettersType) {
-  //  const setProductFileName = useProductStore((state) => state.setProductFileName);
+  const setProductFileName = useProductStore((state) => state.setProductFileName);
   //  const setProductImage = useProductStore((state) => state.setProductImage);
 
   const {
@@ -56,19 +63,23 @@ export default function useProductForm(storeSetters: StoreSettersType) {
     // setProductCategory,
     // setProductDescription,
     // setProductQuantity,
-    setProductFileName,
+    // setProductFileName,
     setProductImage,
   } = storeSetters;
 
   function validateProductFormFields({
     stringFields,
-    fileField,
+    fileProperties,
     setStringError,
     setFileError,
     isValidationError,
   }: ValidateProductFormFieldsProps) {
     const stringError = validateProductFormStringFields(stringFields);
-    const fileError = validateFileField(fileField, "productImage");
+    const fileError = validateFileField({
+      file: fileProperties.file,
+      fileName: fileProperties.fileName,
+      fieldName: "productImage",
+    });
 
     setFileError("productImage", fileError.productImage!);
 
@@ -122,7 +133,11 @@ export default function useProductForm(storeSetters: StoreSettersType) {
       setProductImage(file);
     }
 
-    const fileError = validateFileFieldFunc(file, "productImage");
+    const fileError = validateFileFieldFunc({
+      file,
+      fileName: file?.name ?? "",
+      fieldName: "productImage",
+    });
     setProductFormFileErrorFunc("productImage", fileError.productImage!);
 
     if (isValidationError<Partial<ProductFileFormValidationReturnType>>(fileError, setProductFormFileErrorFunc)) return;
