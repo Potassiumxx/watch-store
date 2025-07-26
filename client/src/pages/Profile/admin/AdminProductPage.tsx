@@ -14,11 +14,20 @@ import {
 import { addProduct } from "../../../services/api/productAPI";
 import ProductForm from "../../../components/ui/ProductForms/ProductForm";
 import useProductForm from "../../../hooks/useProductForm";
+import { useAddProductStore } from "../../../store/productStore/useAddProductStore";
 
 export default function AdminProductPage() {
   const { isValidationError, handleFieldOnChange, dirtyField, handleFormSubmit, generalError } =
     useForm<DirtyFieldState<ProductFormFields>>(initialProductDirtyFieldState);
-  const { handleFileUpload, validateProductFormFields, handleProductFieldOnChange } = useProductForm();
+  const { handleFileUpload, validateProductFormFields, handleProductFieldOnChange } = useProductForm({
+    setProductName: useAddProductStore.getState().setProductName,
+    setProductPrice: useAddProductStore.getState().setProductPrice,
+    setProductCategory: useAddProductStore.getState().setProductCategory,
+    setProductDescription: useAddProductStore.getState().setProductDescription,
+    setProductQuantity: useAddProductStore.getState().setProductQuantity,
+    setProductFileName: useAddProductStore.getState().setProductFileName,
+    setProductImage: useAddProductStore.getState().setProductImage,
+  });
 
   const {
     productName,
@@ -29,16 +38,11 @@ export default function AdminProductPage() {
     productImage,
     productStringErrorFields,
     productFileErrorFields,
-    setProductName,
-    setProductPrice,
-    setProductCategory,
-    setProductDescription,
-    setProductQuantity,
     setProductStringFormError,
     setProductFileFormError,
     clearProductStringFormError,
     clearProductFileFormError
-  } = useProductStore();
+  } = useAddProductStore();
 
   async function handleAddProductSubmit(e: React.FormEvent) {
     e.preventDefault();

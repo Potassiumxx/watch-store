@@ -1,4 +1,3 @@
-import { useProductStore } from "../store/productStore";
 import { DirtyFieldState, HandleFieldOnChangeParamter } from "../types/form";
 import {
   ProductFileFormValidationReturnType,
@@ -37,9 +36,29 @@ interface HandleFileUploadParameter {
   isValidationError: IsValidationErrorType;
 }
 
-export default function useProductForm() {
-  const setProductFileName = useProductStore((state) => state.setProductFileName);
-  const setProductImage = useProductStore((state) => state.setProductImage);
+interface StoreSettersType {
+  setProductName: (v: string) => void;
+  setProductPrice: (v: string) => void;
+  setProductCategory: (v: string) => void;
+  setProductDescription: (v: string) => void;
+  setProductQuantity: (v: string) => void;
+  setProductFileName: (v: string) => void;
+  setProductImage: (f: File | null) => void;
+}
+
+export default function useProductForm(storeSetters: StoreSettersType) {
+  //  const setProductFileName = useProductStore((state) => state.setProductFileName);
+  //  const setProductImage = useProductStore((state) => state.setProductImage);
+
+  const {
+    // setProductName,
+    // setProductPrice,
+    // setProductCategory,
+    // setProductDescription,
+    // setProductQuantity,
+    setProductFileName,
+    setProductImage,
+  } = storeSetters;
 
   function validateProductFormFields({
     stringFields,
@@ -74,11 +93,11 @@ export default function useProductForm() {
       allFormValues: values,
       formValueSetter: (v: string) => {
         const productSetters: Record<keyof ProductFormStringFields, (value: string) => void> = {
-          productName: useProductStore.getState().setProductName,
-          productPrice: useProductStore.getState().setProductPrice,
-          productCategory: useProductStore.getState().setProductCategory,
-          productDescription: useProductStore.getState().setProductDescription,
-          productQuantity: useProductStore.getState().setProductQuantity,
+          productName: storeSetters.setProductName,
+          productPrice: storeSetters.setProductPrice,
+          productCategory: storeSetters.setProductCategory,
+          productDescription: storeSetters.setProductDescription,
+          productQuantity: storeSetters.setProductQuantity,
         };
 
         productSetters[key as keyof ProductFormStringFields]?.(v);
