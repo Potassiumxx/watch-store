@@ -10,9 +10,8 @@ export default function Backdrop({ handleOnClick, isVisible }: BackdropProps) {
   return (
     <div
       onClick={handleOnClick}
-      className={`fixed inset-0 z-40 backdrop-blur-sm transition-opacity duration-300 ease-in-out ${
-        isVisible ? "bg-black/40 opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-      }`}
+      className={`fixed inset-0 z-40 backdrop-blur-sm transition-opacity duration-300 ease-in-out ${isVisible ? "bg-black/40 opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
       data-testid="backdrop"
     />
   );

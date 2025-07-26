@@ -8,10 +8,17 @@ import { ROLES } from "../../utils/constants";
 import UpdateProductForm from "../../components/ui/ProductForms/UpdateProductForm";
 import { IoCloseOutline } from "react-icons/io5";
 import { useProductStore } from "../../store/productStore";
+import ConfirmModal from "../../components/ui/ConfirmModal/ConfirmModal";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
   const [showUpdateForm, setShowUpdateForm] = React.useState<boolean>(false);
+  const [showConfirmModal, setShowConfirmModal] = React.useState<boolean>(false);
+  const [productToDelete, setProductToDelete] = React.useState({
+    id: 0,
+    name: ""
+  });
+
   const [selectedProduct, setSelectedProduct] = React.useState<ProductDTO>({
     id: 0,
     name: "",
@@ -68,7 +75,13 @@ export default function Products() {
                           setShowUpdateForm(true);
                           setSelectedProduct(product);
                         }} />
-                      <Button textValue="Delete" className="defaultButtonStyle h-[35px] w-[70px] items-center bg-red-600 hover:bg-red-800 hover:text-white" />
+                      <Button textValue="Delete"
+                        className="defaultButtonStyle h-[35px] w-[70px] items-center bg-red-600 hover:bg-red-800 hover:text-white"
+                        onClick={() => {
+                          setShowConfirmModal(true);
+                          setProductToDelete({ id: product.id, name: product.name });
+                        }}
+                      />
                     </div>
                   }
                 </div>
@@ -97,11 +110,30 @@ export default function Products() {
             <div className="relative innerDivBackgroundColour rounded-md shadow-lg shadow-gray-800">
               <div className="flex py-4 px-6 items-center border-b-[1px] border-white">
                 <h2 className="w-full text-white justify-self-center text-3xl font-semibold text-center">Update Product</h2>
-                <button className="absolute right-6 text-red-600 z-50 hover:text-red-400 duration-200" onClick={handleFormClose}>{<IoCloseOutline size={45} />}</button>
+                <button className="absolute right-6 text-red-600 z-50 hover:text-red-400 duration-200"
+                  onClick={handleFormClose}>{<IoCloseOutline
+                    size={45} />}</button>
               </div>
               <UpdateProductForm selectedProduct={selectedProduct} />
             </div>
           </div>
+        )
+      }
+
+      {
+        showConfirmModal && (
+          <ConfirmModal
+            isOpen={true}
+            message={`Are you sure you want to delete "${productToDelete.name}"?`}
+            onConfirm={() => {
+              //handleDelete(productToDelete.id);
+              setShowConfirmModal(false);
+            }}
+            onCancel={() => {
+              setShowConfirmModal(false);
+              setProductToDelete({ id: 0, name: "" });
+            }}
+          />
         )
       }
     </div>
