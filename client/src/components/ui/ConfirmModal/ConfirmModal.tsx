@@ -18,10 +18,10 @@ export default function ConfirmModal({
   if (!isOpen) return null;
 
   return (
-    <>
+    <div className="fixed inset-0 flex justify-center items-center">
       <Backdrop handleOnClick={onCancel} isVisible={isOpen} />
-      <div className="fixed inset-0 z-50 flex items-center justify-center" onClick={onCancel}>
-        <div className="bg-[#1f1f1f] text-white p-6 rounded-lg w-[400px] z-50">
+      <div className="flex items-center justify-center z-50">
+        <div className="bg-[#1f1f1f] text-white p-6 rounded-lg w-[400px] z-100">
           <h2 className="text-xl font-bold mb-3">{title}</h2>
           <p className="mb-6">{message}</p>
           <div className="flex justify-end gap-4">
@@ -40,6 +40,6 @@ export default function ConfirmModal({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
