@@ -10,9 +10,10 @@ import { updateProduct } from "../../../services/api/productAPI";
 
 interface UpdateProductFormProps {
   selectedProduct: ProductDTO;
+  handleSuccessResponse: () => void;
 }
 
-export default function UpdateProductForm({ selectedProduct }: UpdateProductFormProps) {
+export default function UpdateProductForm({ selectedProduct, handleSuccessResponse }: UpdateProductFormProps) {
   const { dirtyField, handleFieldOnChange, generalError, isValidationError, handleFormSubmit } = useForm(initialProductDirtyFieldState);
   const { handleFileUpload, validateProductFormFields, handleProductFieldOnChange } = useProductForm({
     setProductName: useUpdateProductStore.getState().setProductName,
@@ -75,9 +76,8 @@ export default function UpdateProductForm({ selectedProduct }: UpdateProductForm
       setError: setProductStringFormError
     });
 
-    if (response) console.log("done");
+    if (response) handleSuccessResponse();
 
-    console.log(selectedProduct);
   }
 
   React.useEffect(() => {
