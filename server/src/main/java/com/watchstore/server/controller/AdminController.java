@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,5 +28,20 @@ public class AdminController {
       e.printStackTrace();
       return new ResponseEntity<>("Something went wrong. Please try again later", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+  }
+
+  @PutMapping("/update-product/{id}")
+  public ResponseEntity<Object> updateProduct(@PathVariable("id") Long productID,
+      @ModelAttribute ProductRequest productRequest) {
+
+    if (productRequest.getProductImage() == null || productRequest.getProductImage().isEmpty()) {
+      System.out.println("No new image uploaded, use the existing one");
+    } else {
+      System.out.println("New image uploaded: " + productRequest.getProductImage().getOriginalFilename());
+    }
+
+    System.out.println(productRequest.getProductName());
+    return new ResponseEntity<>("Update? from backend", HttpStatus.OK);
+
   }
 }

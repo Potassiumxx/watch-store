@@ -22,4 +22,15 @@ public class FileStorageUtil {
     file.transferTo(destination);
     return randomFileName;
   }
+
+  public static boolean deleteFile(String fileName, String uploadDirectory) {
+    if (fileName == null || fileName.isEmpty()) {
+      return false;
+    }
+    File file = new File(uploadDirectory + File.separator + fileName);
+    if (file.exists()) {
+      return file.delete();
+    }
+    return false;
+  }
 }
