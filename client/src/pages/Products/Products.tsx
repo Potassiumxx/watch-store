@@ -11,6 +11,15 @@ import { IoCloseOutline } from "react-icons/io5";
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
   const [showUpdateForm, setShowUpdateForm] = React.useState<boolean>(false);
+  const [selectedProduct, setSelectedProduct] = React.useState<ProductDTO>({
+    id: 0,
+    name: "",
+    price: 0,
+    category: "",
+    description: "",
+    quantity: 0,
+    imagePath: "null"
+  });
 
   const role = useUserStore((state) => state.role);
 
@@ -44,7 +53,10 @@ export default function Products() {
                     <div className="flex gap-5">
                       <Button textValue="Edit"
                         className="defaultButtonStyle h-[35px] w-[60px] items-center"
-                        onClick={() => setShowUpdateForm(true)} />
+                        onClick={() => {
+                          setShowUpdateForm(true);
+                          setSelectedProduct(product);
+                        }} />
                       <Button textValue="Delete" className="defaultButtonStyle h-[35px] w-[70px] items-center bg-red-600 hover:bg-red-800 hover:text-white" />
                     </div>
                   }
@@ -76,7 +88,7 @@ export default function Products() {
                 <h2 className="w-full text-white justify-self-center text-3xl font-semibold text-center">Update Product</h2>
                 <button className="absolute right-6 text-red-600 z-50 hover:text-red-400 duration-200" onClick={() => setShowUpdateForm(false)}>{<IoCloseOutline size={45} />}</button>
               </div>
-              <UpdateProductForm />
+              <UpdateProductForm selectedProduct={selectedProduct} />
             </div>
           </div>
         )

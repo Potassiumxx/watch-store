@@ -28,3 +28,14 @@ export interface BaseFormFieldProps {
   error: string | undefined;
   useVerticalLabelErrorStyle?: boolean;
 }
+
+export interface HandleFieldOnChangeParamter<InputFieldType> {
+  fieldKey: keyof InputFieldType;
+  newValue: string;
+  allFormValues: InputFieldType;
+  formValueSetter: (value: string) => void;
+  validateFunction: (fields: InputFieldType) => Partial<InputFieldType>;
+  setFieldErrorFunction: (inputField: keyof InputFieldType, errorMessage: string) => void;
+  clearErrorsFunction: () => void;
+  dirtyField: { [K in keyof InputFieldType]: boolean };
+}

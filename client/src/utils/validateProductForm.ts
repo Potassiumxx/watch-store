@@ -1,10 +1,21 @@
+import { DirtyFieldState } from "../types/form";
 import {
   ProductFormStringFields,
   ProductStringFormValidationReturnType,
   ProductFileFormValidationReturnType,
+  ProductFormFields,
 } from "../types/productType";
 
 import { isEmpty } from "./helpers";
+
+export const initialProductDirtyFieldState: DirtyFieldState<ProductFormFields> = {
+  productName: false,
+  productPrice: false,
+  productCategory: false,
+  productDescription: false,
+  productQuantity: false,
+  productImage: false,
+};
 
 /**
  * Only validate string form fields which means it only takes these arguments:
@@ -19,7 +30,7 @@ import { isEmpty } from "./helpers";
  * @returns Object with error message for the `ProductFormStringFields` type.
  */
 
-export function validateAddProductForm({
+export function validateProductFormStringFields({
   productName,
   productPrice,
   productCategory,
