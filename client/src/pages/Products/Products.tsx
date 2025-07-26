@@ -1,5 +1,5 @@
 import * as React from "react";
-import { getAllProducts } from "../../services/api/productAPI";
+import { deleteProduct, getAllProducts } from "../../services/api/productAPI";
 import { ProductDTO } from "../../types/productType";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button/Button";
@@ -41,12 +41,22 @@ export default function Products() {
     setProductFileName("");
   }
 
-  React.useEffect(() => {
-    async function fetchProducts() {
-      const data = await getAllProducts();
-      setProducts(data);
-    }
+  async function fetchProducts() {
+    const data = await getAllProducts();
+    setProducts(data);
+  }
 
+  async function handleProductDelete(productID: number) {
+    try {
+      const response = await deleteProduct(productID);
+      fetchProducts();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  React.useEffect(() => {
     fetchProducts();
   }, [])
 
@@ -126,7 +136,7 @@ export default function Products() {
             isOpen={true}
             message={`Are you sure you want to delete "${productToDelete.name}"?`}
             onConfirm={() => {
-              //handleDelete(productToDelete.id);
+              handleProductDelete(productToDelete.id);
               setShowConfirmModal(false);
             }}
             onCancel={() => {
