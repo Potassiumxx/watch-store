@@ -58,15 +58,6 @@ export default function Products() {
 
   React.useEffect(() => {
     fetchProducts();
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
-        handleFormClose();
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [])
 
   return (
@@ -133,11 +124,11 @@ export default function Products() {
                   onClick={handleFormClose}>{<IoCloseOutline
                     size={45} />}</button>
               </div>
-              <UpdateProductForm selectedProduct={selectedProduct}
-                handleSuccessResponse={() => {
-                  handleFormClose();
-                  fetchProducts()
-                }} />
+              <UpdateProductForm
+                selectedProduct={selectedProduct}
+                handleFormCloseFunc={handleFormClose}
+                fetchProductFunc={fetchProducts}
+              />
             </div>
           </div>
         )
