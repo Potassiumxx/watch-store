@@ -1,3 +1,5 @@
+import * as React from "react";
+
 interface BackdropProps {
   /**
    * Handles when user clicks on backdrop - it should close the side panel.
@@ -7,6 +9,16 @@ interface BackdropProps {
 }
 
 export default function Backdrop({ handleOnClick, isVisible }: BackdropProps) {
+  React.useEffect(() => {
+    if (isVisible) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = '';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isVisible]);
+
+
   return (
     <div
       onClick={handleOnClick}
