@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -107,5 +108,15 @@ public class ProductService {
       Inventory inventory = inventoryOpt.orElse(null);
       return new ProductDTO(product, inventory);
     }).collect(Collectors.toList());
+  }
+
+  public ProductDTO getProductById(Long id) {
+    Product product = productRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+
+    Optional<Inventory> inventoryOpt = inventoryRepository.findByProduct(product);
+    Inventory inventory = inventoryOpt.orElse(null);
+
+    return new ProductDTO(product, inventory);
   }
 }

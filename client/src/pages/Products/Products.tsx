@@ -68,7 +68,7 @@ export default function Products() {
         <div className="grid grid-cols-3 gap-8">
           {
             products.length > 0 ? products.map((product, index) => (
-              <Link to={""}
+              <Link to={`/product/${product.id}`}
                 className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}
                 key={product.id}
               >
