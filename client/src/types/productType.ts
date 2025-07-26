@@ -43,3 +43,23 @@ export interface ProductDTO {
   quantity: number;
   imagePath: string;
 }
+
+export interface ProductStore extends ProductFormStringFields, ProductFormFileField {
+  productStringErrorFields: Partial<ProductStringFormValidationReturnType>;
+  productFileName: string;
+  productFileErrorFields: { productImage?: string };
+
+  setProductName: (name: string) => void;
+  setProductPrice: (price: string) => void;
+  setProductCategory: (category: string) => void;
+  setProductDescription: (description: string) => void;
+  setProductQuantity: (quantity: string) => void;
+  setProductImage: (image: File | null) => void;
+
+  setProductStringFormError: (inputField: keyof ProductStringFormValidationReturnType, message: string) => void;
+  setProductFileFormError: (inputField: keyof ProductFileFormValidationReturnType, message: string) => void;
+  setProductFileName: (fileName: string) => void;
+
+  clearProductStringFormError: () => void;
+  clearProductFileFormError: () => void;
+}
