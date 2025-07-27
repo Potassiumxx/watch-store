@@ -10,9 +10,11 @@ import { updateProduct } from "../../../services/api/productAPI";
 
 interface UpdateProductFormProps {
   selectedProduct: ProductDTO;
+  handleFormCloseFunc: () => void;
+  fetchProductFunc: () => void;
 }
 
-export default function UpdateProductForm({ selectedProduct }: UpdateProductFormProps) {
+export default function UpdateProductForm({ selectedProduct, handleFormCloseFunc, fetchProductFunc }: UpdateProductFormProps) {
   const { dirtyField, handleFieldOnChange, generalError, isValidationError, handleFormSubmit } = useForm(initialProductDirtyFieldState);
   const { handleFileUpload, validateProductFormFields, handleProductFieldOnChange } = useProductForm({
     setProductName: useUpdateProductStore.getState().setProductName,
@@ -75,9 +77,11 @@ export default function UpdateProductForm({ selectedProduct }: UpdateProductForm
       setError: setProductStringFormError
     });
 
-    if (response) console.log("done");
+    if (response) {
+      handleFormCloseFunc();
+      fetchProductFunc();
+    };
 
-    console.log(selectedProduct);
   }
 
   React.useEffect(() => {
@@ -93,6 +97,18 @@ export default function UpdateProductForm({ selectedProduct }: UpdateProductForm
     clearProductStringFormError();
     clearProductFileFormError();
   }, [selectedProduct])
+
+  React.useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        handleFormCloseFunc();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+
+  }, [])
 
 
   return (

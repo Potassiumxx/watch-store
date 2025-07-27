@@ -1,5 +1,5 @@
 import * as React from "react";
-import { getAllProducts } from "../../services/api/productAPI";
+import { deleteProduct, getAllProducts } from "../../services/api/productAPI";
 import { ProductDTO } from "../../types/productType";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button/Button";
@@ -9,11 +9,15 @@ import UpdateProductForm from "../../components/ui/ProductForms/UpdateProductFor
 import { IoCloseOutline } from "react-icons/io5";
 import { useProductStore } from "../../store/productStore";
 import ConfirmModal from "../../components/ui/ConfirmModal/ConfirmModal";
+import Loader from "../../components/ui/Loader/Loader";
+import axios from "axios";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
   const [showUpdateForm, setShowUpdateForm] = React.useState<boolean>(false);
   const [showConfirmModal, setShowConfirmModal] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [error, setIsError] = React.useState<string | null>(null);
   const [productToDelete, setProductToDelete] = React.useState({
     id: 0,
     name: ""
@@ -41,14 +45,52 @@ export default function Products() {
     setProductFileName("");
   }
 
-  React.useEffect(() => {
-    async function fetchProducts() {
+  async function fetchProducts() {
+    setIsLoading(true);
+    setIsError(null);
+    try {
       const data = await getAllProducts();
       setProducts(data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.code ?? "ERR_NETWORK");
+        setIsError("A network error occured. Check your internet or try again later.");
+      } else {
+        console.log("Unknown error", error);
+        setIsError("An unexpected error occured. Could be a problem from the server, try again later.");
+      }
+    } finally {
+      setIsLoading(false);
     }
+  }
 
+  async function handleProductDelete(productID: number) {
+    try {
+      const response = await deleteProduct(productID);
+      fetchProducts();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  React.useEffect(() => {
     fetchProducts();
   }, [])
+
+  if (isLoading) return <Loader className="border-white w-full m-auto mt-40 border-8" size={50} />
+
+  if (error) return (
+    <div className="flex justify-center items-center mt-40">
+      <h1 className="text-white text-3xl">{error}</h1>
+    </div>
+  )
+
+  if (products.length === 0) (
+    <div className="flex justify-center items-center mt-40">
+      <h1 className="text-white text-3xl">No products available.</h1>
+    </div>
+  )
 
   return (
     <div className="text-white">
@@ -57,8 +99,8 @@ export default function Products() {
       <div className="component-x-axis-padding">
         <div className="grid grid-cols-3 gap-8">
           {
-            products.length > 0 ? products.map((product, index) => (
-              <Link to={""}
+            products.map((product, index) => (
+              <Link to={`/product/${product.id}`}
                 className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}
                 key={product.id}
               >
@@ -101,7 +143,7 @@ export default function Products() {
                 </div>
               </Link>
             ))
-              : <h1 className="text-white text-[32px]">No Products</h1>}
+          }
         </div>
       </div>
       {
@@ -114,7 +156,11 @@ export default function Products() {
                   onClick={handleFormClose}>{<IoCloseOutline
                     size={45} />}</button>
               </div>
-              <UpdateProductForm selectedProduct={selectedProduct} />
+              <UpdateProductForm
+                selectedProduct={selectedProduct}
+                handleFormCloseFunc={handleFormClose}
+                fetchProductFunc={fetchProducts}
+              />
             </div>
           </div>
         )
@@ -126,7 +172,7 @@ export default function Products() {
             isOpen={true}
             message={`Are you sure you want to delete "${productToDelete.name}"?`}
             onConfirm={() => {
-              //handleDelete(productToDelete.id);
+              handleProductDelete(productToDelete.id);
               setShowConfirmModal(false);
             }}
             onCancel={() => {

@@ -84,6 +84,21 @@ public class ProductService {
     inventoryRepository.save(inventory);
   }
 
+  public void deleteProduct(Long id) {
+    Product product = productRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Product not found! How did you try to delete it?"));
+
+    String imagePath = product.getImage();
+
+    try {
+      FileStorageUtil.deleteFile(imagePath, uploadDirectory);
+    } catch (Exception e) {
+      System.err.println("Failed to delete image file: " + imagePath);
+    }
+
+    productRepository.deleteById(id);
+  }
+
   public List<ProductDTO> getAllProducts() {
     List<Product> products = productRepository.findAll();
 
@@ -92,5 +107,15 @@ public class ProductService {
       Inventory inventory = inventoryOpt.orElse(null);
       return new ProductDTO(product, inventory);
     }).collect(Collectors.toList());
+  }
+
+  public ProductDTO getProductById(Long id) {
+    Product product = productRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+
+    Optional<Inventory> inventoryOpt = inventoryRepository.findByProduct(product);
+    Inventory inventory = inventoryOpt.orElse(null);
+
+    return new ProductDTO(product, inventory);
   }
 }
