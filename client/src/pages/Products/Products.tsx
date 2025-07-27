@@ -81,10 +81,7 @@ export default function Products() {
           <div className="grid grid-cols-3 gap-8">
             {
               products.map((product, index) => (
-                <Link to={`/product/${product.id}`}
-                  className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}
-                  key={product.id}
-                >
+                <div className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}>
                   <div className="flex justify-between pt-4 px-4 items-center">
                     <div className="flex flex-col gap-1">
                       <h1 className="font-black text-3xl">{product.name}</h1>
@@ -108,21 +105,24 @@ export default function Products() {
                       </div>
                     }
                   </div>
+                  <Link to={`/product/${product.id}`}
+                    key={product.id}
+                  >
+                    <img
+                      className="h-[370px] object-contain w-full py-2 scale-90 group-hover:scale-105 transition-transform duration-200"
+                      src={`http://localhost:5000/images/${product.imagePath}`}
+                      alt={product.name}
+                    />
 
-                  <img
-                    className="min-h-[70%] object-contain w-full py-2 scale-90 group-hover:scale-105 transition-transform duration-200"
-                    src={`http://localhost:5000/images/${product.imagePath}`}
-                    alt={product.name}
-                  />
-
-                  <div className="flex justify-between align-middle items-center px-4 h-full">
-                    <span className="flex gap-2 items-center">
-                      <h3 className="text-[#c7c7c7] text-sm">Quantity</h3>
-                      <h1 className="font-semibold text-lg">{product.quantity}</h1>
-                    </span>
-                    <h1 className="font-bold text-3xl">{product.price}</h1>
-                  </div>
-                </Link>
+                    <div className="flex justify-between align-middle items-center px-4">
+                      <span className="flex gap-2 items-center">
+                        <h3 className="text-[#c7c7c7] text-sm">Quantity</h3>
+                        <h1 className="font-semibold text-lg">{product.quantity}</h1>
+                      </span>
+                      <h1 className="font-bold text-3xl">{product.price}</h1>
+                    </div>
+                  </Link>
+                </div>
               ))
             }
           </div>
