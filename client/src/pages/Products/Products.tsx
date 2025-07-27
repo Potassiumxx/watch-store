@@ -10,7 +10,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { useProductStore } from "../../store/productStore";
 import ConfirmModal from "../../components/ui/ConfirmModal/ConfirmModal";
 import Loader from "../../components/ui/Loader/Loader";
-import axios from "axios";
+import { fetchErrorCatcher } from "../../utils/helpers";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
@@ -52,13 +52,7 @@ export default function Products() {
       const data = await getAllProducts();
       setProducts(data);
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.code ?? "ERR_NETWORK");
-        setIsError("A network error occured. Check your internet or try again later.");
-      } else {
-        console.log("Unknown error", error);
-        setIsError("An unexpected error occured. Could be a problem from the server, try again later.");
-      }
+      fetchErrorCatcher(error, setIsError);
     } finally {
       setIsLoading(false);
     }
