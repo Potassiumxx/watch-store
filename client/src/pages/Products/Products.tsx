@@ -81,7 +81,9 @@ export default function Products() {
           <div className="grid grid-cols-3 gap-8">
             {
               products.map((product, index) => (
-                <div className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}>
+                <div
+                  key={product.id}
+                  className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}>
                   <div className="flex justify-between pt-4 px-4 items-center">
                     <div className="flex flex-col gap-1">
                       <h1 className="font-black text-3xl">{product.name}</h1>
@@ -106,7 +108,6 @@ export default function Products() {
                     }
                   </div>
                   <Link to={`/product/${product.id}`}
-                    key={product.id}
                   >
                     <img
                       className="h-[370px] object-contain w-full py-2 scale-90 group-hover:scale-105 transition-transform duration-200"

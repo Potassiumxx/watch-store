@@ -3,15 +3,17 @@ import { useParams } from "react-router-dom";
 import { ProductDTO } from "../../types/productType";
 import { getProductByID } from "../../services/api/productAPI";
 import { fetchErrorCatcher } from "../../utils/helpers";
-import Loader from "../../components/ui/Loader/Loader";
 import FetchStatusDisplay from "../../components/ui/FetchStatusDisplay/FetchStatusDisplay";
 import Button from "../../components/ui/Button/Button";
+import { useCartStore } from "../../store/cartStore";
 
 export default function SingleProductPage() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | null>(null);
   const [product, setProduct] = React.useState<ProductDTO | null>(null);
+
+  const addToCart = useCartStore((state) => state.addToCart);
 
   async function fetchProduct() {
     try {
@@ -56,7 +58,17 @@ export default function SingleProductPage() {
               <h4 className="uppercase text-gray-300">Description</h4>
               <p className="text-base mb-4 max-h-[300px] overflow-scroll">{product.description}</p>
             </span>
-            <Button textValue="Add to cart" className="defaultButtonStyle w-full bg-orange-700 hover:bg-orange-600 hover:text-white" />
+            <Button
+              textValue="Add to cart"
+              className="defaultButtonStyle w-full bg-orange-700 hover:bg-orange-600 hover:text-white"
+              onClick={() => addToCart({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: 1,
+                imagePath: product.imagePath,
+              })}
+            />
           </div>
         </div>
       }
