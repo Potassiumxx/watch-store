@@ -9,6 +9,7 @@ import UpdateProductForm from "../../components/ui/ProductForms/UpdateProductFor
 import { IoCloseOutline } from "react-icons/io5";
 import { useProductStore } from "../../store/productStore";
 import ConfirmModal from "../../components/ui/ConfirmModal/ConfirmModal";
+import Loader from "../../components/ui/Loader/Loader";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
@@ -59,6 +60,8 @@ export default function Products() {
   React.useEffect(() => {
     fetchProducts();
   }, [])
+
+  if (products.length === 0) return <Loader className="border-white w-full m-auto mt-40 border-8" size={50} />
 
   return (
     <div className="text-white">
@@ -111,7 +114,7 @@ export default function Products() {
                 </div>
               </Link>
             ))
-              : <h1 className="text-white text-[32px]">No Products</h1>}
+              : <h1 className="text-white text-[32px] text-center">No Products</h1>}
         </div>
       </div>
       {
