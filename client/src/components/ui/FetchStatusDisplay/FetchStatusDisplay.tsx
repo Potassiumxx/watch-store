@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import Loader from "../Loader/Loader";
 
-interface FetchStatusDispalyProps {
+interface FetchStatusDisplayProps {
   isLoading: boolean;
   error: string | null;
   isEmpty?: boolean;
@@ -9,13 +9,13 @@ interface FetchStatusDispalyProps {
   children: ReactNode;
 }
 
-export default function FetchStatusDispaly({
+export default function FetchStatusDisplay({
   isLoading,
   error,
   isEmpty = false,
   emptyMessage = "No data available.",
   children,
-}: FetchStatusDispalyProps) {
+}: FetchStatusDisplayProps) {
   if (isLoading) {
     return <Loader className="border-white w-full m-auto mt-40 border-8" size={50} />;
   }
