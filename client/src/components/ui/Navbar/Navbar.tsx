@@ -9,6 +9,7 @@ import UserMenu from "../UserFormMenu/UserFormMenu";
 import { useAuthStore } from "../../../store/authStore";
 import { useUIStore } from "../../../store/uiStore";
 import { useUserStore } from "../../../store/userStore";
+import { Cart } from "../Cart/Cart";
 
 export default function Navbar() {
   const [openSearchBar, setOpenSearchBar] = React.useState<boolean>(false);
@@ -27,7 +28,9 @@ export default function Navbar() {
   const globalUsername = useUserStore((state) => state.globalUsername);
 
   const showUserMenu = useUIStore((state) => state.showUserMenu);
+  const showCart = useUIStore((state) => state.showCart);
   const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
+  const setShowCart = useUIStore((state) => state.setShowCart);
   const setNavbarHeight = useUIStore((state) => state.setNavbarHeight);
 
   function handleOpenSearchBar() {
@@ -99,6 +102,7 @@ export default function Navbar() {
   return (
     <div ref={navbarRef} className="fixed top-0 flex flex-col justify-between items-center z-20 w-full" data-testid="navbar">
       {showUserMenu && <UserMenu />}
+      {showCart && <Cart />}
       <div className="flex justify-between w-full py-2 outerDivBackgroundColour text-white items-center px-[50px]">
         <div>
           <span className="text-[10px] italic capitalize text-[#898989]">Buy best watches with free shipping & returns</span>
@@ -106,9 +110,8 @@ export default function Navbar() {
         {openSearchBar && (
           <input
             ref={searchBarRef}
-            className={`${
-              isSearchBarVisible ? "w-[45%]" : "w-0 px-0"
-            } h-6 text-black px-2 outline-1 transition-all duration-300 absolute right-[320px]`}
+            className={`${isSearchBarVisible ? "w-[45%]" : "w-0 px-0"
+              } h-6 text-black px-2 outline-1 transition-all duration-300 absolute right-[320px]`}
             placeholder="Search"
           />
         )}
@@ -116,7 +119,7 @@ export default function Navbar() {
           <button ref={searchIconRef} onClick={handleOpenSearchBar} className="hover:cursor-pointer" aria-label="Search">
             <IoSearchOutline size={25} />
           </button>
-          <button className="flex items-center hover:cursor-pointer" aria-label="Cart">
+          <button className="flex items-center hover:cursor-pointer" aria-label="Cart" onClick={() => setShowCart(true)}>
             <LiaShoppingCartSolid size={32} />
             <span className="flex items-center text-[12px] font-bold px-[5px] py-[1px] rounded-[50%] bg-[#f28c26]">999</span>
           </button>
@@ -134,11 +137,10 @@ export default function Navbar() {
         </div>
       </div>
       <div
-        className={`component-x-axis-padding flex w-full py-5 items-center text-white duration-300 border-b-[1px] border-b-white/[.5] border-t-transparent ${
-          isNavbarBackgroundVisible
-            ? "bg-black/[.5] backdrop-blur-md border-t-[1px] border-t-white/[.5]"
-            : "bg-transparent backdrop-blur-md"
-        }`}
+        className={`component-x-axis-padding flex w-full py-5 items-center text-white duration-300 border-b-[1px] border-b-white/[.5] border-t-transparent ${isNavbarBackgroundVisible
+          ? "bg-black/[.5] backdrop-blur-md border-t-[1px] border-t-white/[.5]"
+          : "bg-transparent backdrop-blur-md"
+          }`}
         data-testid="bottom-navbar"
         ref={bottomNavbarRef}>
         <button onClick={scrollToTop} className="flex items-center gap-2 hover:scale-110 duration-300">
