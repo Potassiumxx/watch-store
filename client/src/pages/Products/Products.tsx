@@ -10,11 +10,14 @@ import { IoCloseOutline } from "react-icons/io5";
 import { useProductStore } from "../../store/productStore";
 import ConfirmModal from "../../components/ui/ConfirmModal/ConfirmModal";
 import Loader from "../../components/ui/Loader/Loader";
+import axios from "axios";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
   const [showUpdateForm, setShowUpdateForm] = React.useState<boolean>(false);
   const [showConfirmModal, setShowConfirmModal] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [error, setIsError] = React.useState<string | null>(null);
   const [productToDelete, setProductToDelete] = React.useState({
     id: 0,
     name: ""
@@ -43,8 +46,22 @@ export default function Products() {
   }
 
   async function fetchProducts() {
-    const data = await getAllProducts();
-    setProducts(data);
+    setIsLoading(true);
+    setIsError(null);
+    try {
+      const data = await getAllProducts();
+      setProducts(data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.code ?? "ERR_NETWORK");
+        setIsError("A network error occured. Check your internet or try again later.");
+      } else {
+        console.log("Unknown error", error);
+        setIsError("An unexpected error occured. Could be a problem from the server, try again later.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   async function handleProductDelete(productID: number) {
@@ -61,7 +78,19 @@ export default function Products() {
     fetchProducts();
   }, [])
 
-  if (products.length === 0) return <Loader className="border-white w-full m-auto mt-40 border-8" size={50} />
+  if (isLoading) return <Loader className="border-white w-full m-auto mt-40 border-8" size={50} />
+
+  if (error) return (
+    <div className="flex justify-center items-center mt-40">
+      <h1 className="text-white text-3xl">{error}</h1>
+    </div>
+  )
+
+  if (products.length === 0) (
+    <div className="flex justify-center items-center mt-40">
+      <h1 className="text-white text-3xl">No products available.</h1>
+    </div>
+  )
 
   return (
     <div className="text-white">
@@ -70,7 +99,7 @@ export default function Products() {
       <div className="component-x-axis-padding">
         <div className="grid grid-cols-3 gap-8">
           {
-            products.length > 0 ? products.map((product, index) => (
+            products.map((product, index) => (
               <Link to={`/product/${product.id}`}
                 className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}
                 key={product.id}
@@ -114,7 +143,7 @@ export default function Products() {
                 </div>
               </Link>
             ))
-              : <h1 className="text-white text-[32px] text-center">No Products</h1>}
+          }
         </div>
       </div>
       {
