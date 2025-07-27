@@ -73,7 +73,7 @@ export default function Products() {
   }, [])
 
   return (
-    <FetchStatusDisplay isLoading={isLoading} error={error} isEmpty={!products}>
+    <FetchStatusDisplay isLoading={isLoading} error={error} isEmpty={!products} emptyMessage="No products available">
       <div className="text-white">
         <h1 className="text-center text-3xl font-bold mb-6">Products</h1>
 

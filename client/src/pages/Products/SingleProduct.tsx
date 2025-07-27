@@ -19,7 +19,7 @@ export default function SingleProductPage() {
     } catch (error) {
       fetchErrorCatcher(error, setError);
     } finally {
-      setIsLoading(true);
+      setIsLoading(false);
     }
   }
 
@@ -27,29 +27,17 @@ export default function SingleProductPage() {
     fetchProduct();
   }, [id]);
 
-  if (isLoading) return <Loader className="border-white w-full m-auto mt-40 border-8" size={50} />
-
-  if (error) return (
-    <div className="flex justify-center items-center mt-40">
-      <h1 className="text-white text-3xl">{error}</h1>
-    </div>
-  )
-
-  if (!product) return (
-    <div className="flex justify-center items-center mt-40">
-      <h1 className="text-white text-3xl">Could not fetch product.</h1>
-    </div>
-  )
-
   return (
-    <FetchStatusDisplay isLoading={isLoading} isEmpty={!product} error={error}>
-      <div className="p-10 text-white">
-        <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
-        <p className="text-lg mb-2">{product.category}</p>
-        <p className="text-base mb-2">{product.description}</p>
-        <p className="text-2xl font-semibold mb-4">${product.price}</p>
-        <img src={`http://localhost:5000/images/${product.imagePath}`} alt={product.name} className="w-[300px] rounded" />
-      </div>
+    <FetchStatusDisplay isLoading={isLoading} isEmpty={!product} error={error} emptyMessage="Could not fetch product.">
+      {product &&
+        <div className="p-10 text-white">
+          <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
+          <p className="text-lg mb-2">{product.category}</p>
+          <p className="text-base mb-2">{product.description}</p>
+          <p className="text-2xl font-semibold mb-4">${product.price}</p>
+          <img src={`http://localhost:5000/images/${product.imagePath}`} alt={product.name} className="w-[300px] rounded" />
+        </div>
+      }
     </FetchStatusDisplay>
   );
 }
