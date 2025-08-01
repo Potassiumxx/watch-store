@@ -10,6 +10,7 @@ import { useAuthStore } from "../../../store/authStore";
 import { useUIStore } from "../../../store/uiStore";
 import { useUserStore } from "../../../store/userStore";
 import { Cart } from "../Cart/Cart";
+import { useCartStore } from "../../../store/cartStore";
 
 export default function Navbar() {
   const [openSearchBar, setOpenSearchBar] = React.useState<boolean>(false);
@@ -24,7 +25,6 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
-
   const globalUsername = useUserStore((state) => state.globalUsername);
 
   const showUserMenu = useUIStore((state) => state.showUserMenu);
@@ -32,6 +32,8 @@ export default function Navbar() {
   const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
   const setShowCart = useUIStore((state) => state.setShowCart);
   const setNavbarHeight = useUIStore((state) => state.setNavbarHeight);
+
+  const cartItems = useCartStore((state) => state.cartItems);
 
   function handleOpenSearchBar() {
     setOpenSearchBar(true);
@@ -120,8 +122,12 @@ export default function Navbar() {
             <IoSearchOutline size={25} />
           </button>
           <button className="flex items-center hover:cursor-pointer" aria-label="Cart" onClick={() => setShowCart(true)}>
-            <LiaShoppingCartSolid size={32} />
-            <span className="flex items-center text-[12px] font-bold px-[5px] py-[1px] rounded-[50%] bg-[#f28c26]">999</span>
+            <LiaShoppingCartSolid size={32} color={cartItems.length > 0 ? "#e65100" : "white"} />
+            {cartItems.length > 0 ?
+              <span className="flex items-center font-bold">
+                <sup className="text-[14px]">{cartItems.length}</sup>
+              </span>
+              : null}
           </button>
           {isUserSignedIn ? (
             <button
