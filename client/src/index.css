@@ -2,6 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes glowline {
+  0% {
+    background-position: 100% 0;
+  }
+  40%, 60% {
+    opacity: 1;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.animate-glowline {
+  background-size: 200% auto;
+  animation: glowline 3s linear infinite;
+}
+
+@keyframes glowline-reverse {
+  0% {
+    background-position: -100% 0;
+  }
+  40%, 60% {
+    opacity: 1;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.animate-glowline-reverse {
+  background-size: 200% auto;
+  animation: glowline-reverse 3s linear infinite;
+}
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -11,4 +45,10 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
   appearance: none;
   -moz-appearance: textfield;
+}
+
+.list-dash li::before {
+  content: "-";
+  display: inline-block;
+  margin-right: 0.5rem;
 }

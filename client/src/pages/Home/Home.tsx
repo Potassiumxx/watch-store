@@ -2,7 +2,9 @@ import * as React from "react";
 import Button from "../../components/ui/Button/Button";
 import { FaCamera } from "react-icons/fa";
 import Collection from "../../components/ui/Collection/Collection";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import AboutUs from "../../components/ui/AboutUs/AboutUs";
+import { useUIStore } from "../../store/uiStore";
 
 // function ImageSlider() {
 //   const imageList = [
@@ -36,10 +38,12 @@ import { useLocation } from "react-router-dom";
 export default function Home() {
   const location = useLocation();
 
+  const navbarHeight = useUIStore((state) => state.navbarHeight);
+
   React.useEffect(() => {
     // Check the state's values passed from Navbar
-    if (location.state?.scrollTo === "collection") {
-      const collectionSection = document.getElementById("collection");
+    if (location.state?.scrollTo === "about-us") {
+      const collectionSection = document.getElementById("about-us");
       if (collectionSection) {
         setTimeout(() => {
           collectionSection.scrollIntoView({ behavior: "smooth" });
@@ -57,18 +61,22 @@ export default function Home() {
       {/*2nd Photo by Fstopper: https://www.pexels.com/photo/round-black-current-chronograph-watch-with-link-bracelet-1075189/ */}
       {/*3rd Photo by Fernando Arcos:
       https://www.pexels.com/photo/silver-linked-bracelet-silver-and-black-round-chronograph-watch-190819/ */}
-      <div className="relative inset-0 flex items-end pb-3 min-h-dvh bg-black z-10 backgroundImageStyle">
-        <div className="flex flex-col justify-between text-white px-[50px] min-h-[350px] w-full">
-          <div className="self-center max-w-[700px]">
-            <div className="flex flex-col gap-7 text-center">
-              <h1 className="uppercase text-6xl font-bold tracking-wide">Buy watches online</h1>
+      <div className={`flex pb-3 bg-black`} style={{ minHeight: `calc(100dvh - ${navbarHeight}px)` }}>
+        <div className="flex flex-col justify-between text-white min-h-full w-full">
+          <div className="relative h-full w-full self-center flex flex-col justify-center">
+            <span className="absolute w-[50%] h-[2px] bg-gray-600 top-[25%] bg-gradient-to-r from-gray-700 via-white to-gray-700 animate-glowline" />
+            <div className="flex flex-col gap-7 text-center self-center max-w-[700px]">
+              <h1 className="uppercase text-6xl font-bold tracking-wide">Get watches online</h1>
               <p className="text-white text-lg font-semibold">
                 Discover the best collection of watches, perfect for every occasion. Stylish, durable, and affordable.
               </p>
             </div>
+            <span className="absolute w-[50%] h-[2px] bg-gray-600 bottom-[25%] bg-gradient-to-l from-gray-700 via-white to-gray-700 animate-glowline-reverse right-0" />
           </div>
-          <Button textValue={"Shop Now"} className="defaultButtonStyle" />
-          <div className="absolute bottom-4 right-4 bg-white text-black rounded-sm hover:bg-[#3f3f3f] hover:text-white transition-all duration-150">
+          <div className="flex flex-col items-center pb-10">
+            <Link to={"/products"} className="text-2xl hover:underline underline-offset-8"> View Products </Link>
+          </div>
+          {/*<div className="absolute bottom-4 right-4 bg-white text-black rounded-sm hover:bg-[#3f3f3f] hover:text-white transition-all duration-150">
             <a
               href="https://www.pexels.com/photo/round-black-current-chronograph-watch-with-link-bracelet-1075189/"
               target="_blank"
@@ -78,11 +86,12 @@ export default function Home() {
               </span>
               <span className="inline-block p-[2px_3px] align-middle">Fstoppper</span>
             </a>
-          </div>
+          </div>*/}
         </div>
       </div>
       <section>
-        <Collection />
+        {/*<Collection />*/}
+        <AboutUs />
       </section>
     </>
   );

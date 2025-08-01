@@ -2,7 +2,9 @@ import { create } from "zustand";
 
 interface SideBarStore {
   showUserMenu: boolean;
+  showCart: boolean;
   setShowUserMenu: (showUserMenu: boolean) => void;
+  setShowCart: (showCart: boolean) => void;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
   navbarHeight: number;
@@ -11,7 +13,9 @@ interface SideBarStore {
 
 export const useUIStore = create<SideBarStore>((set) => ({
   showUserMenu: false,
+  showCart: false,
   setShowUserMenu: (showUserMenu) => set({ showUserMenu: showUserMenu }),
+  setShowCart: (showCart) => set({ showCart: showCart }),
   isLoading: false,
   setIsLoading: (isLoading) => set({ isLoading: isLoading }),
   navbarHeight: 0,

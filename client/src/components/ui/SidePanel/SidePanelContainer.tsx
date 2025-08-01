@@ -13,6 +13,9 @@ export default function SidePanelContainer({ children, panelTitle = "Title" }: S
   const [isVisible, setIsVisible] = React.useState<boolean>(false);
 
   const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
+  const setShowCart = useUIStore((state) => state.setShowCart);
+  const showUserMenu = useUIStore((state) => state.showUserMenu);
+  const showCart = useUIStore((state) => state.showCart);
 
   /**
    * Makes sure the smooth animation gets applied everytime the side panel is closed.
@@ -20,7 +23,8 @@ export default function SidePanelContainer({ children, panelTitle = "Title" }: S
   function hideSidePanelClosing(): void {
     setIsVisible(false);
     setTimeout(() => {
-      setShowUserMenu(false);
+      if (showUserMenu) setShowUserMenu(false);
+      if (showCart) setShowCart(false);
     }, 300);
   }
 
@@ -36,9 +40,8 @@ export default function SidePanelContainer({ children, panelTitle = "Title" }: S
       <Backdrop handleOnClick={hideSidePanelClosing} isVisible={isVisible} />
 
       <div
-        className={`fixed top-0 right-0 h-full w-[420px] bg-[#1a1a1a] text-white z-50 shadow-lg transform transition-transform duration-300 ease-in ${
-          isVisible ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 h-full w-[420px] bg-[#1a1a1a] text-white z-50 shadow-lg transform transition-transform duration-300 ease-in ${isVisible ? "translate-x-0" : "translate-x-full"
+          }`}
         data-testid="side-panel-container">
         <div className="flex w-full border-b-white border-b-2">
           <h1 className="text-2xl my-2 mx-6">{panelTitle}</h1>
