@@ -77,38 +77,43 @@ export default function Products() {
       <div className="text-white">
         <h1 className="text-center text-3xl font-bold mb-6">Products</h1>
 
-        <div className="component-x-axis-padding">
-          <div className="grid grid-cols-3 gap-8">
-            {
-              products.map((product, index) => (
-                <div
-                  key={product.id}
-                  className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}>
-                  <div className="flex justify-between pt-4 px-4 items-center">
-                    <div className="flex flex-col gap-1">
-                      <h1 className="font-black text-3xl">{product.name}</h1>
-                      <h1 className="font-semibold text-sm tracking-wide text-[#c7c7c7]">{product.category}</h1>
+        <div className="component-x-axis-padding grid grid-cols-3 gap-8">
+          {
+            products.map((product, index) => (
+              <div
+                className="flex flex-col gap"
+                key={product.id}
+              >
+                {role === ROLES.ADMIN &&
+                  <div className="flex gap-5 justify-end">
+                    <div className="after:block after:bg-white after:w-[1px] after:h-2 after:items-center after:mx-auto hover:after:w-[3px]">
+                      <Button textValue="Edit"
+                        className="defaultButtonStyle h-[35px] w-[60px] items-center"
+                        onClick={() => {
+                          setShowUpdateForm(true);
+                          setSelectedProduct(product);
+                        }} />
                     </div>
-                    {role === ROLES.ADMIN &&
-                      <div className="flex gap-5">
-                        <Button textValue="Edit"
-                          className="defaultButtonStyle h-[35px] w-[60px] items-center"
-                          onClick={() => {
-                            setShowUpdateForm(true);
-                            setSelectedProduct(product);
-                          }} />
-                        <Button textValue="Delete"
-                          className="defaultButtonStyle h-[35px] w-[70px] items-center bg-red-600 hover:bg-red-800 hover:text-white"
-                          onClick={() => {
-                            setShowConfirmModal(true);
-                            setProductToDelete({ id: product.id, name: product.name });
-                          }}
-                        />
-                      </div>
-                    }
+                    <div className="after:flex after:bg-white after:w-[1px] after:h-2 after:justify-center after:items-center after:mx-auto hover:after:w-[3px]">
+                      <Button textValue="Delete"
+                        className="defaultButtonStyle h-[35px] w-[70px] items-center bg-red-600 hover:bg-red-800 hover:text-white"
+                        onClick={() => {
+                          setShowConfirmModal(true);
+                          setProductToDelete({ id: product.id, name: product.name });
+                        }}
+                      />
+                    </div>
                   </div>
-                  <Link to={`/product/${product.id}`}
-                  >
+                }
+                <Link to={`/product/${product.id}`}>
+                  <div
+                    className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}>
+                    <div className="flex justify-between pt-4 px-4 items-center">
+                      <div className="flex flex-col gap-1">
+                        <h1 className="font-black text-3xl">{product.name}</h1>
+                        <h1 className="font-semibold text-sm tracking-wide text-[#c7c7c7]">{product.category}</h1>
+                      </div>
+                    </div>
                     <img
                       className="h-[370px] object-contain w-full py-2 scale-90 group-hover:scale-105 transition-transform duration-200"
                       src={`http://localhost:5000/images/${product.imagePath}`}
@@ -122,11 +127,11 @@ export default function Products() {
                       </span>
                       <h1 className="font-bold text-3xl">{product.price}</h1>
                     </div>
-                  </Link>
-                </div>
-              ))
-            }
-          </div>
+                  </div>
+                </Link>
+              </div>
+            ))
+          }
         </div>
         {
           showUpdateForm && (
@@ -165,6 +170,6 @@ export default function Products() {
           )
         }
       </div>
-    </FetchStatusDisplay>
+    </FetchStatusDisplay >
   );
 }

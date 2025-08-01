@@ -1,28 +1,28 @@
 import { create } from "zustand";
 
-type CartItem = {
+interface CartItem {
   id: number;
   name: string;
   price: number;
   quantity: number;
   imagePath: string;
-};
+}
 
-type CartState = {
+interface CartState {
   cartItems: CartItem[];
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
   clearCart: () => void;
-};
+}
 
 export const useCartStore = create<CartState>((set, get) => ({
   cartItems: JSON.parse(localStorage.getItem("cart") || "[]"),
 
   addToCart: (item) => {
-    const existing = get().cartItems.find((i) => i.id === item.id);
+    const existingItem = get().cartItems.find((i) => i.id === item.id);
     let updatedCart;
-    if (existing) {
+    if (existingItem) {
       updatedCart = get().cartItems.map((i) => (i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i));
     } else {
       updatedCart = [...get().cartItems, item];
