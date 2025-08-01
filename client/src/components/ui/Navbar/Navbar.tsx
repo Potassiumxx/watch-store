@@ -71,13 +71,13 @@ export default function Navbar() {
   }
 
   // Go to collection section in home page
-  function handleGoToCollection() {
+  function handleGoToAboutUs() {
     if (location.pathname === "/") {
-      const collectionSection = document.getElementById("collection");
+      const collectionSection = document.getElementById("about-us");
       if (collectionSection) collectionSection.scrollIntoView({ behavior: "smooth" });
     } else {
       // Pass the "state" to the "/" location when navigating. The state is stored in memory by React Router. It can only be read by Home.tsx.
-      navigate("/", { state: { scrollTo: "collection" } });
+      navigate("/", { state: { scrollTo: "about-us" } });
     }
   }
 
@@ -162,16 +162,16 @@ export default function Navbar() {
               }}>
               Home
             </NavLink>
-            <button className="navbar-link-style" onClick={handleGoToCollection}>
-              Collection
-            </button>
             <NavLink
-              to={"about"}
+              to={"/products"}
               className={({ isActive }) => {
                 return isActive ? "navbar-link-style border-b-2 border-white" : "navbar-link-style";
               }}>
-              About Us
+              Products
             </NavLink>
+            <button className="navbar-link-style" onClick={handleGoToAboutUs}>
+              About Us
+            </button>
           </div>
         </div>
       </div>
