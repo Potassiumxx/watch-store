@@ -4,6 +4,7 @@ import { ErrorMessage } from "../Error/ErrorMessage";
 import Form from "../Form/Form";
 import FormFieldWrapper from "../FormFieldWrapper/FormFieldWrapper";
 import Input from "../Input/Input";
+import SelectField from "../Input/SelectField/SelectField";
 import Textarea from "../Textarea/Textarea";
 
 interface ProductFormProps {
@@ -67,10 +68,18 @@ export default function ProductForm({
         useVerticalLabelErrorStyle={true}
         error={stringFieldError.productCategory}
         positionRow={true}>
-        <Input
+        {/*<Input
           id="product-category"
           name="productCategory"
           placeholder="Digital Watch"
+          value={values.productCategory}
+          onChange={(e) => onChange(e)}
+          error={stringFieldError.productCategory}
+        />*/}
+        <SelectField
+          id="product-category"
+          name="productCategory"
+          aria-placeholder="Digital Watch"
           value={values.productCategory}
           onChange={(e) => onChange(e)}
           error={stringFieldError.productCategory}
