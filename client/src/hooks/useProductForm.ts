@@ -27,7 +27,7 @@ interface ValidateProductFormFieldsProps {
 }
 
 interface HandleProductFieldOnChangeProps<T> {
-  event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>;
+  event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>;
   values: T;
   dirtyField: DirtyFieldState<T>;
   setStringError: (key: keyof T, error: string) => void;

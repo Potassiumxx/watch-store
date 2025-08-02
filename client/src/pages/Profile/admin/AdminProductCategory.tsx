@@ -6,14 +6,15 @@ import * as React from "react";
 import Input from "../../../components/ui/Input/Input";
 import Button from "../../../components/ui/Button/Button";
 import { addNewCategory } from "../../../services/api/productAPI";
+import axios from "axios";
 
 export default function AdminProductCategory() {
   const newProductCategory = useProductStore((state) => state.newProductCategory);
   const setNewProductCategory = useProductStore((state) => state.setNewProductCategory);
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<string | undefined>("");
   const [message, setMessage] = React.useState<string | null>(null);
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (newProductCategory === "") return setError("Product category cannot be empty");
 
@@ -23,18 +24,27 @@ export default function AdminProductCategory() {
       await addNewCategory(newProductCategory);
       setMessage("Product category added.");
     } catch (error) {
-      const backendMessage = error.response.data.errors?.["Product Category"];
-      if (backendMessage) setError(backendMessage);
-      else setError("Something went wrong!");
+      if (axios.isAxiosError(error)) {
+        const backendMessage = error.response?.data?.errors?.["Product Category"];
+        if (backendMessage) {
+          setError(backendMessage);
+        } else {
+          setError("Something went wrong.");
+        }
+      } else {
+        console.log("Unexpected error:", error);
+        setError("Unexpected error occurred.");
+      }
     }
   }
 
-  function handleOnChange(e) {
+  function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     if (message) setMessage(null);
     const value = e.target.value;
 
-    if (error && value !== "") setError(null);
+    if (error && value !== "") setError("");
+    if (value === "") setError("Product Category cannot be empty");
 
     setNewProductCategory(value);
   }
@@ -50,6 +60,7 @@ export default function AdminProductCategory() {
             useVerticalLabelErrorStyle={true}
             error={error}
             positionRow={true}
+            onSuccessMessage={message}
           >
             <Input
               id="add-product-category"
@@ -60,9 +71,6 @@ export default function AdminProductCategory() {
               error={error}
             />
           </FormFieldWrapper>
-          {
-            message && <span className="text-green-400 text-center text-[15px]">{message}</span>
-          }
           <Button textValue="Submit" className="formButtonStyle w-[40%] self-center mt-5" />
         </Form>
 

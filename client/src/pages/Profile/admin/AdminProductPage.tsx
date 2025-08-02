@@ -46,6 +46,8 @@ export default function AdminProductPage() {
 
   const fileName = useProductStore((state) => state.productFileName);
 
+  const [message, setMessage] = React.useState<string | null>(null);
+
   async function handleAddProductSubmit(e: React.FormEvent) {
     e.preventDefault();
 
@@ -72,7 +74,7 @@ export default function AdminProductPage() {
       setError: setProductStringFormError,
     });
 
-    if (response) console.log("done");
+    if (response) setMessage("Product added successfully!");
   }
 
   React.useEffect(() => {
@@ -110,6 +112,7 @@ export default function AdminProductPage() {
           stringFieldError={productStringErrorFields}
           fileFieldError={productFileErrorFields}
           generalError={generalError}
+          onSuccessMessage={message}
         />
       </div>
     </ProfileContentContainer>

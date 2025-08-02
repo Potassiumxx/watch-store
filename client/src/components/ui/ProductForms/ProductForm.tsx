@@ -1,3 +1,4 @@
+import * as React from "react";
 import { ProductFileFormValidationReturnType, ProductFormStringFields, ProductStringFormValidationReturnType } from "../../../types/productType";
 import Button from "../Button/Button";
 import { ErrorMessage } from "../Error/ErrorMessage";
@@ -5,6 +6,7 @@ import Form from "../Form/Form";
 import FormFieldWrapper from "../FormFieldWrapper/FormFieldWrapper";
 import Input from "../Input/Input";
 import SelectField from "../Input/SelectField/SelectField";
+import SuccessMessage from "../SuccessMessage/SuccessMessage";
 import Textarea from "../Textarea/Textarea";
 
 interface ProductFormProps {
@@ -12,10 +14,11 @@ interface ProductFormProps {
   stringFieldError: ProductStringFormValidationReturnType;
   fileFieldError: ProductFileFormValidationReturnType;
   values: ProductFormStringFields;
-  onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>) => void;
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   generalError?: string | null;
   buttonTextValue?: string
+  onSuccessMessage?: string | null;
 }
 
 export default function ProductForm({
@@ -26,6 +29,7 @@ export default function ProductForm({
   stringFieldError,
   fileFieldError,
   generalError,
+  onSuccessMessage,
   buttonTextValue = "Submit"
 }: ProductFormProps) {
   return (
@@ -135,6 +139,7 @@ export default function ProductForm({
       </FormFieldWrapper>
 
       {generalError && <ErrorMessage message={generalError} className="absolute bottom-[5.5rem]" />}
+      {onSuccessMessage && <SuccessMessage message={onSuccessMessage} />}
       <Button className="formButtonStyle w-[40%] self-center mt-7" textValue={buttonTextValue} />
     </Form>
   )
