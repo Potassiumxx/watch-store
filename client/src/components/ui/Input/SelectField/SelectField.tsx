@@ -35,6 +35,8 @@ export default function SelectField({ id, ...attributes }: SelectFieldProps) {
 
   if (error) return <span>Could not get category options.</span>
 
+  if (options.length === 0) return <span className="text-white">No category to select. Add a category first.</span>
+
   return (
     <select
       id={id} {...attributes}
