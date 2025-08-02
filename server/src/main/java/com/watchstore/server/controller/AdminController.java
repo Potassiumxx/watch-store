@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.watchstore.server.dto.category.CategoryRequest;
 import com.watchstore.server.dto.product.ProductRequest;
+import com.watchstore.server.model.ProductCategory;
+import com.watchstore.server.service.ProductCategoryService;
 import com.watchstore.server.service.ProductService;
 
 @RestController
@@ -19,6 +22,8 @@ import com.watchstore.server.service.ProductService;
 public class AdminController {
   @Autowired
   private ProductService productService;
+  @Autowired
+  private ProductCategoryService categoryService;
 
   @PostMapping("/add-product")
   public ResponseEntity<Object> addProduct(@ModelAttribute ProductRequest productRequest) {
@@ -58,6 +63,17 @@ public class AdminController {
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body("Failed to delete product");
+    }
+  }
+
+  @PostMapping("/add-category")
+  public ResponseEntity<Object> addCategory(@ModelAttribute CategoryRequest categoryRequest) {
+    try {
+      categoryService.createCategory(categoryRequest);
+      return new ResponseEntity<>("Category created", HttpStatus.CREATED);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return new ResponseEntity<>("Could not add category", HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 

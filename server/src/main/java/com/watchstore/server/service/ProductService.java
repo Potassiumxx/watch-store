@@ -13,6 +13,7 @@ import com.watchstore.server.dto.product.ProductDTO;
 import com.watchstore.server.dto.product.ProductRequest;
 import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Product;
+import com.watchstore.server.model.ProductCategory;
 import com.watchstore.server.repository.InventoryRepository;
 import com.watchstore.server.repository.ProductRepository;
 import com.watchstore.server.util.FileStorageUtil;
@@ -37,10 +38,12 @@ public class ProductService {
       throw new IOException(e.getMessage());
     }
 
+    ProductCategory category = new ProductCategory(productRequest.getProductCategory());
+
     Product product = new Product();
     product.setName(productRequest.getProductName());
     product.setPrice(productRequest.getProductPrice());
-    product.setCategory(productRequest.getProductCategory());
+    product.setCategory(category);
     product.setDescription(productRequest.getProductDescription());
     product.setImage(randomFileName);
 
@@ -70,8 +73,10 @@ public class ProductService {
       throw new IOException(e.getMessage());
     }
 
+    ProductCategory category = new ProductCategory(productRequest.getProductCategory());
+
     existingProduct.setName(productRequest.getProductName());
-    existingProduct.setCategory(productRequest.getProductCategory());
+    existingProduct.setCategory(category);
     existingProduct.setDescription(productRequest.getProductDescription());
     existingProduct.setPrice(productRequest.getProductPrice());
 

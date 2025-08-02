@@ -2,6 +2,7 @@ package com.watchstore.server.dto.product;
 
 import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Product;
+import com.watchstore.server.model.ProductCategory;
 
 public class ProductDTO {
   private long id;
@@ -16,7 +17,7 @@ public class ProductDTO {
     this.id = product.getId();
     this.name = product.getName();
     this.price = product.getPrice();
-    this.category = product.getCategory();
+    this.category = product.getCategory().getCategoryName();
     this.description = product.getDescription();
     this.imagePath = product.getImage();
     this.quantity = inventory.getQuantity();
