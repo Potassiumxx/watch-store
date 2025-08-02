@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -67,7 +68,7 @@ public class AdminController {
   }
 
   @PostMapping("/add-category")
-  public ResponseEntity<Object> addCategory(@ModelAttribute CategoryRequest categoryRequest) {
+  public ResponseEntity<Object> addCategory(@RequestBody CategoryRequest categoryRequest) {
     try {
       categoryService.createCategory(categoryRequest);
       return new ResponseEntity<>("Category created", HttpStatus.CREATED);

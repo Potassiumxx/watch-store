@@ -69,7 +69,8 @@ export async function deleteProduct(productID: number) {
 
 export async function addNewCategory(categoryName: string) {
   try {
-    const response = await axios.post(`${BACKEND_API_URL}/admin/add-category`, categoryName);
+    console.log(categoryName);
+    const response = await axios.post(`${BACKEND_API_URL}/admin/add-category`, { categoryName });
     console.log(response);
     return response.data;
   } catch (error) {

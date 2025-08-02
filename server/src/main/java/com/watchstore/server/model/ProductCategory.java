@@ -1,12 +1,10 @@
 package com.watchstore.server.model;
 
-import java.util.List;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,13 +14,14 @@ public class ProductCategory {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
-  private String category_name;
+  @Column(name = "category_name")
+  private String categoryName;
 
   public ProductCategory() {
   };
 
   public ProductCategory(String categoryName) {
-    this.category_name = categoryName;
+    this.categoryName = categoryName;
   }
 
   public Long getId() {
@@ -30,11 +29,11 @@ public class ProductCategory {
   }
 
   public String getCategoryName() {
-    return category_name;
+    return categoryName;
   }
 
   public void setCategoryName(String categoryName) {
-    this.category_name = categoryName;
+    this.categoryName = categoryName;
   }
 
 }
