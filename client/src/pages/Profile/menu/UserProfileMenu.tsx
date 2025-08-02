@@ -19,18 +19,29 @@ export default function UserProfileMenu() {
           My Account
         </NavLink>
         {role === ROLES.ADMIN
-          &&
-          <NavLink
-            to={"product-management"}
-            className={({ isActive }) => {
-              return isActive
-                ? "w-full text-center duration-200 py-2 bg-white/[.95] text-black font-bold"
-                : "w-full text-center duration-200 py-2 hover:bg-white hover:text-black";
-            }}>
-            Products
-          </NavLink>
+          && (
+            <>
+              < NavLink
+                to={"product-management"}
+                className={({ isActive }) => {
+                  return isActive
+                    ? "w-full text-center duration-200 py-2 bg-white/[.95] text-black font-bold"
+                    : "w-full text-center duration-200 py-2 hover:bg-white hover:text-black";
+                }}>
+                Products
+              </NavLink>
+              <NavLink to={"product-category"}
+                className={({ isActive }) => {
+                  return isActive
+                    ? "w-full text-center duration-200 py-2 bg-white/[.95] text-black font-bold"
+                    : "w-full text-center duration-200 py-2 hover:bg-white hover:text-black";
+                }}>
+                Product Category
+              </NavLink>
+            </>
+          )
         }
       </div>
-    </div>
+    </div >
   );
 }

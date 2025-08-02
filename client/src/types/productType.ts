@@ -28,6 +28,10 @@ export type ProductFileFormValidationReturnType = {
   productImage?: string;
 };
 
+export interface ProductCategoryFormFields {
+  newProductCategory: string;
+}
+
 export type ProductFormFields = ProductFormStringFields & ProductFormFileField;
 
 export interface ProductFormResponse {

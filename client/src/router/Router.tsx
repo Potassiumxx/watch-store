@@ -4,6 +4,7 @@ import Home from "../pages/Home/Home";
 import ErrorPage from "../pages/ErrorPage";
 import UserProfile from "../pages/Profile/UserProfile";
 import AdminProductPage from "../pages/Profile/admin/AdminProductPage";
+import AdminProductCategory from "../pages/Profile/admin/AdminProductCategory";
 import UserAccount from "../pages/Profile/account/UserAccount";
 import Products from "../pages/Products/Products";
 import SingleProductPage from "../pages/Products/SingleProduct";
@@ -24,6 +25,7 @@ export default function Router() {
             children: [
               { index: true, element: <UserAccount /> },
               { path: "product-management", element: <AdminProductPage /> },
+              { path: "product-category", element: <AdminProductCategory /> },
             ],
           },
         ],

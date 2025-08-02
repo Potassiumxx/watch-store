@@ -67,6 +67,22 @@ export async function deleteProduct(productID: number) {
   }
 }
 
+export async function addNewCategory(categoryName: string) {
+  try {
+    const response = await axios.post(`${BACKEND_API_URL}/admin/add-category`, categoryName);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("Axios error:", error.response?.data);
+      throw error;
+    } else {
+      console.log("Unexpected error:", error);
+      throw error;
+    }
+  }
+}
+
 export async function getAllProducts(): Promise<ProductDTO[]> {
   try {
     const response = await axios.get(`${BACKEND_API_URL}/products`);
