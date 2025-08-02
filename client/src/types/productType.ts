@@ -48,6 +48,11 @@ export interface ProductDTO {
   imagePath: string;
 }
 
+export interface CategoryDTO {
+  id: number;
+  categoryName: string;
+}
+
 export interface ProductStore extends ProductFormStringFields, ProductFormFileField {
   productID: string;
   productStringErrorFields: Partial<ProductStringFormValidationReturnType>;

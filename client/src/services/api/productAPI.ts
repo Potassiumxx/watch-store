@@ -1,6 +1,6 @@
 import axios from "axios";
 import { BACKEND_API_URL } from "../../utils/constants";
-import { ProductDTO, ProductFormFields, ProductFormResponse } from "../../types/productType";
+import { CategoryDTO, ProductDTO, ProductFormFields, ProductFormResponse } from "../../types/productType";
 
 function appendFormData(productData: ProductFormFields): FormData {
   const formData = new FormData();
@@ -103,6 +103,22 @@ export async function getAllProducts(): Promise<ProductDTO[]> {
 export async function getProductByID(productID: number) {
   try {
     const response = await axios.get(`${BACKEND_API_URL}/products/${productID}`);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data);
+      throw error;
+    } else {
+      console.error("Unexpected error:", error);
+      throw error;
+    }
+  }
+}
+
+export async function getAllProductCategories(): Promise<CategoryDTO[]> {
+  try {
+    const response = await axios.get(`${BACKEND_API_URL}/product-category`);
     console.log(response);
     return response.data;
   } catch (error) {
