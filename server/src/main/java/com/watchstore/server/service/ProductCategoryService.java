@@ -1,8 +1,11 @@
 package com.watchstore.server.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.watchstore.server.dto.category.CategoryDTO;
 import com.watchstore.server.dto.category.CategoryRequest;
 import com.watchstore.server.model.ProductCategory;
 import com.watchstore.server.repository.ProductCategoryRepository;
@@ -22,5 +25,10 @@ public class ProductCategoryService {
     categoryRepository.save(productCategory);
 
     return "Category added";
+  }
+
+  public List<CategoryDTO> getAllCategories() {
+    List<ProductCategory> categories = categoryRepository.findAll();
+    return categories.stream().map(category -> new CategoryDTO(category.getId(), category.getCategoryName())).toList();
   }
 }

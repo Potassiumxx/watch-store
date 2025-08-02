@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.watchstore.server.dto.category.CategoryRequest;
 import com.watchstore.server.dto.product.ProductRequest;
-import com.watchstore.server.model.ProductCategory;
 import com.watchstore.server.service.ProductCategoryService;
 import com.watchstore.server.service.ProductService;
 

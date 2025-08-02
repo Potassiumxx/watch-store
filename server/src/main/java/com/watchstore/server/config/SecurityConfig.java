@@ -19,6 +19,7 @@ public class SecurityConfig {
             .requestMatchers("/api/auth/**").permitAll()
             .requestMatchers("/api/admin/**").permitAll()
             .requestMatchers("/api/products", "/api/products/**").permitAll()
+            .requestMatchers("/api/product-category").permitAll()
             .requestMatchers("/images/**").permitAll()
             .anyRequest().authenticated())
         .httpBasic(Customizer.withDefaults()); // optional: enable basic auth if needed
