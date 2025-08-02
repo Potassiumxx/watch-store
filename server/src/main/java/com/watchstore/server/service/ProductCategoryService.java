@@ -17,7 +17,7 @@ public class ProductCategoryService {
 
   public String createCategory(CategoryRequest categoryRequest) throws Exception {
     if (categoryRepository.findByCategoryName(categoryRequest.getCategoryName().toLowerCase()).isPresent()) {
-      throw new Exception(categoryRequest.getCategoryName() + "already exists!");
+      throw new Exception(categoryRequest.getCategoryName() + " already exists!");
     }
 
     ProductCategory productCategory = new ProductCategory(categoryRequest.getCategoryName());

@@ -10,20 +10,28 @@ import { addNewCategory } from "../../../services/api/productAPI";
 export default function AdminProductCategory() {
   const newProductCategory = useProductStore((state) => state.newProductCategory);
   const setNewProductCategory = useProductStore((state) => state.setNewProductCategory);
-  const [error, setError] = React.useState < string | null > (null);
+  const [error, setError] = React.useState<string | null>(null);
+  const [message, setMessage] = React.useState<string | null>(null);
 
   async function handleSubmit(e) {
     e.preventDefault();
     if (newProductCategory === "") return setError("Product category cannot be empty");
 
-    await addNewCategory(newProductCategory);
+    if (message) setMessage(null);
 
-    console.log("submitted " + newProductCategory);
-
+    try {
+      await addNewCategory(newProductCategory);
+      setMessage("Product category added.");
+    } catch (error) {
+      const backendMessage = error.response.data.errors?.["Product Category"];
+      if (backendMessage) setError(backendMessage);
+      else setError("Something went wrong!");
+    }
   }
 
   function handleOnChange(e) {
     e.preventDefault();
+    if (message) setMessage(null);
     const value = e.target.value;
 
     if (error && value !== "") setError(null);
@@ -52,6 +60,9 @@ export default function AdminProductCategory() {
               error={error}
             />
           </FormFieldWrapper>
+          {
+            message && <span className="text-green-400 text-center text-[15px]">{message}</span>
+          }
           <Button textValue="Submit" className="formButtonStyle w-[40%] self-center mt-5" />
         </Form>
 

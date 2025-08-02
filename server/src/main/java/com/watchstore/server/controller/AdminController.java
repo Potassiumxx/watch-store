@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.watchstore.server.dto.category.CategoryRequest;
 import com.watchstore.server.dto.product.ProductRequest;
+import com.watchstore.server.dto.response.FieldErrorResponse;
 import com.watchstore.server.service.ProductCategoryService;
 import com.watchstore.server.service.ProductService;
 
@@ -72,8 +73,9 @@ public class AdminController {
       categoryService.createCategory(categoryRequest);
       return new ResponseEntity<>("Category created", HttpStatus.CREATED);
     } catch (Exception e) {
-      e.printStackTrace();
-      return new ResponseEntity<>("Could not add category", HttpStatus.INTERNAL_SERVER_ERROR);
+      FieldErrorResponse errorResponse = new FieldErrorResponse();
+      errorResponse.addError("Product Category", e.getMessage());
+      return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
   }
 

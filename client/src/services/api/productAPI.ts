@@ -75,7 +75,6 @@ export async function addNewCategory(categoryName: string) {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log("Axios error:", error.response?.data);
       throw error;
     } else {
       console.log("Unexpected error:", error);
