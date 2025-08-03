@@ -56,6 +56,16 @@ export default function AdminProductCategory() {
     }
   }
 
+  async function handleCategoryDelete(categoryID: number) {
+    try {
+      const response = await deleteCategory(categoryID);
+      fetchCategories();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async function fetchCategories() {
     setIsLoading(true);
     setFetchCategoriesError(null);
@@ -71,15 +81,6 @@ export default function AdminProductCategory() {
     }
   }
 
-  async function handleCategoryDelete(categoryID: number) {
-    try {
-      const response = await deleteCategory(categoryID);
-      fetchCategories();
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -133,27 +134,34 @@ export default function AdminProductCategory() {
             </div>
           ) : (
             <ul className="w-full px-10 space-y-4">
-              {categories.map((category) => (
-                <li
-                  key={category.id}
-                  className="flex items-center justify-between border border-white/[.5] px-6 py-4 hover:shadow-lg hover:border-white hover:shadow-md hover:shadow-gray-400 duration-200"
-                >
-                  <div className="flex flex-col">
-                    <span className="text-white font-medium text-lg">{category.categoryName}</span>
-                    <span className="text-gray-400 text-sm">Products in use: {category.productCount}</span>
-                  </div>
+              {categories.map((category) => {
+                const isCategoryInUse: boolean = category.productCount > 0;
+                return (
+                  <li
+                    key={category.id}
+                    className="flex items-center justify-between border border-white/[.5] px-6 py-4 hover:shadow-lg hover:border-white hover:shadow-md hover:shadow-gray-400 duration-200"
+                  >
+                    <div className="flex flex-col">
+                      <span className="text-white font-medium text-lg">{category.categoryName}</span>
+                      <span className="text-gray-400 text-sm">Products in use: {category.productCount}</span>
+                    </div>
 
-                  <div className="flex gap-4">
-                    <button className="text-white px-2 transition rounded-sm text-3xl hover:bg-white hover:text-black"><CiEdit /></button>
-                    <button
-                      onClick={() => {
-                        setShowConfirmModal(true);
-                        setCategoryToDelete(category);
-                      }}
-                      className="text-white px-2 transition rounded-sm text-3xl hover:bg-red-600 hover:text-black"><MdDeleteOutline /></button>
-                  </div>
-                </li>
-              ))}
+                    <div className="flex gap-4">
+                      <button className="text-white px-2 transition rounded-sm text-3xl hover:bg-white hover:text-black"><CiEdit /></button>
+                      <button
+                        onClick={() => {
+                          if (!isCategoryInUse) {
+                            setShowConfirmModal(true);
+                            setCategoryToDelete(category);
+                          }
+                        }}
+                        className={`text-white px-2 transition rounded-sm text-3xl 
+                        ${isCategoryInUse ? "cursor-not-allowed text-gray-400" : "hover:bg-red-600 hover:text-black"}`
+                        }><MdDeleteOutline /></button>
+                    </div>
+                  </li>
+                )
+              })}
             </ul>
           )}
         </div>
