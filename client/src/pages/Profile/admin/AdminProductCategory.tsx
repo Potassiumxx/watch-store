@@ -28,6 +28,8 @@ export default function AdminProductCategory() {
     id: 0,
     categoryName: "",
   })
+  const [editingCategoryID, setEditingCategoryID] = React.useState<number | null>(null);
+  const [editedCategoryName, setEditedCategoryName] = React.useState<string>("");
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [showConfirmModal, setShowConfirmModal] = React.useState<boolean>(false);
@@ -136,18 +138,40 @@ export default function AdminProductCategory() {
             <ul className="w-full px-10 space-y-4">
               {categories.map((category) => {
                 const isCategoryInUse: boolean = category.productCount > 0;
+                const inEditMode = editingCategoryID === category.id;
                 return (
                   <li
                     key={category.id}
                     className="flex items-center justify-between border border-white/[.5] px-6 py-4 hover:shadow-lg hover:border-white hover:shadow-md hover:shadow-gray-400 duration-200"
                   >
-                    <div className="flex flex-col">
-                      <span className="text-white font-medium text-lg">{category.categoryName}</span>
-                      <span className="text-gray-400 text-sm">Products in use: {category.productCount}</span>
-                    </div>
+                    {
+                      inEditMode ? (
+                        <div className="flex items-center gap-8">
+                          <input
+                            value={editedCategoryName}
+                            autoFocus
+                            onChange={(e) => setEditedCategoryName(e.target.value)}
+                            className="outline-none border-b-2 px-2 bg-transparent text-white"
+                          />
+                          <button className="text-white hover:bg-[#1bddf3] hover:text-black px-2 rounded-sm duration-200">Save</button>
+                          <button className="text-white hover:bg-white hover:text-black px-2 rounded-sm duration-200">Cancel</button>
+                        </div>
+                      ) :
+                        <div className="flex flex-col">
+                          <span className="text-white font-medium text-lg">{category.categoryName}</span>
+                          <span className="text-gray-400 text-sm">Products in use: {category.productCount}</span>
+                        </div>
+                    }
 
                     <div className="flex gap-4">
-                      <button className="text-white px-2 transition rounded-sm text-3xl hover:bg-white hover:text-black"><CiEdit /></button>
+                      <button
+                        onClick={() => {
+                          setEditingCategoryID(category.id);
+                          setEditedCategoryName(category.categoryName);
+                        }}
+                        className="text-white px-2 transition rounded-sm text-3xl hover:bg-white hover:text-black">
+                        <CiEdit />
+                      </button>
                       <button
                         onClick={() => {
                           if (!isCategoryInUse) {
