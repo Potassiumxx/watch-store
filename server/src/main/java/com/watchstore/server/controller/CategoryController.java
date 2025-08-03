@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.watchstore.server.dto.category.CategoryDTO;
-import com.watchstore.server.service.ProductCategoryService;
+import com.watchstore.server.service.CategoryService;
 
 @RestController
 @RequestMapping("/api/product-category")
-public class ProductCategoryController {
-  private final ProductCategoryService categoryService;
+public class CategoryController {
+  private final CategoryService categoryService;
 
-  public ProductCategoryController(ProductCategoryService categoryService) {
+  public CategoryController(CategoryService categoryService) {
     this.categoryService = categoryService;
   }
 

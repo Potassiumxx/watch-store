@@ -8,26 +8,26 @@ import org.springframework.stereotype.Service;
 import com.watchstore.server.dto.category.CategoryDTO;
 import com.watchstore.server.dto.category.CategoryRequest;
 import com.watchstore.server.exceptions.BadRequestException;
-import com.watchstore.server.model.ProductCategory;
-import com.watchstore.server.repository.ProductCategoryRepository;
+import com.watchstore.server.model.Category;
+import com.watchstore.server.repository.CategoryRepository;
 
 @Service
-public class ProductCategoryService {
+public class CategoryService {
   @Autowired
-  private ProductCategoryRepository categoryRepository;
+  private CategoryRepository categoryRepository;
 
   public void createCategory(CategoryRequest categoryRequest) {
     if (categoryRepository.findByCategoryName(categoryRequest.getCategoryName().toLowerCase()).isPresent()) {
       throw new BadRequestException(categoryRequest.getCategoryName() + " already exists!");
     }
 
-    ProductCategory productCategory = new ProductCategory(categoryRequest.getCategoryName());
+    Category category = new Category(categoryRequest.getCategoryName());
 
-    categoryRepository.save(productCategory);
+    categoryRepository.save(category);
   }
 
   public List<CategoryDTO> getAllCategories() {
-    List<ProductCategory> categories = categoryRepository.findAll();
+    List<Category> categories = categoryRepository.findAll();
     return categories.stream().map(category -> new CategoryDTO(category.getId(), category.getCategoryName())).toList();
   }
 }

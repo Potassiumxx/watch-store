@@ -2,7 +2,6 @@ package com.watchstore.server.dto.product;
 
 import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Product;
-import com.watchstore.server.model.ProductCategory;
 
 public class ProductDTO {
   private long id;

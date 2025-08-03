@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.watchstore.server.dto.category.CategoryRequest;
 import com.watchstore.server.dto.product.ProductRequest;
-import com.watchstore.server.service.ProductCategoryService;
+import com.watchstore.server.service.CategoryService;
 import com.watchstore.server.service.ProductService;
 
 @RestController
@@ -23,7 +23,7 @@ public class AdminController {
   @Autowired
   private ProductService productService;
   @Autowired
-  private ProductCategoryService categoryService;
+  private CategoryService categoryService;
 
   @PostMapping("/add-product")
   public ResponseEntity<Object> addProduct(@ModelAttribute ProductRequest productRequest) {

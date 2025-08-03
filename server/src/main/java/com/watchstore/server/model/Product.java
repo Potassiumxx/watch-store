@@ -24,7 +24,7 @@ public class Product {
 
   @ManyToOne
   @JoinColumn(name = "category_id", nullable = false, unique = true)
-  private ProductCategory category;
+  private Category category;
 
   @Column(nullable = false)
   private String description;
@@ -35,7 +35,7 @@ public class Product {
   public Product() {
   };
 
-  public Product(String name, double price, ProductCategory category, String description, String image) {
+  public Product(String name, double price, Category category, String description, String image) {
     this.name = name;
     this.price = price;
     this.category = category;
@@ -55,7 +55,7 @@ public class Product {
     return price;
   }
 
-  public ProductCategory getCategory() {
+  public Category getCategory() {
     return category;
   }
 
@@ -75,7 +75,7 @@ public class Product {
     this.price = price;
   }
 
-  public void setCategory(ProductCategory category) {
+  public void setCategory(Category category) {
     this.category = category;
   }
 

@@ -34,7 +34,7 @@ export default function SelectField({ id, error, ...attributes }: SelectFieldPro
 
   if (isLoading) return <Loader />
 
-  if (fetchError) return <span>Could not get category options.</span>
+  if (fetchError) return <span className="text-white">Could not get category options. Try again later.</span>
 
   if (options.length === 0) return <Link to={"/profile/product-category"} className="text-white underline underline-offset-4 tracking-wide">No categories yet. Click here to create one.</Link>
 

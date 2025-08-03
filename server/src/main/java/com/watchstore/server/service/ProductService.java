@@ -15,9 +15,9 @@ import com.watchstore.server.exceptions.BadRequestException;
 import com.watchstore.server.exceptions.ResourceNotFoundException;
 import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Product;
-import com.watchstore.server.model.ProductCategory;
+import com.watchstore.server.model.Category;
 import com.watchstore.server.repository.InventoryRepository;
-import com.watchstore.server.repository.ProductCategoryRepository;
+import com.watchstore.server.repository.CategoryRepository;
 import com.watchstore.server.repository.ProductRepository;
 import com.watchstore.server.util.FileStorageUtil;
 
@@ -28,7 +28,7 @@ public class ProductService {
   @Autowired
   private InventoryRepository inventoryRepository;
   @Autowired
-  private ProductCategoryRepository categoryRepository;
+  private CategoryRepository categoryRepository;
 
   private final String uploadDirectory = "/home/asus/Pictures";
 
@@ -42,7 +42,7 @@ public class ProductService {
       throw new RuntimeException(e.getMessage());
     }
 
-    ProductCategory category = categoryRepository
+    Category category = categoryRepository
         .findByCategoryName(productRequest.getProductCategory().toLowerCase())
         .orElseThrow(() -> new BadRequestException("Category not found."));
 
@@ -83,7 +83,7 @@ public class ProductService {
       throw new RuntimeException(e.getMessage());
     }
 
-    ProductCategory category = new ProductCategory(productRequest.getProductCategory());
+    Category category = new Category(productRequest.getProductCategory());
 
     existingProduct.setName(productRequest.getProductName());
     existingProduct.setCategory(category);

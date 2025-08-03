@@ -1,12 +1,12 @@
 package com.watchstore.server.dto.category;
 
-import com.watchstore.server.model.ProductCategory;
+import com.watchstore.server.model.Category;
 
 public class CategoryDTO {
   private long id;
   private String categoryName;
 
-  public CategoryDTO(ProductCategory category) {
+  public CategoryDTO(Category category) {
     this.categoryName = category.getCategoryName();
   }
 
