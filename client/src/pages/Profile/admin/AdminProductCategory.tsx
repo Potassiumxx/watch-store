@@ -25,7 +25,7 @@ export default function AdminProductCategory() {
       setMessage("Product category added.");
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const backendMessage = error.response?.data?.errors?.["Product Category"];
+        const backendMessage = error.response?.data;
         if (backendMessage) {
           setError(backendMessage);
         } else {
