@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.watchstore.server.dto.response.FieldErrorResponse;
 import com.watchstore.server.dto.auth.LoginRequest;
 import com.watchstore.server.dto.auth.RegisterRequest;
 import com.watchstore.server.dto.auth.UserDTO;
@@ -24,28 +23,14 @@ public class AuthController {
   // Login Route
   @PostMapping("/login")
   public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
-    try {
-      UserDTO userDTO = authService.login(loginRequest);
-      return ResponseEntity.ok(AuthResponseUtil.buildAuthResponse((userDTO)));
-
-    } catch (Exception e) {
-      FieldErrorResponse errorResponse = new FieldErrorResponse();
-      errorResponse.addError("email", e.getMessage());
-      errorResponse.addError("password", e.getMessage());
-      return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
-    }
+    UserDTO userDTO = authService.login(loginRequest);
+    return ResponseEntity.ok(AuthResponseUtil.buildAuthResponse((userDTO)));
   }
 
   // Register Route
   @PostMapping("/register")
   public ResponseEntity<Object> register(@RequestBody RegisterRequest registerRequest) {
-    try {
-      UserDTO userDTO = authService.register(registerRequest);
-      return new ResponseEntity<>(AuthResponseUtil.buildAuthResponse(userDTO), HttpStatus.CREATED);
-    } catch (Exception e) {
-      FieldErrorResponse errorResponse = new FieldErrorResponse();
-      errorResponse.addError("email", e.getMessage());
-      return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
+    UserDTO userDTO = authService.register(registerRequest);
+    return new ResponseEntity<>(AuthResponseUtil.buildAuthResponse(userDTO), HttpStatus.CREATED);
   }
 }

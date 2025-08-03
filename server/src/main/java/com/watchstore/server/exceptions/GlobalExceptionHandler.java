@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.watchstore.server.dto.response.FieldErrorResponse;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
   @ExceptionHandler(BadRequestException.class)
@@ -15,5 +17,16 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(ResourceNotFoundException.class)
   public ResponseEntity<Object> handleRequestNotFound(ResourceNotFoundException error) {
     return new ResponseEntity<>(error.getMessage(), HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(UnauthorisedException.class)
+  public ResponseEntity<Object> handleUnauthorised(UnauthorisedException error) {
+    FieldErrorResponse fieldErrorResponse = error.getErrorResponse();
+
+    if (fieldErrorResponse != null) {
+      return new ResponseEntity<>(fieldErrorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    return new ResponseEntity<>(error.getMessage(), HttpStatus.UNAUTHORIZED);
   }
 }
