@@ -5,14 +5,22 @@ import { useProductStore } from "../../../store/productStore";
 import * as React from "react";
 import Input from "../../../components/ui/Input/Input";
 import Button from "../../../components/ui/Button/Button";
-import { addNewCategory } from "../../../services/api/productAPI";
+import { addNewCategory, getAllProductCategories } from "../../../services/api/productAPI";
 import axios from "axios";
+import { CategoryDTO } from "../../../types/productType";
+import { fetchErrorCatcher } from "../../../utils/helpers";
+import Loader from "../../../components/ui/Loader/Loader";
+import { CiEdit } from "react-icons/ci";
+import { MdDeleteOutline } from "react-icons/md";
 
 export default function AdminProductCategory() {
   const newProductCategory = useProductStore((state) => state.newProductCategory);
   const setNewProductCategory = useProductStore((state) => state.setNewProductCategory);
   const [error, setError] = React.useState<string | undefined>("");
+  const [fetchCategoriesError, setFetchCategoriesError] = React.useState<string | null>(null);
   const [message, setMessage] = React.useState<string | null>(null);
+  const [categories, setCategories] = React.useState<CategoryDTO[]>([]);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -38,6 +46,21 @@ export default function AdminProductCategory() {
     }
   }
 
+  async function fetchCategories() {
+    setIsLoading(true);
+    setFetchCategoriesError(null);
+
+    try {
+      const data = await getAllProductCategories();
+      setCategories(data);
+    } catch (error) {
+      if (error instanceof Error) setFetchCategoriesError(error.message);
+      else setFetchCategoriesError("Unknown error occurred.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     if (message) setMessage(null);
@@ -49,31 +72,66 @@ export default function AdminProductCategory() {
     setNewProductCategory(value);
   }
 
+  React.useEffect(() => {
+    fetchCategories();
+  }, [])
+
   return (
     <ProfileContentContainer title="Product Category">
-      <div className="innerDivBackgroundColour shadow-black shadow-lg rounded-md px-20">
-        <h2 className="text-2xl text-white text-center py-4">Add New Category</h2>
-        <Form handleFormSubmit={handleSubmit}>
-          <FormFieldWrapper
-            label="Product Category"
-            id="add-product-category"
-            useVerticalLabelErrorStyle={true}
-            error={error}
-            positionRow={true}
-            onSuccessMessage={message}
-          >
-            <Input
+      <div className="flex flex-col gap-20">
+        <div className="innerDivBackgroundColour shadow-black shadow-lg rounded-md px-20">
+          <h2 className="text-2xl text-white text-center py-4">Add New Category</h2>
+          <Form handleFormSubmit={handleSubmit}>
+            <FormFieldWrapper
+              label="Product Category"
               id="add-product-category"
-              name="newProductCategory"
-              placeholder="Digital Watch"
-              value={newProductCategory}
-              onChange={handleOnChange}
+              useVerticalLabelErrorStyle={true}
               error={error}
-            />
-          </FormFieldWrapper>
-          <Button textValue="Submit" className="formButtonStyle w-[40%] self-center mt-5" />
-        </Form>
+              positionRow={true}
+              onSuccessMessage={message}
+            >
+              <Input
+                id="add-product-category"
+                name="newProductCategory"
+                placeholder="Digital Watch"
+                value={newProductCategory}
+                onChange={handleOnChange}
+                error={error}
+              />
+            </FormFieldWrapper>
+            <Button textValue="Submit" className="formButtonStyle w-[40%] self-center mt-5" />
+          </Form>
 
+        </div>
+        <div className="innerDivBackgroundColour py-4 shadow-black shadow-lg rounded-md mb-10">
+          <h2 className="text-2xl text-white text-center py-4">Categories</h2>
+          {isLoading ? (
+            <Loader />
+          ) : categories.length === 0 ? (
+            <div className="text-white text-center text-[22px] pt-10">
+              {fetchCategoriesError ? fetchCategoriesError : "No categories to show"}
+            </div>
+          ) : (
+            <ul className="w-full px-10 space-y-4">
+              {categories.map((category) => (
+                <li
+                  key={category.id}
+                  className="flex items-center justify-between border border-white/[.5] px-6 py-4 hover:shadow-lg hover:border-white hover:shadow-md hover:shadow-gray-400 duration-200"
+                >
+                  <div className="flex flex-col">
+                    <span className="text-white font-medium text-lg">{category.categoryName}</span>
+                    <span className="text-gray-400 text-sm">Products in use: {category.productCount}</span>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <button className="text-white px-2 transition rounded-sm text-3xl hover:bg-white hover:text-black"><CiEdit /></button>
+                    <button className="text-white px-2 transition rounded-sm text-3xl hover:bg-red-600 hover:text-black"><MdDeleteOutline /></button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
 
     </ProfileContentContainer>

@@ -51,6 +51,7 @@ export interface ProductDTO {
 export interface CategoryDTO {
   id: number;
   categoryName: string;
+  productCount: number;
 }
 
 export interface ProductStore extends ProductFormStringFields, ProductFormFileField {
