@@ -83,6 +83,21 @@ export async function addNewCategory(categoryName: string) {
   }
 }
 
+export async function deleteCategory(categoryID: number) {
+  try {
+    const response = await axios.delete(`${BACKEND_API_URL}/admin/delete-category/${categoryID}`);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw error;
+    } else {
+      console.log("Unexpected error:", error);
+      throw error;
+    }
+  }
+}
+
 export async function getAllProducts(): Promise<ProductDTO[]> {
   try {
     const response = await axios.get(`${BACKEND_API_URL}/products`);

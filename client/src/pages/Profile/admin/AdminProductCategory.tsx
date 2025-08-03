@@ -5,22 +5,32 @@ import { useProductStore } from "../../../store/productStore";
 import * as React from "react";
 import Input from "../../../components/ui/Input/Input";
 import Button from "../../../components/ui/Button/Button";
-import { addNewCategory, getAllProductCategories } from "../../../services/api/productAPI";
+import { addNewCategory, deleteCategory, getAllProductCategories } from "../../../services/api/productAPI";
 import axios from "axios";
 import { CategoryDTO } from "../../../types/productType";
 import { fetchErrorCatcher } from "../../../utils/helpers";
 import Loader from "../../../components/ui/Loader/Loader";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
+import ConfirmModal from "../../../components/ui/ConfirmModal/ConfirmModal";
 
 export default function AdminProductCategory() {
   const newProductCategory = useProductStore((state) => state.newProductCategory);
   const setNewProductCategory = useProductStore((state) => state.setNewProductCategory);
+
   const [error, setError] = React.useState<string | undefined>("");
   const [fetchCategoriesError, setFetchCategoriesError] = React.useState<string | null>(null);
+
   const [message, setMessage] = React.useState<string | null>(null);
+
   const [categories, setCategories] = React.useState<CategoryDTO[]>([]);
+  const [categoryToDelete, setCategoryToDelete] = React.useState({
+    id: 0,
+    categoryName: "",
+  })
+
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [showConfirmModal, setShowConfirmModal] = React.useState<boolean>(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -58,6 +68,16 @@ export default function AdminProductCategory() {
       else setFetchCategoriesError("Unknown error occurred.");
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  async function handleCategoryDelete(categoryID: number) {
+    try {
+      const response = await deleteCategory(categoryID);
+      fetchCategories();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -125,13 +145,36 @@ export default function AdminProductCategory() {
 
                   <div className="flex gap-4">
                     <button className="text-white px-2 transition rounded-sm text-3xl hover:bg-white hover:text-black"><CiEdit /></button>
-                    <button className="text-white px-2 transition rounded-sm text-3xl hover:bg-red-600 hover:text-black"><MdDeleteOutline /></button>
+                    <button
+                      onClick={() => {
+                        setShowConfirmModal(true);
+                        setCategoryToDelete(category);
+                      }}
+                      className="text-white px-2 transition rounded-sm text-3xl hover:bg-red-600 hover:text-black"><MdDeleteOutline /></button>
                   </div>
                 </li>
               ))}
             </ul>
           )}
         </div>
+
+        {
+          showConfirmModal &&
+          <ConfirmModal
+            isOpen={true}
+            message={`Are you sure you want to delete "${categoryToDelete.categoryName} category"?`}
+            onConfirm={() => {
+              //handleProductDelete(productToDelete.id);
+              handleCategoryDelete(categoryToDelete.id);
+              console.log("Deleted");
+              setShowConfirmModal(false);
+            }}
+            onCancel={() => {
+              setShowConfirmModal(false);
+              setCategoryToDelete({ id: 0, categoryName: "" });
+            }}
+          />
+        }
       </div>
 
     </ProfileContentContainer>

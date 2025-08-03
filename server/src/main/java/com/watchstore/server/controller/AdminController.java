@@ -56,4 +56,10 @@ public class AdminController {
     categoryService.createCategory(categoryRequest);
     return new ResponseEntity<>("Category created", HttpStatus.CREATED);
   }
+
+  @DeleteMapping("/delete-category/{id}")
+  public ResponseEntity<Object> deleteCategory(@PathVariable long id) {
+    categoryService.deleteCategory(id);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
 }

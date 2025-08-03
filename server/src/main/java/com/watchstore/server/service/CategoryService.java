@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.watchstore.server.dto.category.CategoryDTO;
 import com.watchstore.server.dto.category.CategoryRequest;
 import com.watchstore.server.exceptions.BadRequestException;
+import com.watchstore.server.exceptions.ResourceNotFoundException;
 import com.watchstore.server.model.Category;
 import com.watchstore.server.repository.CategoryRepository;
 import com.watchstore.server.repository.ProductRepository;
@@ -35,5 +36,17 @@ public class CategoryService {
         .map(category -> new CategoryDTO(category.getId(), category.getCategoryName(),
             productRepository.countByCategoryId(category.getId())))
         .toList();
+  }
+
+  public void deleteCategory(long id) {
+    categoryRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Category not found! Nothing to delete."));
+
+    long productCount = productRepository.countByCategoryId(id);
+    if (productCount > 0) {
+      throw new BadRequestException(
+          "Cannot delete category. It is currently in use by " + productCount + "product(s).");
+    }
+    categoryRepository.deleteById(id);
   }
 }
