@@ -19,14 +19,14 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(error.getMessage(), HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler(UnauthorisedException.class)
-  public ResponseEntity<Object> handleUnauthorised(UnauthorisedException error) {
+  @ExceptionHandler(AuthAPIException.class)
+  public ResponseEntity<Object> handleAPIException(AuthAPIException error) {
     FieldErrorResponse fieldErrorResponse = error.getErrorResponse();
+    HttpStatus status = error.getStatus() != null ? error.getStatus() : HttpStatus.UNAUTHORIZED;
 
     if (fieldErrorResponse != null) {
-      return new ResponseEntity<>(fieldErrorResponse, HttpStatus.UNAUTHORIZED);
+      return new ResponseEntity<>(fieldErrorResponse, status);
     }
-
-    return new ResponseEntity<>(error.getMessage(), HttpStatus.UNAUTHORIZED);
+    return new ResponseEntity<>(error.getMessage(), status);
   }
 }
