@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.watchstore.server.dto.category.CategoryDTO;
 import com.watchstore.server.dto.category.CategoryRequest;
+import com.watchstore.server.exceptions.BadRequestException;
 import com.watchstore.server.model.ProductCategory;
 import com.watchstore.server.repository.ProductCategoryRepository;
 
@@ -15,9 +16,9 @@ public class ProductCategoryService {
   @Autowired
   private ProductCategoryRepository categoryRepository;
 
-  public void createCategory(CategoryRequest categoryRequest) throws Exception {
+  public void createCategory(CategoryRequest categoryRequest) {
     if (categoryRepository.findByCategoryName(categoryRequest.getCategoryName().toLowerCase()).isPresent()) {
-      throw new Exception(categoryRequest.getCategoryName() + " already exists!");
+      throw new BadRequestException(categoryRequest.getCategoryName() + " already exists!");
     }
 
     ProductCategory productCategory = new ProductCategory(categoryRequest.getCategoryName());

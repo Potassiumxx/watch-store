@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.watchstore.server.dto.category.CategoryRequest;
 import com.watchstore.server.dto.product.ProductRequest;
-import com.watchstore.server.dto.response.FieldErrorResponse;
 import com.watchstore.server.service.ProductCategoryService;
 import com.watchstore.server.service.ProductService;
 
@@ -42,36 +41,19 @@ public class AdminController {
       System.out.println("New image uploaded: " + productRequest.getProductImage().getOriginalFilename());
     }
 
-    try {
-      productService.updateProduct(productID, productRequest);
-      return new ResponseEntity<>("Updated!", HttpStatus.OK);
-    } catch (Exception e) {
-      e.printStackTrace();
-      return new ResponseEntity<>("Could not update product", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    productService.updateProduct(productID, productRequest);
+    return new ResponseEntity<>("Product updated!", HttpStatus.OK);
   }
 
   @DeleteMapping("/delete-product/{id}")
   public ResponseEntity<Object> deleteProduct(@PathVariable Long id) {
-    try {
-      productService.deleteProduct(id);
-      return ResponseEntity.ok().build();
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body("Failed to delete product");
-    }
+    productService.deleteProduct(id);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
   @PostMapping("/add-category")
   public ResponseEntity<Object> addCategory(@RequestBody CategoryRequest categoryRequest) {
-    try {
-      categoryService.createCategory(categoryRequest);
-      return new ResponseEntity<>("Category created", HttpStatus.CREATED);
-    } catch (Exception e) {
-      FieldErrorResponse errorResponse = new FieldErrorResponse();
-      errorResponse.addError("Product Category", e.getMessage());
-      return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
+    categoryService.createCategory(categoryRequest);
+    return new ResponseEntity<>("Category created", HttpStatus.CREATED);
   }
-
 }

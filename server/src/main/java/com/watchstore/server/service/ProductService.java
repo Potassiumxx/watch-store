@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.watchstore.server.dto.product.ProductDTO;
 import com.watchstore.server.dto.product.ProductRequest;
 import com.watchstore.server.exceptions.BadRequestException;
+import com.watchstore.server.exceptions.ResourceNotFoundException;
 import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Product;
 import com.watchstore.server.model.ProductCategory;
@@ -66,7 +67,7 @@ public class ProductService {
 
   public void updateProduct(Long id, ProductRequest productRequest) {
     Product existingProduct = productRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Product not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
 
     MultipartFile file = productRequest.getProductImage();
     String randomFileName;
@@ -90,7 +91,7 @@ public class ProductService {
     existingProduct.setPrice(productRequest.getProductPrice());
 
     Inventory inventory = inventoryRepository.findByProduct(existingProduct)
-        .orElseThrow(() -> new RuntimeException("Inventory not found"));
+        .orElseThrow(() -> new ResourceNotFoundException("Inventory not found!"));
 
     inventory.setQuantity(productRequest.getProductQuantity());
 
@@ -100,7 +101,7 @@ public class ProductService {
 
   public void deleteProduct(Long id) {
     Product product = productRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Product not found! How did you try to delete it?"));
+        .orElseThrow(() -> new ResourceNotFoundException("Product not found! How did you try to delete it?"));
 
     String imagePath = product.getImage();
 
@@ -125,7 +126,7 @@ public class ProductService {
 
   public ProductDTO getProductById(Long id) {
     Product product = productRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
 
     Optional<Inventory> inventoryOpt = inventoryRepository.findByProduct(product);
     Inventory inventory = inventoryOpt.orElse(null);
