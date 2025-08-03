@@ -28,13 +28,8 @@ public class AdminController {
 
   @PostMapping("/add-product")
   public ResponseEntity<Object> addProduct(@ModelAttribute ProductRequest productRequest) {
-    try {
-      productService.createProductWithInventory(productRequest);
-      return new ResponseEntity<>("Finished", HttpStatus.CREATED);
-    } catch (Exception e) {
-      e.printStackTrace();
-      return new ResponseEntity<>("Something went wrong. Please try again later", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    productService.createProductWithInventory(productRequest);
+    return new ResponseEntity<>("Product created", HttpStatus.CREATED);
   }
 
   @PutMapping("/update-product/{id}")

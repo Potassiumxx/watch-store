@@ -15,7 +15,7 @@ public class ProductCategoryService {
   @Autowired
   private ProductCategoryRepository categoryRepository;
 
-  public String createCategory(CategoryRequest categoryRequest) throws Exception {
+  public void createCategory(CategoryRequest categoryRequest) throws Exception {
     if (categoryRepository.findByCategoryName(categoryRequest.getCategoryName().toLowerCase()).isPresent()) {
       throw new Exception(categoryRequest.getCategoryName() + " already exists!");
     }
@@ -23,8 +23,6 @@ public class ProductCategoryService {
     ProductCategory productCategory = new ProductCategory(categoryRequest.getCategoryName());
 
     categoryRepository.save(productCategory);
-
-    return "Category added";
   }
 
   public List<CategoryDTO> getAllCategories() {

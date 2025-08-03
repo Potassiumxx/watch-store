@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.watchstore.server.dto.product.ProductDTO;
 import com.watchstore.server.dto.product.ProductRequest;
+import com.watchstore.server.exceptions.BadRequestException;
 import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Product;
 import com.watchstore.server.model.ProductCategory;
@@ -30,20 +31,23 @@ public class ProductService {
 
   private final String uploadDirectory = "/home/asus/Pictures";
 
-  public void createProductWithInventory(ProductRequest productRequest) throws Exception {
+  public void createProductWithInventory(ProductRequest productRequest) {
     MultipartFile file = productRequest.getProductImage();
     String randomFileName;
 
     try {
       randomFileName = FileStorageUtil.saveFile(file, uploadDirectory);
     } catch (IllegalStateException | IOException e) {
-      e.printStackTrace();
-      throw new IOException(e.getMessage());
+      throw new RuntimeException(e.getMessage());
     }
 
     ProductCategory category = categoryRepository
         .findByCategoryName(productRequest.getProductCategory().toLowerCase())
-        .orElseThrow(() -> new Exception("Category not found."));
+        .orElseThrow(() -> new BadRequestException("Category not found."));
+
+    if (productRepository.findByName(productRequest.getProductName().toLowerCase()).isPresent()) {
+      throw new BadRequestException(productRequest.getProductName() + " already exists!");
+    }
 
     Product product = new Product();
     product.setName(productRequest.getProductName());
@@ -60,7 +64,7 @@ public class ProductService {
     inventoryRepository.save(inventory);
   }
 
-  public void updateProduct(Long id, ProductRequest productRequest) throws IOException {
+  public void updateProduct(Long id, ProductRequest productRequest) {
     Product existingProduct = productRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Product not found"));
 
@@ -75,7 +79,7 @@ public class ProductService {
       }
     } catch (IllegalStateException | IOException e) {
       e.printStackTrace();
-      throw new IOException(e.getMessage());
+      throw new RuntimeException(e.getMessage());
     }
 
     ProductCategory category = new ProductCategory(productRequest.getProductCategory());
