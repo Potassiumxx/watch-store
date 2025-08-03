@@ -45,11 +45,13 @@ export default function AdminProductPage() {
   } = useAddProductStore();
 
   const fileName = useProductStore((state) => state.productFileName);
+  const clearProductFormFieldsValues = useProductStore((state) => state.clearProductFormFieldsValues);
 
   const [message, setMessage] = React.useState<string | null>(null);
 
   async function handleAddProductSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setMessage(null);
 
     if (validateProductFormFields({
       stringFields: {
@@ -74,7 +76,10 @@ export default function AdminProductPage() {
       setError: setProductStringFormError,
     });
 
-    if (response) setMessage("Product added successfully!");
+    if (response) {
+      setMessage("Product added successfully!");
+      clearProductFormFieldsValues();
+    }
   }
 
   React.useEffect(() => {

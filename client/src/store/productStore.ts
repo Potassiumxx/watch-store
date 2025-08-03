@@ -24,6 +24,7 @@ interface ProductStore extends ProductFormStringFields, ProductFormFileField, Pr
   setProductFileFormError: (inputField: keyof ProductFileFormValidationReturnType, message: string) => void;
   setProductFileName: (fileName: string) => void;
 
+  clearProductFormFieldsValues: () => void;
   clearProductStringFormError: () => void;
   clearProductFileFormError: () => void;
 }
@@ -62,6 +63,14 @@ export const useProductStore = create<ProductStore>((set) => ({
 
   setProductFileName: (fileName) => set({ productFileName: fileName }),
 
+  clearProductFormFieldsValues: () =>
+    set({
+      productName: "",
+      productPrice: "",
+      productCategory: "",
+      productDescription: "",
+      productImage: null,
+    }),
   clearProductStringFormError: () => set({ productStringErrorFields: {} }),
   clearProductFileFormError: () => set({ productFileErrorFields: {} }),
 }));

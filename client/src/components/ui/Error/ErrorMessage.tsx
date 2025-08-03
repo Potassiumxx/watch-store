@@ -6,8 +6,10 @@ interface ErrorMessageProps {
 
 export function ErrorMessage({ message, isInputFieldError, className }: ErrorMessageProps) {
   return (
-    <span className={`text-red-600 text-[14px] font-semibold text-center w-full ${className}`} data-testid="error">
-      {isInputFieldError ? "- " + message : message}
-    </span>
+    <div className="w-full relative">
+      <span className={`text-red-600 text-[14px] font-semibold text-center w-full ${className}`} data-testid="error">
+        {isInputFieldError ? "- " + message : message}
+      </span>
+    </div>
   );
 }

@@ -9,19 +9,19 @@ interface SelectFieldProps extends BaseFormFieldProps, Omit<React.SelectHTMLAttr
 
 }
 
-export default function SelectField({ id, ...attributes }: SelectFieldProps) {
+export default function SelectField({ id, error, ...attributes }: SelectFieldProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<string | null | unknown>(null);
+  const [fetchError, setFetchError] = React.useState<string | null | unknown>(null);
   const [options, setOptions] = React.useState<CategoryDTO[]>([]);
 
   async function fetchCategoryOptions() {
     setIsLoading(true);
-    setError(null);
+    setFetchError(null);
     try {
       const data = await getAllProductCategories();
       setOptions(data);
     } catch (error) {
-      setError(error);
+      setFetchError(error);
       console.log(error);
     } finally {
       setIsLoading(false);
@@ -34,15 +34,20 @@ export default function SelectField({ id, ...attributes }: SelectFieldProps) {
 
   if (isLoading) return <Loader />
 
-  if (error) return <span>Could not get category options.</span>
+  if (fetchError) return <span>Could not get category options.</span>
 
   if (options.length === 0) return <Link to={"/profile/product-category"} className="text-white underline underline-offset-4 tracking-wide">No categories yet. Click here to create one.</Link>
 
   return (
     <select
-      id={id} {...attributes}
+      id={id}
       className={`formElementDefaultStyling ${error ? "formElementErrorStyling" : null}`}
+      {...attributes}
     >
+      <option value="" disabled hidden>
+        Select a category
+      </option>
+
       {options.map((option) => (
         <option value={option.categoryName.toLowerCase()} key={option.id}>
           {option.categoryName}

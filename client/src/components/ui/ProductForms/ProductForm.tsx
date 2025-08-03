@@ -138,9 +138,9 @@ export default function ProductForm({
         />
       </FormFieldWrapper>
 
-      {generalError && <ErrorMessage message={generalError} className="absolute bottom-[5.5rem]" />}
+      {generalError && <ErrorMessage message={generalError} className="absolute" />}
       {onSuccessMessage && <SuccessMessage message={onSuccessMessage} />}
-      <Button className="formButtonStyle w-[40%] self-center mt-7" textValue={buttonTextValue} />
+      <Button className="formButtonStyle w-[40%] self-center mt-4" textValue={buttonTextValue} />
     </Form>
   )
 }
