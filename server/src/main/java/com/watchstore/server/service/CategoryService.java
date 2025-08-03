@@ -10,11 +10,14 @@ import com.watchstore.server.dto.category.CategoryRequest;
 import com.watchstore.server.exceptions.BadRequestException;
 import com.watchstore.server.model.Category;
 import com.watchstore.server.repository.CategoryRepository;
+import com.watchstore.server.repository.ProductRepository;
 
 @Service
 public class CategoryService {
   @Autowired
   private CategoryRepository categoryRepository;
+  @Autowired
+  private ProductRepository productRepository;
 
   public void createCategory(CategoryRequest categoryRequest) {
     if (categoryRepository.findByCategoryName(categoryRequest.getCategoryName().toLowerCase()).isPresent()) {
@@ -28,6 +31,9 @@ public class CategoryService {
 
   public List<CategoryDTO> getAllCategories() {
     List<Category> categories = categoryRepository.findAll();
-    return categories.stream().map(category -> new CategoryDTO(category.getId(), category.getCategoryName())).toList();
+    return categories.stream()
+        .map(category -> new CategoryDTO(category.getId(), category.getCategoryName(),
+            productRepository.countByCategoryId(category.getId())))
+        .toList();
   }
 }
