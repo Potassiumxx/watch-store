@@ -7,9 +7,10 @@ import { useUIStore } from "../../../store/uiStore";
 interface SidePanelProps {
   children: ReactNode;
   panelTitle: string;
+  className?: string;
 }
 
-export default function SidePanelContainer({ children, panelTitle = "Title" }: SidePanelProps) {
+export default function SidePanelContainer({ children, panelTitle = "Title", className }: SidePanelProps) {
   const [isVisible, setIsVisible] = React.useState<boolean>(false);
 
   const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
@@ -40,7 +41,7 @@ export default function SidePanelContainer({ children, panelTitle = "Title" }: S
       <Backdrop handleOnClick={hideSidePanelClosing} isVisible={isVisible} />
 
       <div
-        className={`fixed top-0 right-0 h-full w-[420px] bg-[#1a1a1a] text-white z-50 shadow-lg transform transition-transform duration-300 ease-in ${isVisible ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0 right-0 h-full w-[420px] bg-[#1a1a1a] text-white z-50 shadow-lg transform transition-transform duration-300 ease-in ${className} ${isVisible ? "translate-x-0" : "translate-x-full"
           }`}
         data-testid="side-panel-container">
         <div className="flex w-full border-b-white border-b-2">
