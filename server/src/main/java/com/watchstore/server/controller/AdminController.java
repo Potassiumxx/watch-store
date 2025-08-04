@@ -57,6 +57,12 @@ public class AdminController {
     return new ResponseEntity<>("Category created", HttpStatus.CREATED);
   }
 
+  @PutMapping("/update-category/{id}")
+  public ResponseEntity<Object> updateCategory(@PathVariable long id, @RequestBody CategoryRequest categoryRequest) {
+    categoryService.updateCategory(id, categoryRequest);
+    return new ResponseEntity<>("Category updated", HttpStatus.OK);
+  }
+
   @DeleteMapping("/delete-category/{id}")
   public ResponseEntity<Object> deleteCategory(@PathVariable long id) {
     categoryService.deleteCategory(id);

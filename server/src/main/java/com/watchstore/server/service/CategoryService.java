@@ -30,6 +30,19 @@ public class CategoryService {
     categoryRepository.save(category);
   }
 
+  public void updateCategory(long id, CategoryRequest categoryRequest) {
+    if (categoryRepository.findByCategoryName(categoryRequest.getCategoryName().toLowerCase()).isPresent()) {
+      throw new BadRequestException(categoryRequest.getCategoryName() + " already exists!");
+    }
+
+    Category category = categoryRepository.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("Category not found."));
+
+    category.setCategoryName(categoryRequest.getCategoryName());
+
+    categoryRepository.save(category);
+  }
+
   public List<CategoryDTO> getAllCategories() {
     List<Category> categories = categoryRepository.findAll();
     return categories.stream()

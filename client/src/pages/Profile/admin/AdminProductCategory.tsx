@@ -5,7 +5,7 @@ import { useProductStore } from "../../../store/productStore";
 import * as React from "react";
 import Input from "../../../components/ui/Input/Input";
 import Button from "../../../components/ui/Button/Button";
-import { addNewCategory, deleteCategory, getAllProductCategories } from "../../../services/api/productAPI";
+import { addNewCategory, deleteCategory, getAllProductCategories, updateCategory } from "../../../services/api/productAPI";
 import axios from "axios";
 import { CategoryDTO } from "../../../types/productType";
 import { fetchErrorCatcher } from "../../../utils/helpers";
@@ -20,6 +20,7 @@ export default function AdminProductCategory() {
 
   const [error, setError] = React.useState<string | undefined>("");
   const [fetchCategoriesError, setFetchCategoriesError] = React.useState<string | null>(null);
+  const [updateError, setUpdateError] = React.useState<{ [categoryID: number]: string } | null>({});
 
   const [message, setMessage] = React.useState<string | null>(null);
 
@@ -54,6 +55,36 @@ export default function AdminProductCategory() {
       } else {
         console.log("Unexpected error:", error);
         setError("Unexpected error occurred.");
+      }
+    }
+  }
+
+  async function handleCategoryUpdate(categoryID: number) {
+    if (editedCategoryName === "") {
+      setUpdateError(prev => ({
+        ...prev,
+        [categoryID]: "Category name cannot be empty",
+      }));
+      return;
+    }
+
+    try {
+      await updateCategory(categoryID, editedCategoryName);
+      setUpdateError(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[categoryID];
+        return newErrors;
+      })
+      setEditingCategoryID(null);
+    } catch (error) {
+      console.log(error);
+      if (axios.isAxiosError(error)) {
+        const backendMessage = error.response?.data;
+        console.log(backendMessage);
+        setUpdateError(prev => ({ ...prev, [categoryID]: backendMessage || "Something went wrong" }));
+      } else {
+        console.log("Unexpected error:", error);
+        setUpdateError(prev => ({ ...prev, [categoryID]: "Unexpected error occured." }));
       }
     }
   }
@@ -147,14 +178,34 @@ export default function AdminProductCategory() {
                     {
                       inEditMode ? (
                         <div className="flex items-center gap-8">
-                          <input
-                            value={editedCategoryName}
-                            autoFocus
-                            onChange={(e) => setEditedCategoryName(e.target.value)}
-                            className="outline-none border-b-2 px-2 bg-transparent text-white"
-                          />
-                          <button className="text-white hover:bg-[#1bddf3] hover:text-black px-2 rounded-sm duration-200">Save</button>
-                          <button className="text-white hover:bg-white hover:text-black px-2 rounded-sm duration-200">Cancel</button>
+
+                          {
+                            <div className={`${updateError ? "flex flex-col gap-2" : "flex"}`}>
+                              <input
+                                value={editedCategoryName}
+                                autoFocus
+                                onChange={(e) => {
+                                  setEditedCategoryName(e.target.value);
+                                  if (updateError && e.target.value !== "") setUpdateError(null);
+                                  if (e.target.value === "") setUpdateError({ [category.id]: "Category name cannot be empty" });
+                                }}
+                                className={`outline-none px-2 bg-transparent text-white 
+                                  ${updateError?.[category.id] ? "border-b-2 border-red-600" : "border-b-2 border-white"}`}
+                              />
+                              {updateError?.[category.id] && <span className="text-red-600 text-sm px-2">{updateError[category.id]}</span>}
+                            </div>
+                          }
+                          <button
+                            onClick={() => {
+                              handleCategoryUpdate(category.id)
+                            }}
+                            className="text-white hover:bg-[#1bddf3] hover:text-black px-2 rounded-sm duration-200">Save</button>
+                          <button
+                            onClick={() => {
+                              setEditingCategoryID(null);
+                              setUpdateError(null);
+                            }}
+                            className="text-white hover:bg-white hover:text-black px-2 rounded-sm duration-200">Cancel</button>
                         </div>
                       ) :
                         <div className="flex flex-col">
@@ -168,6 +219,7 @@ export default function AdminProductCategory() {
                         onClick={() => {
                           setEditingCategoryID(category.id);
                           setEditedCategoryName(category.categoryName);
+                          setUpdateError(null);
                         }}
                         className="text-white px-2 transition rounded-sm text-3xl hover:bg-white hover:text-black">
                         <CiEdit />
@@ -177,6 +229,7 @@ export default function AdminProductCategory() {
                           if (!isCategoryInUse) {
                             setShowConfirmModal(true);
                             setCategoryToDelete(category);
+                            setUpdateError(null);
                           }
                         }}
                         className={`text-white px-2 transition rounded-sm text-3xl 
