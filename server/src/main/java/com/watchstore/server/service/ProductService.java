@@ -83,8 +83,10 @@ public class ProductService {
       throw new RuntimeException(e.getMessage());
     }
 
-    Category category = new Category(productRequest.getProductCategory());
+    Category category = categoryRepository.findByCategoryName(productRequest.getProductCategory().toLowerCase())
+        .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
+    existingProduct.setCategory(category);
     existingProduct.setName(productRequest.getProductName());
     existingProduct.setCategory(category);
     existingProduct.setDescription(productRequest.getProductDescription());
