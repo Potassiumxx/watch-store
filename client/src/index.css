@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+.list-dash li::before {
+  content: "-";
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+.overflow-style {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+}
+
 @keyframes glowline {
   0% {
     background-position: 100% 0;
@@ -47,8 +59,23 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-.list-dash li::before {
-  content: "-";
-  display: inline-block;
-  margin-right: 0.5rem;
+/* Scrollbar styles for Webkit (Chromium-based browsers) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: red;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: white;
+  border-radius: 6px;
+}
+
+/* Firefox scrollbar (using scrollbar-width + scrollbar-color) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255) transparent;
 }

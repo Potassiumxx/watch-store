@@ -110,7 +110,7 @@ export default function Products() {
                     className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}>
                     <div className="flex justify-between pt-4 px-4 items-center">
                       <div className="flex flex-col gap-1">
-                        <h1 className="font-black text-3xl">{product.name}</h1>
+                        <h1 className="font-black text-3xl whitespace-nowrap overflow-x-auto max-w-[200px]">{product.name}</h1>
                         <h1 className="font-semibold text-sm tracking-wide text-[#c7c7c7]">{product.category}</h1>
                       </div>
                     </div>
@@ -123,9 +123,9 @@ export default function Products() {
                     <div className="flex justify-between align-middle items-center px-4">
                       <span className="flex gap-2 items-center">
                         <h3 className="text-[#c7c7c7] text-sm">Quantity</h3>
-                        <h1 className="font-semibold text-lg">{product.quantity}</h1>
+                        <h1 className="font-semibold text-lg max-w-[50px] overflow-x-auto">{product.quantity}</h1>
                       </span>
-                      <h1 className="font-bold text-3xl">{product.price}</h1>
+                      <h1 className="font-bold text-3xl max-w-[90px] overflow-x-auto whitespace-nowrap">{product.price}</h1>
                     </div>
                   </div>
                 </Link>
