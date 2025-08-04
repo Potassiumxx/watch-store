@@ -86,7 +86,7 @@ export default function LoginForm() {
 
   return (
     <Form handleFormSubmit={handleLoginFormSubmit}>
-      <FormFieldWrapper error={loginErrorFields.email} label="Email" id="login-email">
+      <FormFieldWrapper error={loginErrorFields.email} label="Email" id="login-email" labelClassName="flex">
         <Input
           type="email"
           placeholder="Email"
@@ -96,7 +96,7 @@ export default function LoginForm() {
           id="login-email"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper error={loginErrorFields.password} label="Password" id="login-password">
+      <FormFieldWrapper error={loginErrorFields.password} label="Password" id="login-password" labelClassName="flex">
         <Input
           type="password"
           placeholder="Password"

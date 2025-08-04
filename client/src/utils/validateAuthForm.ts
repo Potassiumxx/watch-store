@@ -1,4 +1,4 @@
-import { LoginFields, RegisterFields } from "../types/form";
+import { LoginFields, RegisterFields } from "../types/authType";
 
 import { isEmpty } from "./helpers";
 
@@ -20,7 +20,7 @@ export function validateLoginForm({ email, password }: LoginFields): Partial<Log
   if (isEmpty(email)) {
     errors.email = "Please enter an Email";
   } else if (email && isEmailInvalid(email)) {
-    errors.email = "Invalid Email pattern.";
+    errors.email = "Invalid Email pattern";
   }
 
   if (isEmpty(password)) {
@@ -36,7 +36,7 @@ export function validateRegisterForm({ email, password, username }: RegisterFiel
   if (isEmpty(email)) {
     errors.email = "Please enter an Email";
   } else if (email && isEmailInvalid(email)) {
-    errors.email = "Invalid Email pattern.";
+    errors.email = "Invalid Email pattern";
   }
 
   if (isEmpty(password)) {

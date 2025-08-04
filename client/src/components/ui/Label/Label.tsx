@@ -21,9 +21,8 @@ export default function Label({
     <>
       <label
         htmlFor={id}
-        className={`font-semibold text-[14px] uppercase ${isInputTypeFile && fileInputStyle} ${labelClassName ?? null} ${
-          error ? "text-red-600" : "text-white"
-        }`}>
+        className={`font-semibold text-[14px] uppercase ${isInputTypeFile && fileInputStyle} ${labelClassName ?? null} ${error ? "text-red-600" : "text-white"
+          }`}>
         {
           <>
             {label}

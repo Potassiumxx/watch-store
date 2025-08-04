@@ -27,7 +27,7 @@ public class AuthService {
       return (new UserDTO(user.getId(), user.getEmail(), user.getUsername(), user.getRole()));
     }
 
-    String message = "Invalid Email or passowrd";
+    String message = "Invalid Email or password";
     FieldErrorResponse fieldErrorResponse = new FieldErrorResponse();
     fieldErrorResponse.addError("email", message);
     fieldErrorResponse.addError("password", message);

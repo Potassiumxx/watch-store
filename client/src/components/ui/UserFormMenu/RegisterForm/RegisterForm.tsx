@@ -110,7 +110,7 @@ export default function RegisterForm() {
   return (
     <Form handleFormSubmit={handleRegisterFormSubmit}>
       <div>
-        <FormFieldWrapper error={regiserErrorFields.username} label="Username" id="register-username">
+        <FormFieldWrapper error={regiserErrorFields.username} label="Username" id="register-username" labelClassName="flex">
           <Input
             type="name"
             placeholder="Username"
@@ -124,16 +124,15 @@ export default function RegisterForm() {
         </FormFieldWrapper>
         {
           <div
-            className={`${
-              isUsernameFocused ? "opacity-100 h-4 mt-1" : "opacity-0 h-0"
-            } overflow-hidden transition-all duration-200 text-[13px] text-white}`}>
+            className={`${isUsernameFocused ? "opacity-100 h-4 mt-1" : "opacity-0 h-0"
+              } overflow-hidden transition-all duration-200 text-[13px] text-white}`}>
             <span className={`font-semibold ${regiserErrorFields.username ? "text-red-600" : "text-white"}`}>
               Please only use numbers, letters, underscore (_) or hyphen (-)
             </span>
           </div>
         }
       </div>
-      <FormFieldWrapper error={regiserErrorFields.email} label="Email" id="register-email">
+      <FormFieldWrapper error={regiserErrorFields.email} label="Email" id="register-email" labelClassName="flex">
         <Input
           type="email"
           placeholder="Email"
@@ -143,7 +142,7 @@ export default function RegisterForm() {
           id="register-email"
         />
       </FormFieldWrapper>
-      <FormFieldWrapper error={regiserErrorFields.password} label="Password" id="register-password">
+      <FormFieldWrapper error={regiserErrorFields.password} label="Password" id="register-password" labelClassName="flex">
         <Input
           type="password"
           placeholder="Password"
