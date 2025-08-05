@@ -6,6 +6,8 @@ import { fetchErrorCatcher } from "../../utils/helpers";
 import FetchStatusDisplay from "../../components/ui/FetchStatusDisplay/FetchStatusDisplay";
 import Button from "../../components/ui/Button/Button";
 import { useCartStore } from "../../store/cartStore";
+import { useAuthStore } from "../../store/authStore";
+import { useUIStore } from "../../store/uiStore";
 
 export default function SingleProductPage() {
   const { id } = useParams();
@@ -14,6 +16,9 @@ export default function SingleProductPage() {
   const [product, setProduct] = React.useState<ProductDTO | null>(null);
 
   const addToCart = useCartStore((state) => state.addToCart);
+
+  const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
+  const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
 
   async function fetchProduct() {
     try {
@@ -62,6 +67,7 @@ export default function SingleProductPage() {
               textValue="Add to cart"
               className="defaultButtonStyle w-full bg-orange-700 hover:bg-orange-600 hover:text-white"
               onClick={() => {
+                if (!isUserSignedIn) return setShowUserMenu(true);
                 addToCart({
                   id: product.id,
                   name: product.name,

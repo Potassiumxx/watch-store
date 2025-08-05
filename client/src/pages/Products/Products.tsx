@@ -77,9 +77,9 @@ export default function Products() {
       <div className="text-white">
         <h1 className="text-center text-3xl font-bold mb-6">Products</h1>
 
-        <div className="component-x-axis-padding grid grid-cols-3 gap-8">
+        <div className="component-x-axis-padding grid grid-cols-3 gap-8 pb-10">
           {
-            products.map((product, index) => (
+            products.map((product) => (
               <div
                 className="flex flex-col gap"
                 key={product.id}
