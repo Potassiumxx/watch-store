@@ -61,14 +61,17 @@ export default function SingleProductPage() {
             <Button
               textValue="Add to cart"
               className="defaultButtonStyle w-full bg-orange-700 hover:bg-orange-600 hover:text-white"
-              onClick={() => addToCart({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                quantity: 1,
-                category: product.category,
-                imagePath: product.imagePath,
-              })}
+              onClick={() => {
+                addToCart({
+                  id: product.id,
+                  name: product.name,
+                  price: product.price,
+                  availableStock: product.quantity,
+                  quantity: 1,
+                  category: product.category,
+                  imagePath: product.imagePath,
+                })
+              }}
             />
           </div>
         </div>
