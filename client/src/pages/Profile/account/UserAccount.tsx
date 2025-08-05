@@ -4,6 +4,7 @@ import { useUserStore } from "../../../store/userStore";
 import { useNavigate } from "react-router-dom";
 import ProfileContentContainer from "../container/ProfileContentContainer";
 import * as React from "react";
+import { useCartStore } from "../../../store/cartStore";
 
 export default function UserAccount() {
   const globalUsername = useUserStore((state) => state.globalUsername);
@@ -13,6 +14,8 @@ export default function UserAccount() {
   const userSignedOut = useAuthStore((state) => state.userSignedOut);
   const setIsJWTChecked = useAuthStore((state) => state.setIsJWTChecked);
 
+  const clearCart = useCartStore((state) => state.clearCart);
+
   const [isEmailRevealed, setIsEmailRevealed] = React.useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -21,6 +24,7 @@ export default function UserAccount() {
     localStorage.removeItem("token");
     setIsJWTChecked(false);
     userSignedOut();
+    clearCart();
     navigate("/");
   }
 
