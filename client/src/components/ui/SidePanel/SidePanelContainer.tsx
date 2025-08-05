@@ -8,9 +8,10 @@ interface SidePanelProps {
   children: ReactNode;
   panelTitle: string;
   className?: string;
+  closeSidePanel?: boolean;
 }
 
-export default function SidePanelContainer({ children, panelTitle = "Title", className }: SidePanelProps) {
+export default function SidePanelContainer({ children, panelTitle = "Title", className, closeSidePanel }: SidePanelProps) {
   const [isVisible, setIsVisible] = React.useState<boolean>(false);
 
   const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
@@ -35,6 +36,10 @@ export default function SidePanelContainer({ children, panelTitle = "Title", cla
   React.useEffect(() => {
     setTimeout(() => setIsVisible(true), 0);
   }, []);
+
+  React.useEffect(() => {
+    if (isVisible && closeSidePanel) hideSidePanelClosing();
+  }, [closeSidePanel])
 
   return (
     <>
