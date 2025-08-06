@@ -10,6 +10,8 @@ import useForm from "../../hooks/useForm";
 import { useCartStore } from "../../store/cartStore";
 import { useNavigate } from "react-router-dom";
 import { useUIStore } from "../../store/uiStore";
+import { placeOrder } from "../../services/api/checkoutAPI";
+import { useUserStore } from "../../store/userStore";
 
 export default function Checkout() {
   const navigate = useNavigate()
@@ -37,6 +39,10 @@ export default function Checkout() {
 
   const { setShowSuccessfulCheckoutPage } = useUIStore();
 
+  const { userID } = useUserStore();
+
+  const [checkoutAPIError, setCheckoutAPIError] = React.useState<string | null>(null);
+
   const formValueSetterMap: Record<keyof CheckoutFormFields, (val: string) => void> = {
     dropLocation: setDropLocation,
     phoneNumber: setPhoneNumber,
@@ -53,7 +59,7 @@ export default function Checkout() {
     expiry: false,
   }
 
-  const { dirtyField, handleFieldOnChange, isValidationError } = useForm(initialDirtyFieldState);
+  const { dirtyField, handleFieldOnChange, isValidationError, handleFormSubmit } = useForm(initialDirtyFieldState);
 
   const totalAmount: number = checkoutItems.reduce((acc, item) => {
     return acc + item.price * item.quantity;
@@ -77,10 +83,24 @@ export default function Checkout() {
     if (isValidationError(validationError, setCheckoutFormError)) return;
     clearCheckoutFormError();
 
-    setShowSuccessfulCheckoutPage(true);
-    navigate("/checkout-success");
-    clearCart();
-    clearCheckoutFormValues();
+
+    const transformedItems = cartItems.map(item => ({
+      productId: item.id,
+      quantity: item.quantity,
+      unitPrice: item.price
+    }));
+
+    const response = await handleFormSubmit({
+      apiCall: () => placeOrder({ userId: userID, dropLocation, phoneNumber, items: transformedItems }),
+      setError: setCheckoutAPIError
+    })
+
+    if (response) {
+      setShowSuccessfulCheckoutPage(true);
+      navigate("/checkout-success");
+      clearCart();
+      clearCheckoutFormValues();
+    }
   }
 
   function handleCheckoutFieldOnChange(event: React.ChangeEvent<HTMLInputElement>) {

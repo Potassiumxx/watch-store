@@ -7,6 +7,8 @@ interface UserStore {
   setGlobalEmail: (globalEmail: string) => void;
   role: string;
   setRole: (role: string) => void;
+  userID: string;
+  setUserID: (id: string) => void;
 }
 
 export const useUserStore = create<UserStore>((set) => ({
@@ -18,4 +20,7 @@ export const useUserStore = create<UserStore>((set) => ({
 
   role: "",
   setRole: (role) => set({ role: role }),
+
+  userID: "",
+  setUserID: (id) => set({ userID: id }),
 }));
