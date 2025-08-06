@@ -19,7 +19,6 @@ export default function Checkout() {
     clearCheckoutFormError,
     setCardNumber,
     setCheckoutFormError,
-    setCheckoutItems,
     setCvv,
     setDropLocation,
     setExpiry,
@@ -28,7 +27,7 @@ export default function Checkout() {
   const formValueSetterMap: Record<keyof CheckoutFormFields, (val: string) => void> = {
     dropLocation: setDropLocation,
     phoneNumber: setPhoneNumber,
-    cardNumber: setCardNumber,
+    cardNumber: (val) => setCardNumber(formatCardNumber(val)),
     expiry: setExpiry,
     cvv: setCvv,
   };
@@ -48,14 +47,7 @@ export default function Checkout() {
   }, 0);
 
   function formatCardNumber(value: string) {
-    const digits = value.replace(/\D/g, "");
-    const formatted = digits.replace(/(.{4})/g, "$1 ").trim();
-    return formatted;
-  }
-
-  function handleCardInput(e: React.ChangeEvent<HTMLInputElement>) {
-    const formatted = formatCardNumber(e.target.value);
-    setCardNumber(formatted);
+    return value.replace(/\D/g, "").replace(/(.{4})/g, "$1 ").trim();
   }
 
   async function handleCheckoutFormSubmit(event: React.FormEvent) {
@@ -102,7 +94,7 @@ export default function Checkout() {
   }, [])
 
   return (
-    <div className="grid grid-cols-[1.5fr_1fr] gap-4 py-8 text-white min-h-full">
+    <div className="grid grid-cols-[1.4fr_1fr] gap-4 py-8 text-white min-h-full">
       <div className="component-x-axis-padding">
         <h1 className="text-3xl">{checkoutItems.length > 1 ? "Your Items" : "Your Item"}</h1>
         <div className="flex flex-col gap-10">
@@ -192,10 +184,7 @@ export default function Checkout() {
                   inputMode="numeric"
                   pattern="\d"
                   maxLength={19}  // 16 digits + 3 spaces
-                  onChange={(e) => {
-                    handleCardInput(e);
-                    handleCheckoutFieldOnChange(e);
-                  }}
+                  onChange={handleCheckoutFieldOnChange}
                   value={cardNumber}
                 />
               </FormFieldWrapper>
