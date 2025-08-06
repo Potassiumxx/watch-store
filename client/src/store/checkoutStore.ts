@@ -15,6 +15,7 @@ interface CheckoutStore extends CheckoutFormFields {
 
   setCheckoutFormError: (inputField: keyof CheckoutFormFields, message: string) => void;
   clearCheckoutFormError: () => void;
+  clearCheckoutFormValues: () => void;
 }
 
 export const useCheckoutStore = create<CheckoutStore>((set) => ({
@@ -41,4 +42,13 @@ export const useCheckoutStore = create<CheckoutStore>((set) => ({
     })),
 
   clearCheckoutFormError: () => set({ checkoutFormErrorFields: {} }),
+
+  clearCheckoutFormValues: () =>
+    set({
+      dropLocation: "",
+      phoneNumber: "",
+      cardNumber: "",
+      expiry: "",
+      cvv: "",
+    }),
 }));

@@ -9,6 +9,7 @@ import UserAccount from "../pages/Profile/account/UserAccount";
 import Products from "../pages/Products/Products";
 import SingleProductPage from "../pages/Products/SingleProduct";
 import Checkout from "../pages/Checkout/Checkout";
+import CheckoutSuccess from "../pages/Checkout/CheckoutSuccess";
 
 export default function Router() {
   const router = createBrowserRouter(
@@ -29,7 +30,8 @@ export default function Router() {
               { path: "product-category", element: <AdminProductCategory /> },
             ],
           },
-          { path: "/checkout", element: <Checkout /> }
+          { path: "/checkout", element: <Checkout /> },
+          { path: "/checkout-success", element: <CheckoutSuccess /> }
         ],
       },
     ],

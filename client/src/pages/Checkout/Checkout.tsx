@@ -8,8 +8,11 @@ import { validateCheckoutForm } from "../../utils/validateCheckoutForm";
 import { CheckoutFormFields } from "../../types/cartAndCheckoutType";
 import useForm from "../../hooks/useForm";
 import { useCartStore } from "../../store/cartStore";
+import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
+  const navigate = useNavigate()
+
   const {
     checkoutItems,
     dropLocation,
@@ -25,9 +28,11 @@ export default function Checkout() {
     setCvv,
     setDropLocation,
     setExpiry,
-    setPhoneNumber } = useCheckoutStore();
+    setPhoneNumber,
+    clearCheckoutFormValues
+  } = useCheckoutStore();
 
-  const { cartItems } = useCartStore();
+  const { cartItems, clearCart } = useCartStore();
 
   const formValueSetterMap: Record<keyof CheckoutFormFields, (val: string) => void> = {
     dropLocation: setDropLocation,
@@ -68,6 +73,10 @@ export default function Checkout() {
 
     if (isValidationError(validationError, setCheckoutFormError)) return;
     clearCheckoutFormError();
+
+    navigate("/checkout-success");
+    clearCart();
+    clearCheckoutFormValues();
   }
 
   function handleCheckoutFieldOnChange(event: React.ChangeEvent<HTMLInputElement>) {
