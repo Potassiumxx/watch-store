@@ -9,6 +9,9 @@ interface SideBarStore {
   setIsLoading: (isLoading: boolean) => void;
   navbarHeight: number;
   setNavbarHeight: (height: number) => void;
+
+  showSuccessfulCheckoutPage: boolean;
+  setShowSuccessfulCheckoutPage: (show: boolean) => void;
 }
 
 export const useUIStore = create<SideBarStore>((set) => ({
@@ -20,4 +23,7 @@ export const useUIStore = create<SideBarStore>((set) => ({
   setIsLoading: (isLoading) => set({ isLoading: isLoading }),
   navbarHeight: 0,
   setNavbarHeight: (height) => set({ navbarHeight: height }),
+
+  showSuccessfulCheckoutPage: false,
+  setShowSuccessfulCheckoutPage: (show) => set({ showSuccessfulCheckoutPage: show }),
 }));

@@ -9,6 +9,7 @@ import { CheckoutFormFields } from "../../types/cartAndCheckoutType";
 import useForm from "../../hooks/useForm";
 import { useCartStore } from "../../store/cartStore";
 import { useNavigate } from "react-router-dom";
+import { useUIStore } from "../../store/uiStore";
 
 export default function Checkout() {
   const navigate = useNavigate()
@@ -33,6 +34,8 @@ export default function Checkout() {
   } = useCheckoutStore();
 
   const { cartItems, clearCart } = useCartStore();
+
+  const { setShowSuccessfulCheckoutPage } = useUIStore();
 
   const formValueSetterMap: Record<keyof CheckoutFormFields, (val: string) => void> = {
     dropLocation: setDropLocation,
@@ -74,6 +77,7 @@ export default function Checkout() {
     if (isValidationError(validationError, setCheckoutFormError)) return;
     clearCheckoutFormError();
 
+    setShowSuccessfulCheckoutPage(true);
     navigate("/checkout-success");
     clearCart();
     clearCheckoutFormValues();
