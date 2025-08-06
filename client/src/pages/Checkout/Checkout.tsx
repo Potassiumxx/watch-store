@@ -6,6 +6,7 @@ import Input from "../../components/ui/Input/Input";
 import { useCheckoutStore } from "../../store/checkoutStore"
 import { validateCheckoutForm } from "../../utils/validateCheckoutForm";
 import { CheckoutFormFields } from "../../types/cartAndCheckoutType";
+import useForm from "../../hooks/useForm";
 
 export default function Checkout() {
   const { checkoutItems,
@@ -23,6 +24,24 @@ export default function Checkout() {
     setDropLocation,
     setExpiry,
     setPhoneNumber } = useCheckoutStore();
+
+  const formValueSetterMap: Record<keyof CheckoutFormFields, (val: string) => void> = {
+    dropLocation: setDropLocation,
+    phoneNumber: setPhoneNumber,
+    cardNumber: setCardNumber,
+    expiry: setExpiry,
+    cvv: setCvv,
+  };
+
+  const initialDirtyFieldState = {
+    dropLocation: false,
+    phoneNumber: false,
+    cardNumber: false,
+    cvv: false,
+    expiry: false,
+  }
+
+  const { dirtyField, handleFieldOnChange, isValidationError } = useForm(initialDirtyFieldState);
 
   const totalAmount: number = checkoutItems.reduce((acc, item) => {
     return acc + item.price * item.quantity;
@@ -49,17 +68,38 @@ export default function Checkout() {
       cvv,
       expiry
     })
-    clearCheckoutFormError();
 
-    if (Object.keys(validationError).length > 0) {
-      (Object.entries(validationError) as [keyof CheckoutFormFields, string][]).forEach(
-        ([field, message]) => {
-          setCheckoutFormError(field, message);
-        }
-      );
-      return;
-    }
+    if (isValidationError(validationError, setCheckoutFormError)) return;
+    clearCheckoutFormError();
   }
+
+  function handleCheckoutFieldOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { value, name } = event.target;
+    const key = name as keyof CheckoutFormFields;
+    const formValueSetter = formValueSetterMap[key]
+    if (!formValueSetter) return;
+
+    handleFieldOnChange<CheckoutFormFields>({
+      fieldKey: key,
+      newValue: value,
+      allFormValues: {
+        dropLocation,
+        phoneNumber,
+        cardNumber,
+        expiry,
+        cvv
+      },
+      formValueSetter,
+      validateFunction: validateCheckoutForm,
+      setFieldErrorFunction: setCheckoutFormError,
+      clearErrorsFunction: clearCheckoutFormError,
+      dirtyField,
+    });
+  };
+
+  React.useEffect(() => {
+    clearCheckoutFormError();
+  }, [])
 
   return (
     <div className="grid grid-cols-[1.5fr_1fr] gap-4 py-8 text-white min-h-full">
@@ -118,8 +158,10 @@ export default function Checkout() {
               >
                 <Input
                   id="drop-location"
+                  name="dropLocation"
                   error={checkoutFormErrorFields.dropLocation}
                   placeholder="Enter pickup location. Be as precise as possible"
+                  onChange={handleCheckoutFieldOnChange}
                 />
               </FormFieldWrapper>
               <FormFieldWrapper
@@ -130,8 +172,10 @@ export default function Checkout() {
               >
                 <Input
                   id="phone-number"
+                  name="phoneNumber"
                   error={checkoutFormErrorFields.phoneNumber}
                   type="tel"
+                  onChange={handleCheckoutFieldOnChange}
                 />
               </FormFieldWrapper>
               <FormFieldWrapper
@@ -142,12 +186,16 @@ export default function Checkout() {
               >
                 <Input
                   id="card-number"
+                  name="cardNumber"
                   error={checkoutFormErrorFields.cardNumber}
                   placeholder="1234 1234 1234 1234"
                   inputMode="numeric"
                   pattern="\d"
                   maxLength={19}  // 16 digits + 3 spaces
-                  onChange={handleCardInput}
+                  onChange={(e) => {
+                    handleCardInput(e);
+                    handleCheckoutFieldOnChange(e);
+                  }}
                   value={cardNumber}
                 />
               </FormFieldWrapper>
@@ -160,10 +208,13 @@ export default function Checkout() {
                 >
                   <Input
                     id="expiry"
+                    name="expiry"
                     error={checkoutFormErrorFields.expiry}
                     type="text"
                     placeholder="MM/YY"
-                    maxLength={5} />
+                    maxLength={5}
+                    onChange={handleCheckoutFieldOnChange}
+                  />
                 </FormFieldWrapper>
 
                 <FormFieldWrapper
@@ -174,12 +225,15 @@ export default function Checkout() {
                 >
                   <Input
                     id="cvv"
+                    name="cvv"
                     error={checkoutFormErrorFields.cvv}
                     type="tel"
                     inputMode="numeric"
                     pattern="/d{3,4}"
                     maxLength={4}
-                    placeholder="CVV/CVC" />
+                    placeholder="CVV/CVC"
+                    onChange={handleCheckoutFieldOnChange}
+                  />
                 </FormFieldWrapper>
               </div>
             </div>
