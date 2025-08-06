@@ -4,7 +4,6 @@ import Button from "../Button/Button";
 import SidePanelContainer from "../SidePanel/SidePanelContainer";
 import { MdDeleteOutline } from "react-icons/md";
 import * as React from "react";
-import { useCheckoutStore } from "../../../store/checkoutStore";
 
 export function Cart() {
   const [closeSidePanel, setCloseSidePanel] = React.useState<boolean>(false);
@@ -12,10 +11,7 @@ export function Cart() {
 
   const { cartItems, removeFromCart, updateQuantity } = useCartStore();
 
-  const { setCheckoutItems } = useCheckoutStore();
-
   function handleCheckout() {
-    setCheckoutItems(cartItems);
     navigate("/checkout");
     setCloseSidePanel(true);
   }

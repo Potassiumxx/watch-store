@@ -7,15 +7,18 @@ import { useCheckoutStore } from "../../store/checkoutStore"
 import { validateCheckoutForm } from "../../utils/validateCheckoutForm";
 import { CheckoutFormFields } from "../../types/cartAndCheckoutType";
 import useForm from "../../hooks/useForm";
+import { useCartStore } from "../../store/cartStore";
 
 export default function Checkout() {
-  const { checkoutItems,
+  const {
+    checkoutItems,
     dropLocation,
     phoneNumber,
     cardNumber,
     cvv,
     expiry,
     checkoutFormErrorFields,
+    setCheckoutItems,
     clearCheckoutFormError,
     setCardNumber,
     setCheckoutFormError,
@@ -23,6 +26,8 @@ export default function Checkout() {
     setDropLocation,
     setExpiry,
     setPhoneNumber } = useCheckoutStore();
+
+  const { cartItems } = useCartStore();
 
   const formValueSetterMap: Record<keyof CheckoutFormFields, (val: string) => void> = {
     dropLocation: setDropLocation,
@@ -90,45 +95,42 @@ export default function Checkout() {
   };
 
   React.useEffect(() => {
-    clearCheckoutFormError();
-  }, [])
+    setCheckoutItems(cartItems);
+    if (checkoutFormErrorFields)
+      clearCheckoutFormError();
+  }, [cartItems])
+
+  if (checkoutItems.length === 0) return <div className="text-white font-bold text-4xl mx-auto text-center mt-20">No items to checkout</div>
 
   return (
     <div className="grid grid-cols-[1.4fr_1fr] gap-4 py-8 text-white min-h-full">
       <div className="component-x-axis-padding">
         <h1 className="text-3xl">{checkoutItems.length > 1 ? "Your Items" : "Your Item"}</h1>
         <div className="flex flex-col gap-10">
-          {
-            checkoutItems.length === 0 ? (
-              <div>No items to checkout</div>
-            ) : (
-              <div className="pt-10 max-h-[500px] overflow-y-auto"> {
-                checkoutItems.map((item) => {
-                  return (
-                    <div className="pt-2" key={item.id}>
-                      <div className="flex">
-                        <img
-                          src={`http://localhost:5000/images/${item.imagePath}`}
-                          className="w-40 h-[120px] object-contain"
-                        />
-                        <div className="flex justify-between w-full">
-                          <div className="flex flex-col">
-                            <span className="font-semibold max-w-[200px] whitespace-nowrap overflow-x-auto">{item.name}</span>
-                            <span className="text-[14px] text-gray-400">Quantity: <span className="text-white font-semibold">{item.quantity}</span></span>
-                          </div>
-                          <div className="flex flex-col items-end pr-2 max-w-[100px]">
-                            <span className="max-w-full whitespace-nowrap overflow-x-auto">{item.price * item.quantity}</span>
-                            {item.quantity > 1 && <span className="text-[14px] text-gray-400 max-w-full whitespace-nowrap overflow-x-auto">{item.price} each</span>}
-                          </div>
-                        </div>
+          <div className="pt-10 max-h-[500px] overflow-y-auto"> {
+            checkoutItems.map((item) => {
+              return (
+                <div className="pt-2" key={item.id}>
+                  <div className="flex">
+                    <img
+                      src={`http://localhost:5000/images/${item.imagePath}`}
+                      className="w-40 h-[120px] object-contain"
+                    />
+                    <div className="flex justify-between w-full">
+                      <div className="flex flex-col">
+                        <span className="font-semibold max-w-[200px] whitespace-nowrap overflow-x-auto">{item.name}</span>
+                        <span className="text-[14px] text-gray-400">Quantity: <span className="text-white font-semibold">{item.quantity}</span></span>
+                      </div>
+                      <div className="flex flex-col items-end pr-2 max-w-[100px]">
+                        <span className="max-w-full whitespace-nowrap overflow-x-auto font-bold">{item.price * item.quantity}</span>
+                        {item.quantity > 1 && <span className="text-[14px] text-gray-400 max-w-full whitespace-nowrap overflow-x-auto">{item.price} each</span>}
                       </div>
                     </div>
-
-                  )
-                })}
-              </div>
-            )
-          }
+                  </div>
+                </div>
+              )
+            })}
+          </div>
           <div className="flex justify-between">
             <span className="text-white text-2xl">Total</span>
             <div className="max-w-[200px] overflow-style font-semibold text-2xl">{totalAmount.toFixed(2)}</div>
