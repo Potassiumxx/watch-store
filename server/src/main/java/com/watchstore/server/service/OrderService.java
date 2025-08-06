@@ -1,0 +1,82 @@
+package com.watchstore.server.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.watchstore.server.dto.order.OrderItemDTO;
+import com.watchstore.server.dto.order.OrderRequestDTO;
+import com.watchstore.server.exceptions.BadRequestException;
+import com.watchstore.server.exceptions.ResourceNotFoundException;
+import com.watchstore.server.model.Order;
+import com.watchstore.server.model.OrderItem;
+import com.watchstore.server.model.Product;
+import com.watchstore.server.model.User;
+import com.watchstore.server.repository.OrderItemRepository;
+import com.watchstore.server.repository.OrderRepository;
+import com.watchstore.server.repository.ProductRepository;
+import com.watchstore.server.repository.UserRepository;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class OrderService {
+
+  private final OrderRepository orderRepository;
+  private final OrderItemRepository orderItemRepository;
+  private final UserRepository userRepository;
+  private final ProductRepository productRepository;
+
+  public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository,
+      UserRepository userRepository, ProductRepository productRepository) {
+    this.orderRepository = orderRepository;
+    this.orderItemRepository = orderItemRepository;
+    this.userRepository = userRepository;
+    this.productRepository = productRepository;
+  }
+
+  public List<Order> getAllOrders() {
+    return orderRepository.findAll();
+  }
+
+  public Optional<Order> getOrderById(Long id) {
+    return orderRepository.findById(id);
+  }
+
+  @Transactional
+  public Order placeOrder(OrderRequestDTO dto) {
+    User user = null;
+    if (dto.getUserId() != null) {
+      user = userRepository.findById(dto.getUserId())
+          .orElseThrow(() -> new BadRequestException("Invalid user ID"));
+    }
+
+    Order order = new Order(user, dto.getDropLocation(), dto.getPhoneNumber());
+
+    for (OrderItemDTO itemDTO : dto.getItems()) {
+      Product product = productRepository.findById(itemDTO.getProductId())
+          .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + itemDTO.getProductId()));
+
+      OrderItem item = new OrderItem(order, product, itemDTO.getQuantity(), itemDTO.getUnitPrice());
+      order.addItem(item);
+    }
+
+    return orderRepository.save(order);
+  }
+
+  public void deleteOrder(Long id) {
+    orderRepository.deleteById(id);
+  }
+
+  public List<OrderItem> getItemsByOrderId(Long orderId) {
+    return orderItemRepository.findByOrderId(orderId);
+  }
+
+  @Transactional
+  public Order saveOrderWithItems(Order order, List<OrderItem> items) {
+    for (OrderItem item : items) {
+      order.addItem(item); // sets bidirectional relationship
+    }
+    return orderRepository.save(order);
+  }
+}

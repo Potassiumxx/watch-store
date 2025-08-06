@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS orders (
   user_id BIGINT,
   drop_location TEXT NOT NULL,
   phone_number VARCHAR(20) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_orders_user
     FOREIGN KEY (user_id)
     REFERENCES users(id)
