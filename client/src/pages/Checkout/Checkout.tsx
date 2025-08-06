@@ -1,15 +1,65 @@
+import * as React from "react";
 import Button from "../../components/ui/Button/Button";
 import Form from "../../components/ui/Form/Form";
 import FormFieldWrapper from "../../components/ui/FormFieldWrapper/FormFieldWrapper";
 import Input from "../../components/ui/Input/Input";
 import { useCheckoutStore } from "../../store/checkoutStore"
+import { validateCheckoutForm } from "../../utils/validateCheckoutForm";
+import { CheckoutFormFields } from "../../types/cartAndCheckoutType";
 
 export default function Checkout() {
-  const { checkoutItems } = useCheckoutStore();
+  const { checkoutItems,
+    dropLocation,
+    phoneNumber,
+    cardNumber,
+    cvv,
+    expiry,
+    checkoutFormErrorFields,
+    clearCheckoutFormError,
+    setCardNumber,
+    setCheckoutFormError,
+    setCheckoutItems,
+    setCvv,
+    setDropLocation,
+    setExpiry,
+    setPhoneNumber } = useCheckoutStore();
 
   const totalAmount: number = checkoutItems.reduce((acc, item) => {
     return acc + item.price * item.quantity;
   }, 0);
+
+  function formatCardNumber(value: string) {
+    const digits = value.replace(/\D/g, "");
+    const formatted = digits.replace(/(.{4})/g, "$1 ").trim();
+    return formatted;
+  }
+
+  function handleCardInput(e: React.ChangeEvent<HTMLInputElement>) {
+    const formatted = formatCardNumber(e.target.value);
+    setCardNumber(formatted);
+  }
+
+  async function handleCheckoutFormSubmit(event: React.FormEvent) {
+    event.preventDefault();
+
+    const validationError = validateCheckoutForm({
+      dropLocation,
+      cardNumber,
+      phoneNumber,
+      cvv,
+      expiry
+    })
+    clearCheckoutFormError();
+
+    if (Object.keys(validationError).length > 0) {
+      (Object.entries(validationError) as [keyof CheckoutFormFields, string][]).forEach(
+        ([field, message]) => {
+          setCheckoutFormError(field, message);
+        }
+      );
+      return;
+    }
+  }
 
   return (
     <div className="grid grid-cols-[1.5fr_1fr] gap-4 py-8 text-white min-h-full">
@@ -54,52 +104,88 @@ export default function Checkout() {
         </div>
       </div>
       <div className="component-x-axis-padding rounded-sm h-[550px]" style={{
-        boxShadow: "-3px 0 12px 1px rgb(0, 0, 0, 0.8)",
+        boxShadow: "-3px 0 12px 4px rgb(0, 0, 0, 0.9)",
       }}>
         <h1 className="text-3xl">Shipping Information</h1>
         <div className="px-0 py-10 flex flex-col justify-between h-full">
-          <div className="flex flex-col gap-4">
-            <FormFieldWrapper
-              id="drop-location"
-              label="Drop Location"
-              error={""}
-            >
-              <Input id="drop-location" error={""} placeholder="Enter pickup location" />
-            </FormFieldWrapper>
-            <FormFieldWrapper
-              id="phone-number"
-              label="Phone Number"
-              error={""}
-            >
-              <Input id="phone-number" error={""} type="tel" />
-            </FormFieldWrapper>
-            <FormFieldWrapper
-              id="card-number"
-              label="Card Number"
-              error={""}
-            >
-              <Input id="card-number" error={""} placeholder="1234 1234 1234 1234" />
-            </FormFieldWrapper>
-            <div className="flex gap-4">
+          <Form className="flex flex-col p-0 justify-between h-full" handleFormSubmit={handleCheckoutFormSubmit}>
+            <div className="flex flex-col gap-4">
               <FormFieldWrapper
-                id="expiry"
-                label="Expiry"
-                error={""}
+                id="drop-location"
+                label="Drop Location"
+                error={checkoutFormErrorFields.dropLocation}
+                labelClassName="flex w-full whitespace-nowrap"
               >
-                <Input id="expiry" error={""} type="text" placeholder="MM/YY" maxLength={5} />
+                <Input
+                  id="drop-location"
+                  error={checkoutFormErrorFields.dropLocation}
+                  placeholder="Enter pickup location. Be as precise as possible"
+                />
               </FormFieldWrapper>
+              <FormFieldWrapper
+                id="phone-number"
+                label="Phone Number"
+                error={checkoutFormErrorFields.phoneNumber}
+                labelClassName="flex w-full whitespace-nowrap"
+              >
+                <Input
+                  id="phone-number"
+                  error={checkoutFormErrorFields.phoneNumber}
+                  type="tel"
+                />
+              </FormFieldWrapper>
+              <FormFieldWrapper
+                id="card-number"
+                label="Card Number"
+                error={checkoutFormErrorFields.cardNumber}
+                labelClassName="flex w-full whitespace-nowrap"
+              >
+                <Input
+                  id="card-number"
+                  error={checkoutFormErrorFields.cardNumber}
+                  placeholder="1234 1234 1234 1234"
+                  inputMode="numeric"
+                  pattern="\d"
+                  maxLength={19}  // 16 digits + 3 spaces
+                  onChange={handleCardInput}
+                  value={cardNumber}
+                />
+              </FormFieldWrapper>
+              <div className="flex gap-4">
+                <FormFieldWrapper
+                  id="expiry"
+                  label="Expiry"
+                  error={checkoutFormErrorFields.expiry}
+                  labelClassName="flex w-full whitespace-nowrap"
+                >
+                  <Input
+                    id="expiry"
+                    error={checkoutFormErrorFields.expiry}
+                    type="text"
+                    placeholder="MM/YY"
+                    maxLength={5} />
+                </FormFieldWrapper>
 
-              <FormFieldWrapper
-                id="cvv"
-                label="CVV"
-                error={""}
-              >
-                <Input id="cvv" error={""} type="password" maxLength={4} placeholder="CVV/CVC" />
-              </FormFieldWrapper>
+                <FormFieldWrapper
+                  id="cvv"
+                  label="CVV"
+                  error={checkoutFormErrorFields.cvv}
+                  labelClassName="flex w-full whitespace-nowrap"
+                >
+                  <Input
+                    id="cvv"
+                    error={checkoutFormErrorFields.cvv}
+                    type="tel"
+                    inputMode="numeric"
+                    pattern="/d{3,4}"
+                    maxLength={4}
+                    placeholder="CVV/CVC" />
+                </FormFieldWrapper>
+              </div>
             </div>
 
-          </div>
-          <Button textValue={`Pay ${totalAmount.toFixed(2)}`} className="defaultButtonStyle w-full mb-4" />
+            <Button textValue={`Pay ${totalAmount.toFixed(2)}`} className="defaultButtonStyle w-full mb-4" />
+          </Form>
         </div>
       </div>
     </div>

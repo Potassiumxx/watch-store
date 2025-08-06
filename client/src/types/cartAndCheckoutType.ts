@@ -9,3 +9,11 @@ export interface CartItem {
 }
 
 export interface CheckoutItem extends Omit<CartItem, "availableStock"> {}
+
+export interface CheckoutFormFields {
+  dropLocation: string;
+  phoneNumber: string;
+  cardNumber: string;
+  expiry: string;
+  cvv: string;
+}
