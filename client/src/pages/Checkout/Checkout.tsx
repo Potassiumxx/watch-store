@@ -11,7 +11,7 @@ export default function Checkout() {
   return (
     <div className="grid grid-cols-[1.5fr_1fr] gap-4 py-8 text-white min-h-full">
       <div className="component-x-axis-padding">
-        <h1 className="text-3xl">Your Items</h1>
+        <h1 className="text-3xl">{checkoutItems.length > 1 ? "Your Items" : "Your Item"}</h1>
         <div className="flex flex-col gap-10">
           {
             checkoutItems.length === 0 ? (
