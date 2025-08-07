@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.watchstore.server.dto.category.CategoryRequest;
 import com.watchstore.server.dto.product.ProductRequest;
 import com.watchstore.server.service.CategoryService;
+import com.watchstore.server.service.OrderService;
 import com.watchstore.server.service.ProductService;
 
 @RestController
@@ -24,6 +26,8 @@ public class AdminController {
   private ProductService productService;
   @Autowired
   private CategoryService categoryService;
+  @Autowired
+  private OrderService orderService;
 
   @PostMapping("/add-product")
   public ResponseEntity<Object> addProduct(@ModelAttribute ProductRequest productRequest) {
@@ -67,5 +71,10 @@ public class AdminController {
   public ResponseEntity<Object> deleteCategory(@PathVariable long id) {
     categoryService.deleteCategory(id);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
+
+  @GetMapping("/orders")
+  public ResponseEntity<Object> getAllOrders() {
+    return ResponseEntity.ok(orderService.getAllOrders());
   }
 }

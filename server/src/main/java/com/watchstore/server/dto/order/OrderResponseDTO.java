@@ -12,6 +12,7 @@ public class OrderResponseDTO {
   private String phoneNumber;
   private LocalDateTime createdAt;
   private List<OrderItemDTO> items;
+  private String userEmail;
 
   public OrderResponseDTO() {
   };
@@ -22,6 +23,12 @@ public class OrderResponseDTO {
     this.phoneNumber = order.getPhoneNumber();
     this.createdAt = order.getCreatedAt();
     this.items = order.getItems().stream().map(OrderItemDTO::new).collect(Collectors.toList());
+
+    if (order.getUser() != null) {
+      this.userEmail = order.getUser().getEmail();
+    } else {
+      this.userEmail = "Guest";
+    }
   }
 
   public long getOrderID() {
@@ -42,5 +49,10 @@ public class OrderResponseDTO {
 
   public List<OrderItemDTO> getOrderItems() {
     return this.items;
+  }
+
+  // Only for admin
+  public String getUserEmail() {
+    return this.userEmail;
   }
 }

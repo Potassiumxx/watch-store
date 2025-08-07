@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.watchstore.server.dto.order.OrderItemDTO;
 import com.watchstore.server.dto.order.OrderRequestDTO;
+import com.watchstore.server.dto.order.OrderResponseDTO;
 import com.watchstore.server.exceptions.BadRequestException;
 import com.watchstore.server.exceptions.ResourceNotFoundException;
 import com.watchstore.server.model.Order;
@@ -18,6 +19,7 @@ import com.watchstore.server.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -34,8 +36,9 @@ public class OrderService {
     this.productRepository = productRepository;
   }
 
-  public List<Order> getAllOrders() {
-    return orderRepository.findAll();
+  public List<OrderResponseDTO> getAllOrders() {
+    List<Order> orders = orderRepository.findAll();
+    return orders.stream().map(OrderResponseDTO::new).collect(Collectors.toList());
   }
 
   public Optional<Order> getOrderById(Long id) {
