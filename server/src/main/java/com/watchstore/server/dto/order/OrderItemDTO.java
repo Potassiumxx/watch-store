@@ -2,6 +2,8 @@ package com.watchstore.server.dto.order;
 
 import java.math.BigDecimal;
 
+import com.watchstore.server.model.OrderItem;
+
 public class OrderItemDTO {
   private Long productId;
   private Integer quantity;
@@ -16,24 +18,30 @@ public class OrderItemDTO {
     this.unitPrice = unitPrice;
   }
 
-  public Long getProductId() {
-    return productId;
+  public OrderItemDTO(OrderItem item) {
+    this.productId = item.getProduct().getId();
+    this.quantity = item.getQuantity();
+    this.unitPrice = item.getUnitPrice();
   }
 
-  public void setProductId(Long productId) {
-    this.productId = productId;
+  public Long getProductId() {
+    return productId;
   }
 
   public Integer getQuantity() {
     return quantity;
   }
 
-  public void setQuantity(Integer quantity) {
-    this.quantity = quantity;
-  }
-
   public BigDecimal getUnitPrice() {
     return unitPrice;
+  }
+
+  public void setProductId(Long productId) {
+    this.productId = productId;
+  }
+
+  public void setQuantity(Integer quantity) {
+    this.quantity = quantity;
   }
 
   public void setUnitPrice(BigDecimal unitPrice) {

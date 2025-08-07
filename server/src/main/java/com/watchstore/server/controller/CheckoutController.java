@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.watchstore.server.dto.order.OrderRequestDTO;
-import com.watchstore.server.model.Order;
-import com.watchstore.server.repository.ProductRepository;
-import com.watchstore.server.repository.UserRepository;
 import com.watchstore.server.service.OrderService;
 
 @RestController
@@ -19,14 +16,13 @@ public class CheckoutController {
 
   private final OrderService orderService;
 
-  public CheckoutController(OrderService orderService, ProductRepository productRepository,
-      UserRepository userRepository) {
+  public CheckoutController(OrderService orderService) {
     this.orderService = orderService;
   }
 
   @PostMapping
-  public ResponseEntity<Order> placeOrder(@RequestBody OrderRequestDTO orderRequest) {
-    Order placedOrder = orderService.placeOrder(orderRequest);
-    return ResponseEntity.status(HttpStatus.CREATED).body(placedOrder);
+  public ResponseEntity<Object> placeOrder(@RequestBody OrderRequestDTO orderRequest) {
+    orderService.placeOrder(orderRequest);
+    return new ResponseEntity<>("Order created", HttpStatus.CREATED);
   }
 }

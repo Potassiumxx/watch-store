@@ -61,24 +61,12 @@ public class Order {
     return user;
   }
 
-  public void setUser(User user) {
-    this.user = user;
-  }
-
   public String getDropLocation() {
     return dropLocation;
   }
 
-  public void setDropLocation(String dropLocation) {
-    this.dropLocation = dropLocation;
-  }
-
   public String getPhoneNumber() {
     return phoneNumber;
-  }
-
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
   }
 
   public LocalDateTime getCreatedAt() {
@@ -87,6 +75,18 @@ public class Order {
 
   public List<OrderItem> getItems() {
     return items;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
+  public void setDropLocation(String dropLocation) {
+    this.dropLocation = dropLocation;
+  }
+
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
   }
 
   public void setItems(List<OrderItem> items) {

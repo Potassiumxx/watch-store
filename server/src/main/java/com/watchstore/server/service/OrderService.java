@@ -21,7 +21,6 @@ import java.util.Optional;
 
 @Service
 public class OrderService {
-
   private final OrderRepository orderRepository;
   private final OrderItemRepository orderItemRepository;
   private final UserRepository userRepository;
@@ -44,7 +43,7 @@ public class OrderService {
   }
 
   @Transactional
-  public Order placeOrder(OrderRequestDTO dto) {
+  public void placeOrder(OrderRequestDTO dto) {
     User user = null;
     if (dto.getUserId() != null) {
       user = userRepository.findById(dto.getUserId())
@@ -61,7 +60,7 @@ public class OrderService {
       order.addItem(item);
     }
 
-    return orderRepository.save(order);
+    orderRepository.save(order);
   }
 
   public void deleteOrder(Long id) {

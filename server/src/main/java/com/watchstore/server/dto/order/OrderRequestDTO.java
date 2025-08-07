@@ -22,28 +22,28 @@ public class OrderRequestDTO {
     return userId;
   }
 
-  public void setUserId(Long userId) {
-    this.userId = userId;
-  }
-
   public String getDropLocation() {
     return dropLocation;
-  }
-
-  public void setDropLocation(String dropLocation) {
-    this.dropLocation = dropLocation;
   }
 
   public String getPhoneNumber() {
     return phoneNumber;
   }
 
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
-  }
-
   public List<OrderItemDTO> getItems() {
     return items;
+  }
+
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
+
+  public void setDropLocation(String dropLocation) {
+    this.dropLocation = dropLocation;
+  }
+
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
   }
 
   public void setItems(List<OrderItemDTO> items) {
