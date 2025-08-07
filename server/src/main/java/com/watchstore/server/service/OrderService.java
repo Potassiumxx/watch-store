@@ -18,7 +18,6 @@ import com.watchstore.server.repository.ProductRepository;
 import com.watchstore.server.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,8 +40,8 @@ public class OrderService {
     return orders.stream().map(OrderResponseDTO::new).collect(Collectors.toList());
   }
 
-  public Optional<Order> getOrderById(Long id) {
-    return orderRepository.findById(id);
+  public List<OrderResponseDTO> getOrderByUserId(Long userID) {
+    return orderRepository.findByUserId(userID).stream().map(OrderResponseDTO::new).collect(Collectors.toList());
   }
 
   @Transactional

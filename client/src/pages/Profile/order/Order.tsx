@@ -1,10 +1,18 @@
 import * as React from "react";
 import ProfileContentContainer from "../container/ProfileContentContainer";
-import { getAllOrders } from "../../../services/api/orderAPI";
+import { getAllOrders, getSpecificOrder } from "../../../services/api/orderAPI";
 import { OrderResponseDTO } from "../../../types/orderType";
+import { useUserStore } from "../../../store/userStore";
+import { ROLES } from "../../../utils/constants";
+import { useAuthStore } from "../../../store/authStore";
 
 export default function Order() {
   const [orders, setOrders] = React.useState<OrderResponseDTO[]>([]);
+
+  const { role, userID } = useUserStore();
+
+  const isJWTChecked = useAuthStore((state) => state.isJWTChecked);
+
 
   async function fetchAllOrders() {
     try {
@@ -16,11 +24,24 @@ export default function Order() {
     }
   }
 
-  React.useEffect(() => {
-    fetchAllOrders();
-  }, [])
+  async function fetchSpecificOrder() {
+    try {
+      const data = await getSpecificOrder(userID);
+      setOrders(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  if (orders.length === 0) return <div className="txt-4xl text-center mt-20 text-white">No orders history to show</div>
+  React.useEffect(() => {
+    if (!isJWTChecked) return;
+
+    if (role === ROLES.ADMIN) fetchAllOrders();
+    else fetchSpecificOrder();
+  }, [isJWTChecked])
+
+  if (orders.length === 0) return <h1 className="text-4xl mt-20 mx-auto text-white">No orders history to show</h1>
 
   return (
     <ProfileContentContainer title="View Orders">
