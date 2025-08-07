@@ -10,6 +10,7 @@ import Products from "../pages/Products/Products";
 import SingleProductPage from "../pages/Products/SingleProduct";
 import Checkout from "../pages/Checkout/Checkout";
 import CheckoutSuccess from "../pages/Checkout/CheckoutSuccess";
+import Order from "../pages/Profile/order/Order";
 
 export default function Router() {
   const router = createBrowserRouter(
@@ -26,6 +27,7 @@ export default function Router() {
             element: <UserProfile />,
             children: [
               { index: true, element: <UserAccount /> },
+              { path: "orders", element: <Order /> },
               { path: "product-management", element: <AdminProductPage /> },
               { path: "product-category", element: <AdminProductCategory /> },
             ],
