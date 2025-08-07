@@ -46,10 +46,10 @@ export default function Order() {
   return (
     <ProfileContentContainer title="View Orders">
       <table className="text-white min-w-full border border-gray-200 table-auto w-full overflow-x-auto">
-        <thead className="border border-gray-200 text-center overflow-x-auto">
+        <thead className="border border-gray-200 text-center overflow-x-auto text-bold">
           <tr className="border border-gray-200">
             <th className="border p-2 w-[80px]">Order ID</th>
-            <th className="border p-2 w-[10px] overflow-x-auto">User</th>
+            {role === ROLES.ADMIN && <th className="border p-2 w-[10px] overflow-x-auto">User Email</th>}
             <th className="border p-2 w-[150px]">Phone Number</th>
             <th className="border p-2">Drop Location</th>
             <th className="border p-2 w-[120px]">Date (D/M/Y)</th>
@@ -64,7 +64,7 @@ export default function Order() {
               return (
                 <tr key={order.orderID}>
                   <td className="border p-2">{order.orderID}</td>
-                  <td className="border p-2 overflow-x-auto">{order.userEmail}</td>
+                  {role === ROLES.ADMIN && <td className="border p-2 overflow-x-auto">{order.userEmail}</td>}
                   <td className="border p-2">{order.phoneNumber}</td>
                   <td className="border p-2">{order.dropLocation}</td>
                   <td className="border p-2">{new Date(order.createdAt).toLocaleDateString()}</td>

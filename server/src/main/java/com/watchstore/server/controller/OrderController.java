@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.watchstore.server.dto.order.OrderResponseDTO;
 import com.watchstore.server.service.OrderService;
 
 @RestController
@@ -21,7 +20,7 @@ public class OrderController {
   }
 
   @GetMapping("/user/{id}")
-  public ResponseEntity<List<OrderResponseDTO>> getOrderByUserId(@PathVariable("id") long userID) {
+  public ResponseEntity<List<UserOrderResponseDTO>> getOrderByUserId(@PathVariable("id") long userID) {
     return ResponseEntity.ok(orderService.getOrderByUserId(userID));
   }
 }

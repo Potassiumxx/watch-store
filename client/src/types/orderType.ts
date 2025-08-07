@@ -6,7 +6,7 @@ interface OrderItemsDTO {
 
 export interface OrderResponseDTO {
   orderID: number;
-  userEmail: string;
+  userEmail?: string;
   phoneNumber: string;
   dropLocation: string;
   createdAt: string;
