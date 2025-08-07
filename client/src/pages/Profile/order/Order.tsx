@@ -8,10 +8,15 @@ import { useAuthStore } from "../../../store/authStore";
 
 export default function Order() {
   const [orders, setOrders] = React.useState<OrderResponseDTO[]>([]);
+  const [expandedOrderId, setExpandedOrderId] = React.useState<number | null>(null);
 
   const { role, userID } = useUserStore();
 
   const isJWTChecked = useAuthStore((state) => state.isJWTChecked);
+
+  function toggleShowOrderItems(orderId: number) {
+    setExpandedOrderId((prev) => (prev === orderId ? null : orderId));
+  }
 
 
   async function fetchAllOrders() {
@@ -45,38 +50,72 @@ export default function Order() {
 
   return (
     <ProfileContentContainer title="View Orders">
-      <table className="text-white min-w-full border border-gray-200 table-auto w-full overflow-x-auto">
-        <thead className="border border-gray-200 text-center overflow-x-auto text-bold">
-          <tr className="border border-gray-200">
-            <th className="border p-2 w-[80px]">Order ID</th>
-            {role === ROLES.ADMIN && <th className="border p-2 w-[10px] overflow-x-auto">User Email</th>}
-            <th className="border p-2 w-[150px]">Phone Number</th>
-            <th className="border p-2">Drop Location</th>
-            <th className="border p-2 w-[120px]">Date (D/M/Y)</th>
-            <th className="border p-2 w-[120px]">Time (24h)</th>
-            <th className="border p-2 w-[180px]">Total</th>
+      <table className="text-white min-w-full border border-gray-400 bg-black/[.7] table-fixed">
+        <thead className="text-left text-[15px] text-bold bg-white/[.2]">
+          <tr className="p-4">
+            <th className="p-2">#</th>
+            <th className="p-2">Order ID</th>
+            {role === ROLES.ADMIN && <th className="p-2 w-[400px]">User Email</th>}
+            <th className="p-2">Date (D/M/Y)</th>
+            <th className="p-2">Time (24h)</th>
+            <th className="p-2">Total</th>
+            <th className="p-2 w-[200px]">Action</th>
           </tr>
         </thead>
-        <tbody className="text-center">
+        <tbody className="text-left">
           {
-            orders.map((order) => {
+            orders.map((order, index) => {
               const totalPrice = order.orderItems.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
               return (
-                <tr key={order.orderID}>
-                  <td className="border p-2">{order.orderID}</td>
-                  {role === ROLES.ADMIN && <td className="border p-2 overflow-x-auto">{order.userEmail}</td>}
-                  <td className="border p-2">{order.phoneNumber}</td>
-                  <td className="border p-2">{order.dropLocation}</td>
-                  <td className="border p-2">{new Date(order.createdAt).toLocaleDateString()}</td>
-                  <td className="border p-2">{new Date(order.createdAt).toLocaleTimeString()}</td>
-                  <td className="border p-2">{totalPrice}</td>
-                </tr>
+                <React.Fragment key={order.orderID}>
+                  <tr className="border-b border-gray-400">
+                    <td className="p-2">{index + 1}</td>
+                    <td className="p-2">{order.orderID}</td>
+                    {role === ROLES.ADMIN && <td className="p-2 overflow-x-auto">{order.userEmail}</td>}
+                    <td className="p-2">{new Date(order.createdAt).toLocaleDateString()}</td>
+                    <td className="p-2">{new Date(order.createdAt).toLocaleTimeString()}</td>
+                    <td className="p-2">{totalPrice}</td>
+                    <td className="p-2">
+                      <button
+                        onClick={() => toggleShowOrderItems(order.orderID)}
+                        className="border px-4 py-2 hover:bg-white hover:text-black duration-200">
+                        {expandedOrderId === order.orderID ? " Hide Details" : "Show Details"}
+                      </button>
+                    </td>
+                  </tr>
+                  {expandedOrderId === order.orderID && (
+                    <tr>
+                      <td colSpan={role === ROLES.ADMIN ? 9 : 8} className="p-4">
+                        <div className="grid grid-cols-[2fr_1fr]">
+                          <div className="">
+                            <strong>Items:</strong>
+                            <ul className="list-dash list-inside pl-4 mt-1">
+                              {order.orderItems.map((item) => (
+                                <li key={item.productId}>
+                                  {item.productName} | Quantity: {item.quantity} | Price: {item.unitPrice}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div className="flex flex-col gap-8 ml-auto">
+                            <div className="mb-2">
+                              <strong>Phone Number:</strong> {order.phoneNumber}
+                            </div>
+                            <div className="mb-2">
+                              <strong>Drop Location:</strong> {order.dropLocation}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
               )
             }
             )
           }
         </tbody>
       </table>
-    </ProfileContentContainer>
+    </ProfileContentContainer >
   )
 }

@@ -2,6 +2,7 @@ interface OrderItemsDTO {
   productId: number;
   quantity: number;
   unitPrice: number;
+  productName: string;
 }
 
 export interface OrderResponseDTO {
