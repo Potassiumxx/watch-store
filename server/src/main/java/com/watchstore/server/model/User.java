@@ -26,15 +26,18 @@ public class User {
   @Column(nullable = false)
   private String role;
 
-  // Constructors
+  @Column(name = "security_code", nullable = false)
+  private String securityCode;
+
   public User() {
   }
 
-  public User(String email, String password, String username, String role) {
+  public User(String email, String password, String username, String role, String securityCode) {
     this.email = email;
     this.password = password;
     this.username = username;
     this.role = role;
+    this.securityCode = securityCode;
   }
 
   // Getters and setters
@@ -58,6 +61,10 @@ public class User {
     return role;
   }
 
+  public String getSecurityCode() {
+    return securityCode;
+  }
+
   public void setId(Long id) {
     this.id = id;
   }
@@ -76,5 +83,9 @@ public class User {
 
   public void setRole(String role) {
     this.role = role;
+  }
+
+  public void setSecurityCode(String securityCode) {
+    this.securityCode = securityCode;
   }
 }

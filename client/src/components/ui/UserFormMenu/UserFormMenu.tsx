@@ -54,7 +54,7 @@ export default function UserMenu() {
 
   return (
     <>
-      <SidePanelContainer panelTitle={isLoginMode ? "Sign in" : "Sign Up"}>
+      <SidePanelContainer panelTitle={isLoginMode ? "Sign in" : "Sign Up"} className="w-[480px]">
         {isLoginMode ? <LoginForm /> : <RegisterForm />}
         <div className="flex justify-center" data-testid="user-menu">
           <button onClick={() => setIsLoginMode(!isLoginMode)} disabled={isLoading} className="disabled:cursor-not-allowed">

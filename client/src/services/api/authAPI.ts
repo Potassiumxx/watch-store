@@ -11,6 +11,7 @@ interface registerCredentials {
   registerEmail: string;
   registerPassword: string;
   registerUsername: string;
+  securityCode: string;
 }
 
 /**
@@ -39,6 +40,7 @@ export async function loginUser(credentials: loginCredentials): Promise<LoginAnd
  * @param credentials Registration data, e.g., email, password and username
  */
 export async function registerUser(credentials: registerCredentials): Promise<LoginAndRegisterResponse> {
+  console.log(credentials);
   try {
     const response = await axios.post(`${BACKEND_API_URL}/auth/register`, credentials);
     return response.data;

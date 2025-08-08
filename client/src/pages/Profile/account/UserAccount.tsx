@@ -54,7 +54,7 @@ export default function UserAccount() {
               <h3 className="text-lg mb-1">Username</h3>
               <div className="flex justify-between items-center">
                 <div className="font-normal text-white/90">{globalUsername ?? "No username"}</div>
-                <Button textValue="Edit" className="border-2 border-white py-1 hover:bg-white hover:text-black" />
+                <Button textValue="Edit" className="border-2 border-white py-1 hover:bg-white hover:text-black w-[100px]" />
               </div>
             </div>
             <div>
@@ -63,7 +63,7 @@ export default function UserAccount() {
                 <div className="font-normal text-white/90">{modifiedEmail(globalEmail)}</div>
                 <Button
                   textValue={isEmailRevealed ? "Hide" : "Show"}
-                  className="border-2 border-white py-1 hover:bg-white hover:text-black"
+                  className="border-2 border-white py-1 hover:bg-white hover:text-black w-[100px]"
                   onClick={() => setIsEmailRevealed(!isEmailRevealed)}
                 />
               </div>

@@ -48,9 +48,10 @@ public class AuthService {
       throw new AuthAPIException(fieldErrorResponse, HttpStatus.CONFLICT);
     }
 
+    String userRole = "USER";
     String hashedPassword = passwordEncoder.encode(registerRequest.getPassword());
     User user = new User(registerRequest.getEmail(), hashedPassword, registerRequest.getUsername(),
-        "USER");
+        userRole, registerRequest.getSecurityCode());
 
     userRepository.save(user);
 

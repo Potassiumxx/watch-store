@@ -9,6 +9,7 @@ interface AuthStore {
   registerEmail: string;
   registerPassword: string;
   registerUsername: string;
+  securityCode: string;
 
   loginErrorFields: LoginFields;
   registerErrorFields: RegisterFields;
@@ -23,6 +24,7 @@ interface AuthStore {
   setRegisterEmail: (email: string) => void;
   setRegisterPassword: (email: string) => void;
   setRegisterUsername: (email: string) => void;
+  setSecurityCode: (securityCode: string) => void;
 
   setLoginError: (inputField: keyof LoginFields, message: string) => void;
   setRegisterError: (inputField: keyof RegisterFields, message: string) => void;
@@ -45,6 +47,7 @@ export const useAuthStore = create<AuthStore>()(
       registerEmail: "",
       registerPassword: "",
       registerUsername: "",
+      securityCode: "",
 
       loginErrorFields: {},
       registerErrorFields: {},
@@ -59,6 +62,7 @@ export const useAuthStore = create<AuthStore>()(
       setRegisterEmail: (email) => set({ registerEmail: email }),
       setRegisterPassword: (password) => set({ registerPassword: password }),
       setRegisterUsername: (username) => set({ registerUsername: username }),
+      setSecurityCode: (securityCode) => set({ securityCode: securityCode }),
 
       setLoginError: (inputField, message) =>
         set((state) => ({

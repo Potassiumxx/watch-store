@@ -17,10 +17,12 @@ export default function RegisterForm() {
   const registerEmail = useAuthStore((state) => state.registerEmail);
   const registerPassword = useAuthStore((state) => state.registerPassword);
   const registerUsername = useAuthStore((state) => state.registerUsername);
+  const securityCode = useAuthStore((state) => state.securityCode);
 
   const setRegisterEmail = useAuthStore((state) => state.setRegisterEmail);
   const setRegisterPassword = useAuthStore((state) => state.setRegisterPassword);
   const setRegisterUsername = useAuthStore((state) => state.setRegisterUsername);
+  const setSecurityCode = useAuthStore((state) => state.setSecurityCode);
 
   const setRegisterError = useAuthStore((state) => state.setRegisterError);
   const regiserErrorFields = useAuthStore((state) => state.registerErrorFields);
@@ -30,59 +32,41 @@ export default function RegisterForm() {
   const isLoading = useUIStore((state) => state.isLoading);
 
   const [isUsernameFocused, setIsUsernameFocused] = React.useState<boolean>(false);
+  const [isSecurityCodeFocused, setIsSecurityCodeFocused] = React.useState<boolean>(false);
 
   const initialDirtyFieldState: DirtyFieldState<RegisterFields> = {
     email: false,
     password: false,
     username: false,
+    securityCode: false,
   };
 
   const { dirtyField, generalError, isValidationError, handleFormSubmit, handleFieldOnChange, handleSuccessfulResponse } =
     useForm<DirtyFieldState<RegisterFields>>(initialDirtyFieldState);
 
-  function handleRegisterUsernameOnChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    const username = event.target.value;
+  function handleRegisterFieldOnChange(
+    fieldKey: keyof RegisterFields,
+    setter: (value: string) => void
+  ) {
+    return (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newValue = event.target.value;
 
-    handleFieldOnChange<RegisterFields>({
-      fieldKey: "username",
-      newValue: username,
-      allFormValues: { email: registerEmail, password: registerPassword, username: registerUsername },
-      formValueSetter: setRegisterUsername,
-      validateFunction: validateRegisterForm,
-      setFieldErrorFunction: setRegisterError,
-      clearErrorsFunction: clearRegisterErrors,
-      dirtyField: dirtyField,
-    });
-  }
-
-  function handleRegisterEmailOnChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    const email = event.target.value;
-
-    handleFieldOnChange<RegisterFields>({
-      fieldKey: "email",
-      newValue: email,
-      allFormValues: { email: registerEmail, password: registerPassword, username: registerUsername },
-      formValueSetter: setRegisterEmail,
-      validateFunction: validateRegisterForm,
-      setFieldErrorFunction: setRegisterError,
-      clearErrorsFunction: clearRegisterErrors,
-      dirtyField: dirtyField,
-    });
-  }
-
-  function handleRegisterPasswordOnChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    const password = event.target.value;
-
-    handleFieldOnChange<RegisterFields>({
-      fieldKey: "password",
-      newValue: password,
-      allFormValues: { email: registerEmail, password: registerPassword, username: registerUsername },
-      formValueSetter: setRegisterPassword,
-      validateFunction: validateRegisterForm,
-      setFieldErrorFunction: setRegisterError,
-      clearErrorsFunction: clearRegisterErrors,
-      dirtyField: dirtyField,
-    });
+      handleFieldOnChange<RegisterFields>({
+        fieldKey,
+        newValue,
+        allFormValues: {
+          email: registerEmail,
+          password: registerPassword,
+          username: registerUsername,
+          securityCode: securityCode,
+        },
+        formValueSetter: setter,
+        validateFunction: validateRegisterForm,
+        setFieldErrorFunction: setRegisterError,
+        clearErrorsFunction: clearRegisterErrors,
+        dirtyField,
+      });
+    };
   }
 
   async function handleRegisterFormSubmit(event: React.FormEvent) {
@@ -92,12 +76,13 @@ export default function RegisterForm() {
       email: registerEmail,
       password: registerPassword,
       username: registerUsername,
+      securityCode: securityCode,
     });
 
     if (isValidationError<RegisterFields>(validationError, setRegisterError)) return;
 
     const response = await handleFormSubmit<RegisterFields, LoginAndRegisterResponse>({
-      apiCall: () => registerUser({ registerEmail, registerPassword, registerUsername }),
+      apiCall: () => registerUser({ registerEmail, registerPassword, registerUsername, securityCode }),
       setError: setRegisterError,
     });
 
@@ -115,7 +100,7 @@ export default function RegisterForm() {
             type="name"
             placeholder="Username"
             value={registerUsername}
-            onChange={(e) => handleRegisterUsernameOnChange(e)}
+            onChange={handleRegisterFieldOnChange("username", setRegisterUsername)}
             onFocus={() => setIsUsernameFocused(true)}
             onBlur={() => setIsUsernameFocused(false)}
             error={regiserErrorFields.username}
@@ -137,7 +122,7 @@ export default function RegisterForm() {
           type="email"
           placeholder="Email"
           value={registerEmail}
-          onChange={(e) => handleRegisterEmailOnChange(e)}
+          onChange={handleRegisterFieldOnChange("email", setRegisterEmail)}
           error={regiserErrorFields.email}
           id="register-email"
         />
@@ -147,14 +132,38 @@ export default function RegisterForm() {
           type="password"
           placeholder="Password"
           value={registerPassword}
-          onChange={(e) => handleRegisterPasswordOnChange(e)}
+          onChange={handleRegisterFieldOnChange("password", setRegisterPassword)}
           error={regiserErrorFields.password}
           id="register-password"
         />
       </FormFieldWrapper>
+      <div>
+        <FormFieldWrapper error={regiserErrorFields.securityCode} label="Security Code" id="security-code" labelClassName="flex whitespace-nowrap">
+          <Input
+            type="password"
+            placeholder="Security Code"
+            value={securityCode}
+            onChange={handleRegisterFieldOnChange("securityCode", setSecurityCode)}
+            onFocus={() => setIsSecurityCodeFocused(true)}
+            onBlur={() => setIsSecurityCodeFocused(false)}
+            error={regiserErrorFields.securityCode}
+            id="security-code"
+          />
+        </FormFieldWrapper>
+        {
+          <div
+            className={`${isSecurityCodeFocused ? "opacity-100 h-full" : "opacity-0 h-0"
+              } overflow-hidden transition-all duration-200 text-[13px] text-white}`}>
+            <div className={`font-semibold text-white flex flex-col`}>
+              <span>- Use this code to reset your password if forgotten.</span>
+              <span>- Keep it secret and don’t share with anyone.</span>
+            </div>
+          </div>
+        }
+      </div>
       <Button textValue={isLoading ? <Loader /> : "Sign Up"} className="formButtonStyle" disabled={isLoading} />
 
-      {generalError && <ErrorMessage message={generalError} />}
+      {generalError && <ErrorMessage message={generalError} className="text-center w-full" />}
     </Form>
   );
 }

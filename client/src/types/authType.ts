@@ -5,6 +5,7 @@ export interface LoginFields {
 
 export interface RegisterFields extends Partial<LoginFields> {
   username?: string;
+  securityCode?: string;
 }
 
 export interface DecodedJWT {

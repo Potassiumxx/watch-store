@@ -30,7 +30,7 @@ export function validateLoginForm({ email, password }: LoginFields): Partial<Log
   return errors;
 }
 
-export function validateRegisterForm({ email, password, username }: RegisterFields): Partial<RegisterFields> {
+export function validateRegisterForm({ email, password, username, securityCode }: RegisterFields): Partial<RegisterFields> {
   const errors: Partial<RegisterFields> = {};
 
   if (isEmpty(email)) {
@@ -51,6 +51,10 @@ export function validateRegisterForm({ email, password, username }: RegisterFiel
   } else if (username && !/^[A-Za-z0-9_-]+$/.test(username)) {
     errors.username = "Invalid character for username";
   }
+
+  if (isEmpty(securityCode)) errors.securityCode = "Please enter a security code";
+  else if (!isEmpty(password) && !isEmpty(securityCode) && password === securityCode)
+    errors.securityCode = "Security code and password cannot be same";
 
   return errors;
 }
