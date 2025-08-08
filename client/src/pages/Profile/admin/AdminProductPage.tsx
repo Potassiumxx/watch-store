@@ -5,7 +5,6 @@ import { useProductStore } from "../../../store/productStore";
 import useForm from "../../../hooks/useForm";
 import { DirtyFieldState } from "../../../types/form";
 import {
-  ProductFileFormValidationReturnType,
   ProductFormFields,
   ProductFormResponse,
   ProductFormStringFields,

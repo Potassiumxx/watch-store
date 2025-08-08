@@ -42,7 +42,6 @@ export default function UpdateProductForm({ selectedProduct, handleFormCloseFunc
     setProductCategory,
     setProductDescription,
     setProductQuantity,
-    setProductImage,
     setProductStringFormError,
     setProductFileFormError,
     clearProductStringFormError,
@@ -112,7 +111,7 @@ export default function UpdateProductForm({ selectedProduct, handleFormCloseFunc
 
 
   return (
-    <div>
+    <div className="max-h-[90vh]">
       <ProductForm
         onSubmit={handleUpdateProductSubmit}
         onChange={(e) => handleProductFieldOnChange<ProductFormStringFields>({

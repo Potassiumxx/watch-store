@@ -13,7 +13,6 @@ import { fetchErrorCatcher } from "../../utils/helpers";
 import FetchStatusDisplay from "../../components/ui/FetchStatusDisplay/FetchStatusDisplay";
 import { useNavbarStore } from "../../store/navbarStore";
 import getLevenshteinDistance from "../../utils/algorithm";
-import { normalizePath } from "vite";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
@@ -21,6 +20,7 @@ export default function Products() {
   const [showConfirmModal, setShowConfirmModal] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setIsError] = React.useState<string | null>(null);
+  const [isFormVisible, setIsFormVisible] = React.useState<boolean>(false);
   const [productToDelete, setProductToDelete] = React.useState({
     id: 0,
     name: ""
@@ -103,6 +103,18 @@ export default function Products() {
     fetchProducts();
   }, [])
 
+  React.useEffect(() => {
+    if (showUpdateForm) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showUpdateForm]);
+
   if (products.length === 0 || getFilteredProducts(searchedValue).length === 0) return (
     <div className="w-full text-center mt-20">
       <h1 className="text-white text-4xl font-semibold">No products found</h1>
@@ -127,6 +139,7 @@ export default function Products() {
                       <Button textValue="Edit"
                         className="defaultButtonStyle h-[35px] w-[60px] items-center"
                         onClick={() => {
+                          setIsFormVisible(true)
                           setShowUpdateForm(true);
                           setSelectedProduct(product);
                         }} />
@@ -172,13 +185,18 @@ export default function Products() {
         </div>
         {
           showUpdateForm && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center outerDivBackgroundColour">
-              <div className="relative innerDivBackgroundColour rounded-md shadow-lg shadow-gray-800">
+            <div
+              onClick={handleFormClose}
+              className={`fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/[.8] 
+                backdrop-blur-md transition-opacity duration-200 ${isFormVisible} ? "opacity-100" : "opacity-0"`}
+            >
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="relative innerDivBackgroundColour rounded-md border border-white/[.5] z-100">
                 <div className="flex py-4 px-6 items-center border-b-[1px] border-white">
                   <h2 className="w-full text-white justify-self-center text-3xl font-semibold text-center">Update Product</h2>
                   <button className="absolute right-6 text-red-600 z-50 hover:text-red-400 duration-200"
-                    onClick={handleFormClose}>{<IoCloseOutline
-                      size={45} />}</button>
+                    onClick={handleFormClose}>{<IoCloseOutline size={45} />}</button>
                 </div>
                 <UpdateProductForm
                   selectedProduct={selectedProduct}

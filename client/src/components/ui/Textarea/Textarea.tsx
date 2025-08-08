@@ -1,7 +1,7 @@
 import * as React from "react";
 import { BaseFormFieldProps } from "../../../types/form";
 
-interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "id">, BaseFormFieldProps {}
+interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "id">, BaseFormFieldProps { }
 
 export default function Textarea({ id, error, onChange, ...attributes }: TextareaProps) {
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
@@ -22,7 +22,7 @@ export default function Textarea({ id, error, onChange, ...attributes }: Textare
       <textarea
         id={id}
         ref={textareaRef}
-        className={`formElementDefaultStyling resize-none min-h-16 ${error ? "formElementErrorStyling" : null}`}
+        className={`formElementDefaultStyling resize-none min-h-16 max-h-52 ${error ? "formElementErrorStyling" : null}`}
         onInput={handleInput}
         {...attributes}
       />

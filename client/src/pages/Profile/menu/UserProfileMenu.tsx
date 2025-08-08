@@ -32,13 +32,13 @@ export default function UserProfileMenu() {
           && (
             <>
               < NavLink
-                to={"product-management"}
+                to={"add-product"}
                 className={({ isActive }) => {
                   return isActive
                     ? "w-full text-center duration-200 py-2 bg-white/[.95] text-black font-bold"
                     : "w-full text-center duration-200 py-2 hover:bg-white hover:text-black";
                 }}>
-                Products
+                Add Product
               </NavLink>
               <NavLink to={"product-category"}
                 className={({ isActive }) => {
@@ -46,7 +46,7 @@ export default function UserProfileMenu() {
                     ? "w-full text-center duration-200 py-2 bg-white/[.95] text-black font-bold"
                     : "w-full text-center duration-200 py-2 hover:bg-white hover:text-black";
                 }}>
-                Product Category
+                Manage Product Category
               </NavLink>
             </>
           )

@@ -28,7 +28,7 @@ export default function Router() {
             children: [
               { index: true, element: <UserAccount /> },
               { path: "orders", element: <Order /> },
-              { path: "product-management", element: <AdminProductPage /> },
+              { path: "add-product", element: <AdminProductPage /> },
               { path: "product-category", element: <AdminProductCategory /> },
             ],
           },

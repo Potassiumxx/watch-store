@@ -11,7 +11,6 @@ import { useUIStore } from "../../../store/uiStore";
 import { useUserStore } from "../../../store/userStore";
 import { Cart } from "../Cart/Cart";
 import { useCartStore } from "../../../store/cartStore";
-import { useProductStore } from "../../../store/productStore";
 import { useNavbarStore } from "../../../store/navbarStore";
 
 export default function Navbar() {
@@ -37,7 +36,6 @@ export default function Navbar() {
 
   const cartItems = useCartStore((state) => state.cartItems);
 
-  const searchedValue = useNavbarStore((state) => state.searchedValue);
   const setSearchedValue = useNavbarStore((state) => state.setSearchedValue);
 
   function handleOpenSearchBar() {
