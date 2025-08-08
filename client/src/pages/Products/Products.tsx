@@ -13,6 +13,7 @@ import { fetchErrorCatcher } from "../../utils/helpers";
 import FetchStatusDisplay from "../../components/ui/FetchStatusDisplay/FetchStatusDisplay";
 import { useNavbarStore } from "../../store/navbarStore";
 import getLevenshteinDistance from "../../utils/algorithm";
+import { normalizePath } from "vite";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
@@ -52,21 +53,27 @@ export default function Products() {
   function getFilteredProducts(searchedString: string) {
     if (!searchedString.trim()) return products;
 
-    const threshold = 4;
+    const normalisedSearch = searchedString.toLowerCase().replace(/\s+/g, "");
 
-    //const filteredProducts = products.filter((product) => {
-    //return product.name.toLowerCase().includes(searchedString.toLowerCase());
-    //})
+    return products.filter((product) => {
+      const normalisedProductName = product.name.toLowerCase().replace(/\s+/g, "");
 
-    const scored = products.map((product) => {
-      const score = getLevenshteinDistance(
-        searchedString.toLowerCase(), product.name.toLowerCase()
-      );
-      return { ...product, score };
-    }).filter((product) => product.score <= threshold)
-      .sort((a, b) => a.score - b.score);
+      if (normalisedProductName.includes(normalisedSearch)) return true;
 
-    return scored;
+      const distance = getLevenshteinDistance(normalisedSearch, normalisedProductName);
+      const threshold = Math.floor(normalisedProductName.length * 0.9);
+
+      return distance <= threshold;
+    }).sort((a, b) => {
+      const aIncludes = a.name.toLowerCase().includes(searchedString.toLowerCase()) ? 0 : 1;
+      const bIncludes = b.name.toLowerCase().includes(searchedString.toLowerCase()) ? 0 : 1;
+      if (aIncludes !== bIncludes) return aIncludes - bIncludes;
+
+      const aDist = getLevenshteinDistance(normalisedSearch, a.name.toLowerCase().replace(/\s+/g, ''));
+      const bDist = getLevenshteinDistance(normalisedSearch, b.name.toLowerCase().replace(/\s+/g, ''));
+
+      return aDist - bDist;
+    })
   }
 
   async function fetchProducts() {
