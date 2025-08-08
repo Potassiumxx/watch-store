@@ -9,7 +9,6 @@ public class LoginRequest {
   @JsonProperty("loginPassword")
   private String password;
 
-  // Getters and Setters
   public String getEmail() {
     return email;
   }

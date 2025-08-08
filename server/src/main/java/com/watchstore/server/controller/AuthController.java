@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.watchstore.server.dto.auth.LoginRequest;
 import com.watchstore.server.dto.auth.RegisterRequest;
 import com.watchstore.server.dto.auth.UserDTO;
+import com.watchstore.server.dto.auth.VerifySecurityCodeRequest;
 import com.watchstore.server.service.AuthService;
 import com.watchstore.server.util.AuthResponseUtil;
 
@@ -32,5 +33,11 @@ public class AuthController {
   public ResponseEntity<Object> register(@RequestBody RegisterRequest registerRequest) {
     UserDTO userDTO = authService.register(registerRequest);
     return new ResponseEntity<>(AuthResponseUtil.buildAuthResponse(userDTO), HttpStatus.CREATED);
+  }
+
+  @PostMapping("/verify/security-code")
+  public ResponseEntity<Object> verifySecurityCode(@RequestBody VerifySecurityCodeRequest request) {
+    authService.verifySecurityCode(request);
+    return new ResponseEntity<>("Valid security", HttpStatus.OK);
   }
 }

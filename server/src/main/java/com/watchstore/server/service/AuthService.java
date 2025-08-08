@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.watchstore.server.dto.auth.LoginRequest;
 import com.watchstore.server.dto.auth.RegisterRequest;
 import com.watchstore.server.dto.auth.UserDTO;
+import com.watchstore.server.dto.auth.VerifySecurityCodeRequest;
 import com.watchstore.server.dto.response.FieldErrorResponse;
 import com.watchstore.server.exceptions.AuthAPIException;
 import com.watchstore.server.model.User;
@@ -56,5 +57,26 @@ public class AuthService {
     userRepository.save(user);
 
     return new UserDTO(user.getId(), user.getEmail(), user.getUsername(), user.getRole());
+  }
+
+  public void verifySecurityCode(VerifySecurityCodeRequest request) {
+    String message = "Invalid Email or security code";
+    User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> {
+      FieldErrorResponse fieldErrorResponse = new FieldErrorResponse();
+      fieldErrorResponse.addError("email", message);
+      fieldErrorResponse.addError("securityCode", message);
+
+      System.out.println("Wrong email");
+
+      throw new AuthAPIException(fieldErrorResponse);
+    });
+
+    if (!user.getSecurityCode().equals(request.getSecurityCode())) {
+      System.out.println("Wrong code");
+      FieldErrorResponse fieldErrorResponse = new FieldErrorResponse();
+      fieldErrorResponse.addError("email", message);
+      fieldErrorResponse.addError("securityCode", message);
+      throw new AuthAPIException(fieldErrorResponse);
+    }
   }
 }
