@@ -14,7 +14,10 @@ function isPasswordInvalid(password: string): string | null {
   return null;
 }
 
-export function validateLoginForm({ email, password }: LoginFields): Partial<LoginFields> {
+export function validateLoginForm(
+  { email, password, securityCode }: LoginFields,
+  { isForgotPassword }: { isForgotPassword: boolean }
+): Partial<LoginFields> {
   const errors: Partial<LoginFields> = {};
 
   if (isEmpty(email)) {
@@ -23,8 +26,14 @@ export function validateLoginForm({ email, password }: LoginFields): Partial<Log
     errors.email = "Invalid Email pattern";
   }
 
-  if (isEmpty(password)) {
-    errors.password = "Please enter a password";
+  if (isForgotPassword) {
+    if (isEmpty(securityCode)) {
+      errors.securityCode = "Security code cannot be empty";
+    }
+  } else {
+    if (isEmpty(password)) {
+      errors.password = "Please enter a password";
+    }
   }
 
   return errors;

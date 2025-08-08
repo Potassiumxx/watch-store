@@ -1,11 +1,11 @@
 export interface LoginFields {
   email?: string;
   password?: string;
+  securityCode?: string;
 }
 
 export interface RegisterFields extends Partial<LoginFields> {
   username?: string;
-  securityCode?: string;
 }
 
 export interface DecodedJWT {

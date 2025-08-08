@@ -29,6 +29,9 @@ export default function UserMenu() {
   const clearLoginErrors = useAuthStore((state) => state.clearLoginErrors);
   const clearRegisterErrors = useAuthStore((state) => state.clearRegisterErrors);
 
+  const securityCode = useAuthStore((state) => state.securityCode);
+  const setSecurityCode = useAuthStore((state) => state.setSecurityCode);
+
   const isLoading = useUIStore((state) => state.isLoading);
   const showUserMenu = useUIStore((state) => state.showUserMenu);
 
@@ -47,6 +50,8 @@ export default function UserMenu() {
     // Clear password fields if the form is closed or switched. For security reasons.
     if (loginPassword !== "") setLoginPassword("");
     if (registerPassword !== "") setRegisterPassword("");
+
+    if (securityCode !== "") setSecurityCode("");
 
     clearLoginErrors();
     clearRegisterErrors();
