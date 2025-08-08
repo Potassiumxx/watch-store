@@ -13,6 +13,7 @@ import { useUIStore } from "../../../store/uiStore";
 
 export default function UserMenu() {
   const [isLoginMode, setIsLoginMode] = React.useState<boolean>(true);
+  const [hasForgotPassword, setHasForgotPassword] = React.useState<boolean>(false);
 
   const loginEmail = useAuthStore((state) => state.loginEmail);
   const loginPassword = useAuthStore((state) => state.loginPassword);
@@ -59,8 +60,8 @@ export default function UserMenu() {
 
   return (
     <>
-      <SidePanelContainer panelTitle={isLoginMode ? "Sign in" : "Sign Up"} className="w-[480px]">
-        {isLoginMode ? <LoginForm /> : <RegisterForm />}
+      <SidePanelContainer panelTitle={isLoginMode ? (hasForgotPassword ? "Forgot Password" : "Sign In") : "Sign Up"} className="w-[480px]">
+        {isLoginMode ? <LoginForm hasForgotPassword={hasForgotPassword} setHasForgotPassword={setHasForgotPassword} /> : <RegisterForm />}
         <div className="flex justify-center" data-testid="user-menu">
           <button onClick={() => setIsLoginMode(!isLoginMode)} disabled={isLoading} className="disabled:cursor-not-allowed">
             <div className="group flex gap-2 items-end text-[14px]">

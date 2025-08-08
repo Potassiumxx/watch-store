@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useAuthStore } from "../../../../store/authStore";
-import { loginUser } from "../../../../services/api/authAPI";
+import { loginUser, resetPasswordAPI, verifySecurityCode } from "../../../../services/api/authAPI";
 import Input from "../../Input/Input";
 import { validateLoginForm } from "../../../../utils/validateAuthForm";
 import { ErrorMessage } from "../../Error/ErrorMessage";
@@ -13,7 +13,12 @@ import Loader from "../../Loader/Loader";
 import { useUIStore } from "../../../../store/uiStore";
 import FormFieldWrapper from "../../FormFieldWrapper/FormFieldWrapper";
 
-export default function LoginForm() {
+interface LoginFormProps {
+  hasForgotPassword: boolean;
+  setHasForgotPassword: (hasForgotPassword: boolean) => void;
+}
+
+export default function LoginForm({ hasForgotPassword, setHasForgotPassword }: LoginFormProps) {
   const loginEmail = useAuthStore((state) => state.loginEmail);
   const loginPassword = useAuthStore((state) => state.loginPassword);
   const securityCode = useAuthStore((state) => state.securityCode);
@@ -29,7 +34,9 @@ export default function LoginForm() {
 
   const isLoading = useUIStore((state) => state.isLoading);
 
-  const [hasForgotPassword, setHasForgotPassword] = React.useState<boolean>(false);
+  const [resetPassword, setResetPassowrd] = React.useState("");
+  const [isResetPasswordState, setIsResetPasswordState] = React.useState<boolean>(false);
+
 
   const initialDirtyFieldState: DirtyFieldState<LoginFields> = {
     email: false,
@@ -73,23 +80,39 @@ export default function LoginForm() {
       { isForgotPassword: hasForgotPassword }
     );
 
-    console.log(validationError);
-
     if (isValidationError<LoginFields>(validationError, setLoginError)) return;
 
-    const response = await handleFormSubmit<LoginFields, LoginAndRegisterResponse>({
-      apiCall: () => loginUser({ loginEmail, loginPassword }),
-      setError: setLoginError,
-    });
+    let response;
 
-    if (response) {
+    if (hasForgotPassword) {
+      response = await handleFormSubmit<LoginFields, LoginAndRegisterResponse>({
+        apiCall: () => verifySecurityCode({ loginEmail, securityCode }),
+        setError: setLoginError,
+      });
+    } else if (isResetPasswordState) {
+      response = await handleFormSubmit<LoginFields, LoginAndRegisterResponse>({
+        apiCall: () => resetPasswordAPI({ loginEmail, loginPassword }),
+        setError: setLoginError,
+      });
+    } else {
+      response = await handleFormSubmit<LoginFields, LoginAndRegisterResponse>({
+        apiCall: () => loginUser({ loginEmail, loginPassword }),
+        setError: setLoginError,
+      });
+    }
+
+    if (response && !hasForgotPassword) {
       await handleSuccessfulResponse(response);
+    } else if (response && hasForgotPassword) {
+      setIsResetPasswordState(true);
+      setHasForgotPassword(false);
+      setSecurityCode("");
     }
   }
 
   function handleForgotPassword(e: React.FormEvent) {
     e.preventDefault();
-    setHasForgotPassword(true);
+    setHasForgotPassword(!hasForgotPassword);
   }
 
   return (
@@ -106,7 +129,12 @@ export default function LoginForm() {
       </FormFieldWrapper>
       {!hasForgotPassword ?
         (
-          <FormFieldWrapper error={loginErrorFields.password} label="Password" id="login-password" labelClassName="flex">
+          <FormFieldWrapper
+            error={loginErrorFields.password}
+            label={isResetPasswordState ? "New password" : "Password"}
+            id="login-password"
+            labelClassName="flex"
+          >
             <Input
               type="password"
               placeholder="Password"
@@ -129,21 +157,23 @@ export default function LoginForm() {
           </FormFieldWrapper>
         )
       }
+      <div className="flex justify-end">
+        <button onClick={handleForgotPassword}>
+          <div className="group flex gap-2 items-end text-[14px]">
+            <span className="group-hover:underline underline-offset-4 text-[#1bddf3] text-[14px]">
+              {hasForgotPassword ? "I remember the password now" : "Forgot password"}
+            </span>
+          </div>
+        </button>
+      </div>
       <Button
-        textValue={isLoading ? <Loader /> : "Sign In"}
+        textValue={isLoading ? <Loader /> : (hasForgotPassword ? "Submit" : "Sign In")}
         className="formButtonStyle"
         disabled={isLoading}
         data-testid="login-submit-btn"
       />
-      <div className="flex justify-center">
-        <button onClick={handleForgotPassword}>
-          <div className="group flex gap-2 items-end text-[14px]">
-            <span className="group-hover:underline underline-offset-4 text-[#1bddf3]">Forgot password</span>
-          </div>
-        </button>
-      </div>
 
-      {generalError && <ErrorMessage message={generalError} />}
+      {generalError && <ErrorMessage message={generalError} className="text-center w-full" />}
     </Form>
   );
 }

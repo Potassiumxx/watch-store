@@ -14,6 +14,11 @@ interface registerCredentials {
   securityCode: string;
 }
 
+interface ResetPasswordCredentials {
+  loginEmail: string;
+  securityCode: string;
+}
+
 /**
  * API function - Send login data to the backend
  *
@@ -53,6 +58,38 @@ export async function registerUser(credentials: registerCredentials): Promise<Lo
       throw error;
     } else {
       console.error("Signup failed", error);
+      throw error;
+    }
+  }
+}
+
+export async function verifySecurityCode(credentials: ResetPasswordCredentials) {
+  try {
+    const response = await axios.post(`${BACKEND_API_URL}/auth/verify/security-code`, credentials);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data);
+      throw error;
+    } else {
+      console.error("Unexpected error:", error);
+      throw error;
+    }
+  }
+}
+
+export async function resetPasswordAPI(credentials: loginCredentials) {
+  try {
+    const response = await axios.post(`${BACKEND_API_URL}/auth/verify/reset-password`, credentials);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data);
+      throw error;
+    } else {
+      console.error("Unexpected error:", error);
       throw error;
     }
   }
