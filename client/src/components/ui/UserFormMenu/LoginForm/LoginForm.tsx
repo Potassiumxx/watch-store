@@ -157,7 +157,7 @@ export default function LoginForm({ hasForgotPassword, setHasForgotPassword }: L
         )
       }
       <div className="flex justify-end">
-        <button onClick={handleForgotPassword}>
+        <button onClick={handleForgotPassword} type="button">
           <div className="group flex gap-2 items-end text-[14px]">
             <span className="group-hover:underline underline-offset-4 text-[#1bddf3] text-[14px]">
               {hasForgotPassword ? "I remember the password now" : "Forgot password"}
