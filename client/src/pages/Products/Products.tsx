@@ -11,6 +11,8 @@ import { useProductStore } from "../../store/productStore";
 import ConfirmModal from "../../components/ui/ConfirmModal/ConfirmModal";
 import { fetchErrorCatcher } from "../../utils/helpers";
 import FetchStatusDisplay from "../../components/ui/FetchStatusDisplay/FetchStatusDisplay";
+import { useNavbarStore } from "../../store/navbarStore";
+import getLevenshteinDistance from "../../utils/algorithm";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
@@ -37,12 +39,34 @@ export default function Products() {
 
   const setProductFileName = useProductStore((state) => state.setProductFileName);
 
+  const searchedValue = useNavbarStore((state) => state.searchedValue);
+
   function handleFormClose() {
     setShowUpdateForm(false);
 
     // Reset the file name on close so that it does not get carried to the add product page.
     // Add product page sould initially be empty. More information about this will be provided in the future.
     setProductFileName("");
+  }
+
+  function getFilteredProducts(searchedString: string) {
+    if (!searchedString.trim()) return products;
+
+    const threshold = 4;
+
+    //const filteredProducts = products.filter((product) => {
+    //return product.name.toLowerCase().includes(searchedString.toLowerCase());
+    //})
+
+    const scored = products.map((product) => {
+      const score = getLevenshteinDistance(
+        searchedString.toLowerCase(), product.name.toLowerCase()
+      );
+      return { ...product, score };
+    }).filter((product) => product.score <= threshold)
+      .sort((a, b) => a.score - b.score);
+
+    return scored;
   }
 
   async function fetchProducts() {
@@ -72,6 +96,12 @@ export default function Products() {
     fetchProducts();
   }, [])
 
+  if (products.length === 0 || getFilteredProducts(searchedValue).length === 0) return (
+    <div className="w-full text-center mt-20">
+      <h1 className="text-white text-4xl font-semibold">No products found</h1>
+    </div>
+  )
+
   return (
     <FetchStatusDisplay isLoading={isLoading} error={error} isEmpty={!products} emptyMessage="No products available">
       <div className="text-white">
@@ -79,7 +109,7 @@ export default function Products() {
 
         <div className="component-x-axis-padding grid grid-cols-3 gap-8 pb-10">
           {
-            products.map((product) => (
+            getFilteredProducts(searchedValue).map((product) => (
               <div
                 className="flex flex-col gap"
                 key={product.id}

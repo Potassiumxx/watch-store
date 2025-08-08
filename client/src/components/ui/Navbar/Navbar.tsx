@@ -11,6 +11,8 @@ import { useUIStore } from "../../../store/uiStore";
 import { useUserStore } from "../../../store/userStore";
 import { Cart } from "../Cart/Cart";
 import { useCartStore } from "../../../store/cartStore";
+import { useProductStore } from "../../../store/productStore";
+import { useNavbarStore } from "../../../store/navbarStore";
 
 export default function Navbar() {
   const [openSearchBar, setOpenSearchBar] = React.useState<boolean>(false);
@@ -34,6 +36,9 @@ export default function Navbar() {
   const setNavbarHeight = useUIStore((state) => state.setNavbarHeight);
 
   const cartItems = useCartStore((state) => state.cartItems);
+
+  const searchedValue = useNavbarStore((state) => state.searchedValue);
+  const setSearchedValue = useNavbarStore((state) => state.setSearchedValue);
 
   function handleOpenSearchBar() {
     setOpenSearchBar(true);
@@ -111,6 +116,7 @@ export default function Navbar() {
         </div>
         {openSearchBar && (
           <input
+            onChange={(e) => setSearchedValue(e.target.value)}
             ref={searchBarRef}
             className={`${isSearchBarVisible ? "w-[45%]" : "w-0 px-0"
               } h-6 text-black px-2 outline-1 transition-all duration-300 absolute right-[320px]`}
