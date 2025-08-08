@@ -34,7 +34,6 @@ export default function LoginForm({ hasForgotPassword, setHasForgotPassword }: L
 
   const isLoading = useUIStore((state) => state.isLoading);
 
-  const [resetPassword, setResetPassowrd] = React.useState("");
   const [isResetPasswordState, setIsResetPasswordState] = React.useState<boolean>(false);
 
 

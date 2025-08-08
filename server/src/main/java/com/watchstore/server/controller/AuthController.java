@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.watchstore.server.dto.auth.LoginRequest;
 import com.watchstore.server.dto.auth.RegisterRequest;
+import com.watchstore.server.dto.auth.ResetPasswordRequest;
 import com.watchstore.server.dto.auth.UserDTO;
 import com.watchstore.server.dto.auth.VerifySecurityCodeRequest;
 import com.watchstore.server.service.AuthService;
@@ -40,4 +41,11 @@ public class AuthController {
     authService.verifySecurityCode(request);
     return new ResponseEntity<>("Valid security", HttpStatus.OK);
   }
+
+  @PostMapping("/reset-password")
+  public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordRequest request) {
+    UserDTO userDTO = authService.resetPassword(request);
+    return ResponseEntity.ok(AuthResponseUtil.buildAuthResponse(userDTO));
+  }
+
 }

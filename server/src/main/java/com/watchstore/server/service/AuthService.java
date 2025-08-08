@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.watchstore.server.dto.auth.LoginRequest;
 import com.watchstore.server.dto.auth.RegisterRequest;
+import com.watchstore.server.dto.auth.ResetPasswordRequest;
 import com.watchstore.server.dto.auth.UserDTO;
 import com.watchstore.server.dto.auth.VerifySecurityCodeRequest;
 import com.watchstore.server.dto.response.FieldErrorResponse;
@@ -78,5 +79,23 @@ public class AuthService {
       fieldErrorResponse.addError("securityCode", message);
       throw new AuthAPIException(fieldErrorResponse);
     }
+  }
+
+  public UserDTO resetPassword(ResetPasswordRequest request) {
+    User user = userRepository.findByEmail(request.getEmail().trim().toLowerCase()).orElseThrow(() -> {
+
+      String message = "Invalid Email or password";
+      FieldErrorResponse fieldErrorResponse = new FieldErrorResponse();
+      fieldErrorResponse.addError("email", message);
+      fieldErrorResponse.addError("password", message);
+
+      throw new AuthAPIException(fieldErrorResponse);
+    });
+
+    String hashedPassword = passwordEncoder.encode(request.getPassword());
+    user.setPassword(hashedPassword);
+    userRepository.save(user);
+
+    return new UserDTO(user.getId(), user.getEmail(), user.getUsername(), user.getRole());
   }
 }
