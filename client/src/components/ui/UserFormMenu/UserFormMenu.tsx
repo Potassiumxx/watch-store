@@ -56,7 +56,7 @@ export default function UserMenu() {
 
     clearLoginErrors();
     clearRegisterErrors();
-  }, [showUserMenu, isLoginMode]);
+  }, [showUserMenu, isLoginMode, hasForgotPassword]);
 
   return (
     <>
