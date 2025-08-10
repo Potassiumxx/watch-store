@@ -59,7 +59,7 @@ export default function Checkout() {
     expiry: false,
   }
 
-  const { dirtyField, handleFieldOnChange, isValidationError, handleFormSubmit } = useForm(initialDirtyFieldState);
+  const { dirtyField, handleFieldOnChange, isValidationError, handleFormSubmit, generalError } = useForm(initialDirtyFieldState);
 
   const totalAmount: number = checkoutItems.reduce((acc, item) => {
     return acc + item.price * item.quantity;
@@ -90,10 +90,12 @@ export default function Checkout() {
       unitPrice: item.price
     }));
 
-    const response = await handleFormSubmit({
+    const response = await handleFormSubmit<CheckoutFormFields, string>({
       apiCall: () => placeOrder({ userId: userID, dropLocation, phoneNumber, items: transformedItems }),
       setError: setCheckoutAPIError
     })
+
+    console.log(response);
 
     if (response) {
       setShowSuccessfulCheckoutPage(true);
@@ -174,7 +176,7 @@ export default function Checkout() {
         boxShadow: "-3px 0 12px 4px rgb(0, 0, 0, 0.9)",
       }}>
         <h1 className="text-3xl">Shipping Information</h1>
-        <div className="px-0 py-10 flex flex-col justify-between h-full">
+        <div className="px-0 py-4 flex flex-col justify-between h-full">
           <Form className="flex flex-col p-0 justify-between h-full" handleFormSubmit={handleCheckoutFormSubmit}>
             <div className="flex flex-col gap-4">
               <FormFieldWrapper
@@ -261,6 +263,8 @@ export default function Checkout() {
                 </FormFieldWrapper>
               </div>
             </div>
+
+            {generalError && <div className="text-red-600 text-center font-semibold">{generalError}</div>}
 
             <Button textValue={`Pay ${totalAmount.toFixed(2)}`} className="defaultButtonStyle w-full mb-4" />
           </Form>

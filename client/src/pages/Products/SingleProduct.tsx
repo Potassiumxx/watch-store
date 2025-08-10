@@ -63,22 +63,25 @@ export default function SingleProductPage() {
               <h4 className="uppercase text-gray-300">Description</h4>
               <p className="text-base mb-4 max-h-[250px] max-w-full overflow-style">{product.description}</p>
             </span>
-            <Button
-              textValue="Add to cart"
-              className="defaultButtonStyle w-full bg-orange-700 hover:bg-orange-600 hover:text-white"
-              onClick={() => {
-                if (!isUserSignedIn) return setShowUserMenu(true);
-                addToCart({
-                  id: product.id,
-                  name: product.name,
-                  price: product.price,
-                  availableStock: product.quantity,
-                  quantity: 1,
-                  category: product.category,
-                  imagePath: product.imagePath,
-                })
-              }}
-            />
+            {
+              product.quantity > 0 ?
+                <Button
+                  textValue="Add to cart"
+                  className="defaultButtonStyle w-full bg-orange-700 hover:bg-orange-600 hover:text-white"
+                  onClick={() => {
+                    if (!isUserSignedIn) return setShowUserMenu(true);
+                    addToCart({
+                      id: product.id,
+                      name: product.name,
+                      price: product.price,
+                      availableStock: product.quantity,
+                      quantity: 1,
+                      category: product.category,
+                      imagePath: product.imagePath,
+                    })
+                  }}
+                /> : <div className="text-3xl font-semibold text-center">Out of stock</div>
+            }
           </div>
         </div>
       }

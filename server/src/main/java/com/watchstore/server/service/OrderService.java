@@ -64,7 +64,15 @@ public class OrderService {
           .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + itemDTO.getProductId()));
 
       Inventory inventory = inventoryRepository.findByProduct(product).orElseThrow(
-          () -> new ResourceNotFoundException("Inventory not found for the product: " + product.getName()));
+          () -> new ResourceNotFoundException("Inventory not found for the product " + product.getName()));
+
+      if (inventory.getQuantity() == 0) {
+        throw new BadRequestException("Out of stock for product " + product.getName());
+      }
+
+      if (inventory.getQuantity() < itemDTO.getQuantity()) {
+        throw new BadRequestException("Insufficient stock for product " + product.getName());
+      }
 
       inventory.setQuantity(inventory.getQuantity() - itemDTO.getQuantity());
       inventoryRepository.save(inventory);

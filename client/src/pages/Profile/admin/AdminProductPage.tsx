@@ -16,7 +16,7 @@ import useProductForm from "../../../hooks/useProductForm";
 import { useAddProductStore } from "../../../store/productStore/useAddProductStore";
 
 export default function AdminProductPage() {
-  const { isValidationError, handleFieldOnChange, dirtyField, handleFormSubmit, generalError } =
+  const { isValidationError, handleFieldOnChange, dirtyField, handleFormSubmit, generalError, setGeneralError } =
     useForm<DirtyFieldState<ProductFormFields>>(initialProductDirtyFieldState);
   const { handleFileUpload, validateProductFormFields, handleProductFieldOnChange } = useProductForm({
     setProductName: useAddProductStore.getState().setProductName,
@@ -51,6 +51,7 @@ export default function AdminProductPage() {
   async function handleAddProductSubmit(e: React.FormEvent) {
     e.preventDefault();
     setMessage(null);
+    setGeneralError(null);
 
     if (validateProductFormFields({
       stringFields: {

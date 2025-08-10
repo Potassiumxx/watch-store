@@ -138,7 +138,7 @@ export default function ProductForm({
         />
       </FormFieldWrapper>
 
-      {generalError && <ErrorMessage message={generalError} className="absolute" />}
+      {generalError && <ErrorMessage message={generalError} className="absolute text-center" />}
       {onSuccessMessage && <SuccessMessage message={onSuccessMessage} />}
       <Button className="formButtonStyle w-[40%] self-center mt-4" textValue={buttonTextValue} />
     </Form>
