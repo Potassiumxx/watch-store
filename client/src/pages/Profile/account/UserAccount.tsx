@@ -17,6 +17,8 @@ export default function UserAccount() {
   const clearCart = useCartStore((state) => state.clearCart);
 
   const [isEmailRevealed, setIsEmailRevealed] = React.useState<boolean>(false);
+  const [editedUsernameValue, setEditedUsernameValue] = React.useState<string | null>(null);
+  const [updateNameError, setUpdateNameError] = React.useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -53,8 +55,51 @@ export default function UserAccount() {
             <div>
               <h3 className="text-lg mb-1">Username</h3>
               <div className="flex justify-between items-center">
-                <div className="font-normal text-white/90">{globalUsername ?? "No username"}</div>
-                <Button textValue="Edit" className="border-2 border-white py-1 hover:bg-white hover:text-black w-[100px]" />
+                {
+                  editedUsernameValue != null ?
+                    (
+                      <>
+                        <div className="flex flex-col">
+                          <input
+                            value={editedUsernameValue}
+                            autoFocus
+                            className={`outline-none bg-transparent text-white border-b-2 
+                              ${updateNameError ? "border-red-600" : "border-white"}`
+                            }
+                            onChange={(e) => {
+                              setUpdateNameError(null);
+                              if (e.target.value === "") {
+                                setUpdateNameError("Username cannot be empty");
+                              }
+                              setEditedUsernameValue(e.target.value)
+                            }}
+                          />
+                          {updateNameError && <span className="text-[13px] text-red-600">{updateNameError}</span>}
+                        </div>
+                        <div className="flex gap-4 items-center">
+                          <Button
+                            textValue="Save"
+                            className="py-1 h-[50%] w-[100px] border-2 hover:bg-white hover:text-black"
+                          />
+                          <Button
+                            textValue="Cancel"
+                            className="py-1 h-[50%] w-[100px] border-2 hover:bg-white hover:text-black"
+                            onClick={() => setEditedUsernameValue(null)}
+                          />
+                        </div>
+                      </>
+                    ) :
+                    (
+                      <>
+                        <div className="font-normal text-white/90">{globalUsername ?? "No username"}</div>
+                        <Button
+                          textValue="Edit"
+                          className="border-2 border-white py-1 hover:bg-white hover:text-black w-[100px]"
+                          onClick={() => setEditedUsernameValue(globalUsername)}
+                        />
+                      </>
+                    )
+                }
               </div>
             </div>
             <div>
