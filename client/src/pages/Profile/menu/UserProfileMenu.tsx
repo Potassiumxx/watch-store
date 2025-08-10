@@ -6,7 +6,8 @@ export default function UserProfileMenu() {
   const role = useUserStore((state) => state.role);
 
   return (
-    <div className="flex align-middle min-h-dvh w-[20%] innerDivBackgroundColour shadow-md shadow-white/50">
+    <div
+      className="flex align-middle min-h-dvh w-[20%] innerDivBackgroundColour">
       <div className="flex flex-col gap-10 w-full items-center text-white pt-4">
         <NavLink
           to={"."}
