@@ -3,8 +3,10 @@ package com.watchstore.server.startup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.watchstore.server.model.User;
 import com.watchstore.server.repository.UserRepository;
 
 @Component
@@ -12,10 +14,23 @@ public class StartupService {
   private final UserRepository userRepository;
 
   private final String adminEmail;
+  private final String adminUsername;
+  private final String adminPassword;
 
-  public StartupService(UserRepository userRepository, @Value("${app.admin.email:}") String adminEmail) {
+  private final PasswordEncoder passwordEncoder;
+
+  public StartupService(
+      UserRepository userRepository,
+      PasswordEncoder passwordEncoder,
+      @Value("${app.admin.email}") String adminEmail,
+      @Value("${app.admin.username}") String adminUsername,
+      @Value("${app.admin.password}") String adminPassword) {
     this.userRepository = userRepository;
     this.adminEmail = adminEmail;
+    this.adminUsername = adminUsername;
+    this.adminPassword = adminPassword;
+    this.passwordEncoder = passwordEncoder;
+
   }
 
   @EventListener(ApplicationReadyEvent.class)
@@ -35,7 +50,15 @@ public class StartupService {
         System.out.println("User " + adminEmail + " is already an admin.");
       }
     }, () -> {
-      System.out.println("Admin email " + adminEmail + " not found in database.");
+
+      User newAdmin = new User();
+      newAdmin.setEmail(adminEmail);
+      newAdmin.setUsername(adminUsername);
+      newAdmin.setPassword(passwordEncoder.encode(adminPassword));
+      newAdmin.setRole("ADMIN");
+      newAdmin.setSecurityCode("good_code");
+      userRepository.save(newAdmin);
+      System.out.println("Created new admin" + adminEmail);
     });
   }
 }
