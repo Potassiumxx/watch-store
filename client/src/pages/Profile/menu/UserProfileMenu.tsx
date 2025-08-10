@@ -7,7 +7,11 @@ export default function UserProfileMenu() {
 
   return (
     <div
-      className="flex align-middle min-h-dvh w-[20%] innerDivBackgroundColour">
+      className="flex align-middle min-h-dvh w-[20%] innerDivBackgroundColour"
+      style={{
+        boxShadow: "8px -10px 10px 4px rgb(0, 0, 0, 0.9)",
+      }}
+    >
       <div className="flex flex-col gap-10 w-full items-center text-white pt-4">
         <NavLink
           to={"."}
