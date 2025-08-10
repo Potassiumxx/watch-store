@@ -6,21 +6,18 @@ import Button from "../../components/ui/Button/Button";
 import { useUserStore } from "../../store/userStore";
 import { ROLES } from "../../utils/constants";
 import UpdateProductForm from "../../components/ui/ProductForms/UpdateProductForm";
-import { IoCloseOutline } from "react-icons/io5";
-import { useProductStore } from "../../store/productStore";
 import ConfirmModal from "../../components/ui/ConfirmModal/ConfirmModal";
 import { fetchErrorCatcher } from "../../utils/helpers";
 import FetchStatusDisplay from "../../components/ui/FetchStatusDisplay/FetchStatusDisplay";
 import { useNavbarStore } from "../../store/navbarStore";
 import getLevenshteinDistance from "../../utils/algorithm";
+import { useUIStore } from "../../store/uiStore";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
-  const [showUpdateForm, setShowUpdateForm] = React.useState<boolean>(false);
   const [showConfirmModal, setShowConfirmModal] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setIsError] = React.useState<string | null>(null);
-  const [isFormVisible, setIsFormVisible] = React.useState<boolean>(false);
   const [productToDelete, setProductToDelete] = React.useState({
     id: 0,
     name: ""
@@ -38,17 +35,12 @@ export default function Products() {
 
   const role = useUserStore((state) => state.role);
 
-  const setProductFileName = useProductStore((state) => state.setProductFileName);
 
   const searchedValue = useNavbarStore((state) => state.searchedValue);
 
-  function handleFormClose() {
-    setShowUpdateForm(false);
+  const showUpdateProductForm = useUIStore((state) => state.showUpdateProductForm);
+  const setShowUpdateProductForm = useUIStore((state) => state.setShowUpdateProductForm);
 
-    // Reset the file name on close so that it does not get carried to the add product page.
-    // Add product page sould initially be empty. More information about this will be provided in the future.
-    setProductFileName("");
-  }
 
   function getFilteredProducts(searchedString: string) {
     if (!searchedString.trim()) return products;
@@ -104,7 +96,7 @@ export default function Products() {
   }, [])
 
   React.useEffect(() => {
-    if (showUpdateForm) {
+    if (showUpdateProductForm) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
@@ -113,7 +105,7 @@ export default function Products() {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [showUpdateForm]);
+  }, [showUpdateProductForm]);
 
   if (products.length === 0 || getFilteredProducts(searchedValue).length === 0) return (
     <div className="w-full text-center mt-20">
@@ -139,8 +131,7 @@ export default function Products() {
                       <Button textValue="Edit"
                         className="defaultButtonStyle h-[35px] w-[60px] items-center"
                         onClick={() => {
-                          setIsFormVisible(true)
-                          setShowUpdateForm(true);
+                          setShowUpdateProductForm(true);
                           setSelectedProduct(product);
                         }} />
                     </div>
@@ -184,27 +175,11 @@ export default function Products() {
           }
         </div>
         {
-          showUpdateForm && (
-            <div
-              onClick={handleFormClose}
-              className={`fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/[.8] 
-                backdrop-blur-md transition-opacity duration-200 ${isFormVisible} ? "opacity-100" : "opacity-0"`}
-            >
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className="relative innerDivBackgroundColour rounded-md border border-white/[.5] z-100">
-                <div className="flex py-4 px-6 items-center border-b-[1px] border-white">
-                  <h2 className="w-full text-white justify-self-center text-3xl font-semibold text-center">Update Product</h2>
-                  <button className="absolute right-6 text-red-600 z-50 hover:text-red-400 duration-200"
-                    onClick={handleFormClose}>{<IoCloseOutline size={45} />}</button>
-                </div>
-                <UpdateProductForm
-                  selectedProduct={selectedProduct}
-                  handleFormCloseFunc={handleFormClose}
-                  fetchProductFunc={fetchProducts}
-                />
-              </div>
-            </div>
+          showUpdateProductForm && (
+            <UpdateProductForm
+              selectedProduct={selectedProduct}
+              fetchProductFunc={fetchProducts}
+            />
           )
         }
 

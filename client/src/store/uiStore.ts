@@ -12,6 +12,9 @@ interface SideBarStore {
 
   showSuccessfulCheckoutPage: boolean;
   setShowSuccessfulCheckoutPage: (show: boolean) => void;
+
+  showUpdateProductForm: boolean;
+  setShowUpdateProductForm: (show: boolean) => void;
 }
 
 export const useUIStore = create<SideBarStore>((set) => ({
@@ -26,4 +29,7 @@ export const useUIStore = create<SideBarStore>((set) => ({
 
   showSuccessfulCheckoutPage: false,
   setShowSuccessfulCheckoutPage: (show) => set({ showSuccessfulCheckoutPage: show }),
+
+  showUpdateProductForm: false,
+  setShowUpdateProductForm: (show) => set({ showUpdateProductForm: show }),
 }));

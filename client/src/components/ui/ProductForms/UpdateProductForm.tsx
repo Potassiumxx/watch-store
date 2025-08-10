@@ -7,14 +7,15 @@ import useProductForm from "../../../hooks/useProductForm";
 import { useUpdateProductStore } from "../../../store/productStore/useUpdateProductStore";
 import { useProductStore } from "../../../store/productStore";
 import { updateProduct } from "../../../services/api/productAPI";
+import { IoCloseOutline } from "react-icons/io5";
+import { useUIStore } from "../../../store/uiStore";
 
 interface UpdateProductFormProps {
   selectedProduct: ProductDTO;
-  handleFormCloseFunc: () => void;
   fetchProductFunc: () => void;
 }
 
-export default function UpdateProductForm({ selectedProduct, handleFormCloseFunc, fetchProductFunc }: UpdateProductFormProps) {
+export default function UpdateProductForm({ selectedProduct, fetchProductFunc }: UpdateProductFormProps) {
   const { dirtyField, handleFieldOnChange, generalError, isValidationError, handleFormSubmit } = useForm(initialProductDirtyFieldState);
   const { handleFileUpload, validateProductFormFields, handleProductFieldOnChange } = useProductForm({
     setProductName: useUpdateProductStore.getState().setProductName,
@@ -51,6 +52,23 @@ export default function UpdateProductForm({ selectedProduct, handleFormCloseFunc
   const setProductFileName = useProductStore((state) => state.setProductFileName);
   const fileName = useProductStore((state) => state.productFileName);
 
+  const [isFormVisible, setIsFormVisible] = React.useState<boolean>(false);
+
+  const showUpdateProductForm = useUIStore((state) => state.showUpdateProductForm);
+  const setShowUpdateProductForm = useUIStore((state) => state.setShowUpdateProductForm);
+
+  function handleFormClose() {
+    setIsFormVisible(false);
+    setTimeout(() => {
+      if (showUpdateProductForm) setShowUpdateProductForm(false);
+      // Reset the file name on close so that it does not get carried to the add product page.
+      // Add product page sould initially be empty. More information about this will be provided in the future.
+      setProductFileName("");
+    }, 300);
+
+  }
+
+
   async function handleUpdateProductSubmit(e: React.FormEvent) {
     e.preventDefault();
 
@@ -77,7 +95,7 @@ export default function UpdateProductForm({ selectedProduct, handleFormCloseFunc
     });
 
     if (response) {
-      handleFormCloseFunc();
+      handleFormClose();
       fetchProductFunc();
     };
 
@@ -100,7 +118,7 @@ export default function UpdateProductForm({ selectedProduct, handleFormCloseFunc
   React.useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        handleFormCloseFunc();
+        handleFormClose();
       }
     }
 
@@ -109,43 +127,61 @@ export default function UpdateProductForm({ selectedProduct, handleFormCloseFunc
 
   }, [])
 
+  React.useEffect(() => {
+    setTimeout(() => setIsFormVisible(true), 0);
+  }, [])
 
   return (
     <div className="max-h-[90vh]">
-      <ProductForm
-        onSubmit={handleUpdateProductSubmit}
-        onChange={(e) => handleProductFieldOnChange<ProductFormStringFields>({
-          event: e,
-          values: {
-            productName,
-            productPrice,
-            productCategory,
-            productDescription,
-            productQuantity,
-          },
-          dirtyField: dirtyField,
-          setStringError: setProductStringFormError,
-          clearStringError: clearProductStringFormError,
-          handleFieldOnChange,
-          validateFunction: validateProductFormStringFields
-        })}
-        onFileChange={(e) => handleFileUpload({
-          e,
-          validateFileFieldFunc: validateFileField,
-          setProductFormFileErrorFunc: setProductFileFormError,
-          isValidationError: isValidationError
-        })}
-        values={{
-          productName,
-          productPrice,
-          productCategory,
-          productDescription,
-          productQuantity,
-        }}
-        stringFieldError={productStringErrorFields}
-        fileFieldError={productFileErrorFields}
-        generalError={generalError}
-      />
+      <div
+        onClick={handleFormClose}
+        className={`fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/[.8] 
+                backdrop-blur-md duration-300 ${isFormVisible ? "opacity-100" : "opacity-0"}`}
+      >
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="relative innerDivBackgroundColour rounded-md border border-white/[.5] z-100">
+          <div className="flex py-4 px-6 items-center border-b-[1px] border-white">
+            <h2 className="w-full text-white justify-self-center text-3xl font-semibold text-center">Update Product</h2>
+            <button className="absolute right-6 text-red-600 z-50 hover:text-red-400 duration-200"
+              onClick={handleFormClose}>{<IoCloseOutline size={45} />}</button>
+          </div>
+          <ProductForm
+            onSubmit={handleUpdateProductSubmit}
+            onChange={(e) => handleProductFieldOnChange<ProductFormStringFields>({
+              event: e,
+              values: {
+                productName,
+                productPrice,
+                productCategory,
+                productDescription,
+                productQuantity,
+              },
+              dirtyField: dirtyField,
+              setStringError: setProductStringFormError,
+              clearStringError: clearProductStringFormError,
+              handleFieldOnChange,
+              validateFunction: validateProductFormStringFields
+            })}
+            onFileChange={(e) => handleFileUpload({
+              e,
+              validateFileFieldFunc: validateFileField,
+              setProductFormFileErrorFunc: setProductFileFormError,
+              isValidationError: isValidationError
+            })}
+            values={{
+              productName,
+              productPrice,
+              productCategory,
+              productDescription,
+              productQuantity,
+            }}
+            stringFieldError={productStringErrorFields}
+            fileFieldError={productFileErrorFields}
+            generalError={generalError}
+          />
+        </div>
+      </div>
     </div>
   )
 }
