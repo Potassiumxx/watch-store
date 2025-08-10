@@ -19,6 +19,11 @@ interface ResetPasswordCredentials {
   securityCode: string;
 }
 
+interface UpdateUsernameCredentials {
+  updatedUsername: string;
+  userEmail: string;
+}
+
 /**
  * API function - Send login data to the backend
  *
@@ -82,6 +87,22 @@ export async function verifySecurityCode(credentials: ResetPasswordCredentials) 
 export async function resetPasswordAPI(credentials: loginCredentials) {
   try {
     const response = await axios.post(`${BACKEND_API_URL}/auth/reset-password`, credentials);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data);
+      throw error;
+    } else {
+      console.error("Unexpected error:", error);
+      throw error;
+    }
+  }
+}
+
+export async function updateUsername(credentials: UpdateUsernameCredentials) {
+  try {
+    const response = await axios.put(`${BACKEND_API_URL}/auth/update-username`, credentials);
     console.log(response);
     return response.data;
   } catch (error) {

@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import ProfileContentContainer from "../container/ProfileContentContainer";
 import * as React from "react";
 import { useCartStore } from "../../../store/cartStore";
+import { updateUsername } from "../../../services/api/authAPI";
+import axios from "axios";
 
 export default function UserAccount() {
   const globalUsername = useUserStore((state) => state.globalUsername);
@@ -36,6 +38,22 @@ export default function UserAccount() {
     }
     const index = email.indexOf("@");
     return "*****" + email.substring(index);
+  }
+
+  async function handleUsernameUpdate() {
+    //setGlobalUsername();
+    if (editedUsernameValue === "") return setUpdateNameError("Username cannot be empty");
+    try {
+      if (editedUsernameValue) {
+        const response = await updateUsername({ updatedUsername: editedUsernameValue, userEmail: globalEmail });
+        console.log(response);
+      }
+    } catch (error) {
+      console.log(error);
+      if (axios.isAxiosError(error)) {
+        setUpdateNameError(error.message);
+      }
+    }
   }
 
   return (
@@ -80,6 +98,7 @@ export default function UserAccount() {
                           <Button
                             textValue="Save"
                             className="py-1 h-[50%] w-[100px] border-2 hover:bg-white hover:text-black"
+                            onClick={handleUsernameUpdate}
                           />
                           <Button
                             textValue="Cancel"

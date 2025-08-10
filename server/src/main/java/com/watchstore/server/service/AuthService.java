@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import com.watchstore.server.dto.auth.LoginRequest;
 import com.watchstore.server.dto.auth.RegisterRequest;
 import com.watchstore.server.dto.auth.ResetPasswordRequest;
+import com.watchstore.server.dto.auth.UpdateUsernameRequest;
 import com.watchstore.server.dto.auth.UserDTO;
 import com.watchstore.server.dto.auth.VerifySecurityCodeRequest;
 import com.watchstore.server.dto.response.FieldErrorResponse;
 import com.watchstore.server.exceptions.AuthAPIException;
+import com.watchstore.server.exceptions.BadRequestException;
 import com.watchstore.server.model.User;
 import com.watchstore.server.repository.UserRepository;
 
@@ -94,6 +96,18 @@ public class AuthService {
 
     String hashedPassword = passwordEncoder.encode(request.getPassword());
     user.setPassword(hashedPassword);
+    userRepository.save(user);
+
+    return new UserDTO(user.getId(), user.getEmail(), user.getUsername(), user.getRole());
+  }
+
+  public UserDTO updateUsername(UpdateUsernameRequest request) {
+    User user = userRepository.findByEmail(request.getEmail().trim().toLowerCase()).orElseThrow(() -> {
+
+      throw new BadRequestException("Invalid email. Something went terribly wrong");
+    });
+
+    user.setUsername(request.getUpdatedUsername());
     userRepository.save(user);
 
     return new UserDTO(user.getId(), user.getEmail(), user.getUsername(), user.getRole());
