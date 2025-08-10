@@ -30,7 +30,8 @@ export default function Products() {
     category: "",
     description: "",
     quantity: 0,
-    imagePath: "null"
+    imagePath: "null",
+    isActive: true,
   });
 
   const role = useUserStore((state) => state.role);
@@ -73,7 +74,7 @@ export default function Products() {
     setIsError(null);
     try {
       const data = await getAllProducts();
-      setProducts(data);
+      setProducts(data.filter((product) => product.isActive === true));
     } catch (error) {
       fetchErrorCatcher(error, setIsError);
     } finally {
@@ -84,6 +85,7 @@ export default function Products() {
   async function handleProductDelete(productID: number) {
     try {
       const response = await deleteProduct(productID);
+      console.log(response);
       fetchProducts();
       console.log(response);
     } catch (error) {

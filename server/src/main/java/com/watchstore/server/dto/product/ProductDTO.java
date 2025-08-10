@@ -11,6 +11,7 @@ public class ProductDTO {
   private String description;
   private String imagePath;
   private int quantity;
+  private boolean isActive;
 
   public ProductDTO(Product product, Inventory inventory) {
     this.id = product.getId();
@@ -19,6 +20,7 @@ public class ProductDTO {
     this.category = product.getCategory().getCategoryName();
     this.description = product.getDescription();
     this.imagePath = product.getImage();
+    this.isActive = product.isActive();
     this.quantity = inventory.getQuantity();
   }
 
@@ -48,6 +50,10 @@ public class ProductDTO {
 
   public int getQuantity() {
     return this.quantity;
+  }
+
+  public boolean getIsActive() {
+    return this.isActive;
   }
 
 }

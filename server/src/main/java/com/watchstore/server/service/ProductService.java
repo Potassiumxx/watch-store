@@ -17,6 +17,7 @@ import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Product;
 import com.watchstore.server.model.Category;
 import com.watchstore.server.repository.InventoryRepository;
+import com.watchstore.server.repository.OrderItemRepository;
 import com.watchstore.server.repository.CategoryRepository;
 import com.watchstore.server.repository.ProductRepository;
 import com.watchstore.server.util.FileStorageUtil;
@@ -29,6 +30,8 @@ public class ProductService {
   private InventoryRepository inventoryRepository;
   @Autowired
   private CategoryRepository categoryRepository;
+  @Autowired
+  private OrderItemRepository orderItemRepository;
 
   private final String uploadDirectory = "/home/asus/Pictures";
 
@@ -50,12 +53,13 @@ public class ProductService {
       throw new BadRequestException(productRequest.getProductName() + " already exists!");
     }
 
-    Product product = new Product();
-    product.setName(productRequest.getProductName());
-    product.setPrice(productRequest.getProductPrice());
-    product.setCategory(category);
-    product.setDescription(productRequest.getProductDescription());
-    product.setImage(randomFileName);
+    Product product = new Product(
+        productRequest.getProductName(),
+        productRequest.getProductPrice(),
+        category,
+        productRequest.getProductDescription(),
+        randomFileName,
+        true);
 
     Inventory inventory = new Inventory();
     inventory.setQuantity(productRequest.getProductQuantity());
@@ -105,15 +109,22 @@ public class ProductService {
     Product product = productRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Product not found! How did you try to delete it?"));
 
-    String imagePath = product.getImage();
+    boolean isReferencedInOrders = orderItemRepository.existsByProductId(id);
 
-    try {
-      FileStorageUtil.deleteFile(imagePath, uploadDirectory);
-    } catch (Exception e) {
-      System.err.println("Failed to delete image file: " + imagePath);
+    if (isReferencedInOrders) {
+      product.setIsActive(false);
+      productRepository.save(product);
+    } else {
+      String imagePath = product.getImage();
+
+      try {
+        FileStorageUtil.deleteFile(imagePath, uploadDirectory);
+      } catch (Exception e) {
+        System.err.println("Failed to delete image file: " + imagePath);
+      }
+
+      productRepository.deleteById(id);
     }
-
-    productRepository.deleteById(id);
   }
 
   public List<ProductDTO> getAllProducts() {

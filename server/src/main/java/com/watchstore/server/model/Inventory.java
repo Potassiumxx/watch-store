@@ -15,36 +15,43 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "inventory")
 public class Inventory {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    @Column(nullable = false)
-    private int quantity;
+  @Column(nullable = false)
+  private int quantity;
 
-    @OneToOne
-    @JoinColumn(name = "product_id", nullable = false, unique = true)
-    private Product product;
+  @OneToOne
+  @JoinColumn(name = "product_id", nullable = false, unique = true)
+  private Product product;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDate dateAdded;
+  @Column(nullable = false, updatable = false)
+  private LocalDate dateAdded;
 
-    @Column(nullable = false)
-    private LocalDate dateUpdated;
+  @Column(nullable = false)
+  private LocalDate dateUpdated;
 
-    public Inventory() {
-        LocalDate now = LocalDate.now();
-        this.dateAdded = now;
-        this.dateUpdated = now;
-    }
+  public Inventory() {
+    LocalDate now = LocalDate.now();
+    this.dateAdded = now;
+    this.dateUpdated = now;
+  }
 
-    @PreUpdate
-    public void preUpdate() {
-        this.dateUpdated = LocalDate.now();
-    }
+  @PreUpdate
+  public void preUpdate() {
+    this.dateUpdated = LocalDate.now();
+  }
 
-    public int getQuantity() { return quantity; }
+  public int getQuantity() {
+    return quantity;
+  }
 
-    public void setQuantity(int quantity) { this.quantity = quantity; }
-    public void setProduct(Product product) { this.product = product; }
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
+  }
+
+  public void setProduct(Product product) {
+    this.product = product;
+  }
 }

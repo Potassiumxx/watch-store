@@ -129,7 +129,7 @@ export async function getAllProducts(): Promise<ProductDTO[]> {
   }
 }
 
-export async function getProductByID(productID: number) {
+export async function getProductByID(productID: number): Promise<ProductDTO> {
   try {
     const response = await axios.get(`${BACKEND_API_URL}/products/${productID}`);
     console.log(response);

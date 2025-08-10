@@ -32,15 +32,19 @@ public class Product {
   @Column(nullable = false)
   private String image;
 
+  @Column(name = "is_active", nullable = false)
+  private boolean isActive;
+
   public Product() {
   };
 
-  public Product(String name, double price, Category category, String description, String image) {
+  public Product(String name, double price, Category category, String description, String image, boolean isActive) {
     this.name = name;
     this.price = price;
     this.category = category;
     this.description = description;
     this.image = image;
+    this.isActive = isActive;
   }
 
   public Long getId() {
@@ -67,6 +71,10 @@ public class Product {
     return image;
   }
 
+  public boolean isActive() {
+    return isActive;
+  }
+
   public void setName(String name) {
     this.name = name;
   }
@@ -85,5 +93,9 @@ public class Product {
 
   public void setImage(String image) {
     this.image = image;
+  }
+
+  public void setIsActive(Boolean isActive) {
+    this.isActive = isActive;
   }
 }
