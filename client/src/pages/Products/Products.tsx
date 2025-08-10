@@ -193,7 +193,7 @@ export default function Products() {
                 setShowConfirmModal(false);
               }}
               onCancel={() => {
-                setShowConfirmModal(false);
+                setShowConfirmModal(false)
                 setProductToDelete({ id: 0, name: "" });
               }}
             />
