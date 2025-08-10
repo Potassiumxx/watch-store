@@ -155,7 +155,7 @@ export default function UserAccount() {
               <Button
                 textValue="Log Out"
                 onClick={handleLogOut}
-                className="defaultButtonStyle bg-red-600 w-[100px] mt-5 text-[10px] hover:bg-red-800 hover:text-white focus:bg-red-800 focus:text-white"
+                className="border-2 bg-red-600 w-[100px] py-1 px-2 h-[50%] mt-5 text-[14px] hover:bg-red-800 hover:text-white focus:bg-red-800 focus:text-white"
               />
             </div>
           </div>
