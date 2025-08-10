@@ -108,20 +108,20 @@ export default function Navbar() {
     <div ref={navbarRef} className="fixed top-0 flex flex-col justify-between items-center z-20 w-full" data-testid="navbar">
       {showUserMenu && <UserMenu />}
       {showCart && <Cart />}
-      <div className="flex justify-between w-full py-2 outerDivBackgroundColour text-white items-center px-[50px]">
+      <div className="flex w-full py-2 outerDivBackgroundColour text-white items-center px-8 justify-end md:px-[50px] md:justify-between">
         <div>
-          <span className="text-[10px] italic capitalize text-[#898989]">Buy best watches with free shipping & returns</span>
+          <span className="text-[10px] italic capitalize text-[#898989] hidden xl:block md:w-[80%] xl:w-full">Buy best watches with free shipping & returns</span>
         </div>
         {openSearchBar && (
           <input
             onChange={(e) => setSearchedValue(e.target.value)}
             ref={searchBarRef}
-            className={`${isSearchBarVisible ? "w-[45%]" : "w-0 px-0"
-              } h-6 text-black px-2 outline-1 transition-all duration-300 absolute right-[320px]`}
+            className={`${isSearchBarVisible ? "w-[50%] md:w-[65%] xl-[70%]" : "w-0 px-0"
+              } h-6 text-black px-2 outline-1 transition-all duration-300 absolute right-[160px] md:right-[180px] lg:right-[260px] xl:right-[320px]`}
             placeholder="Search"
           />
         )}
-        <div className="flex items-center w-[200px] justify-between">
+        <div className="flex items-center w-[200px] justify-end gap-4 lg:justify-between">
           <button ref={searchIconRef} onClick={handleOpenSearchBar} className="hover:cursor-pointer" aria-label="Search">
             <IoSearchOutline size={25} />
           </button>
@@ -147,18 +147,18 @@ export default function Navbar() {
         </div>
       </div>
       <div
-        className={`component-x-axis-padding flex w-full py-5 items-center text-white duration-300 border-b-[1px] border-b-white/[.5] border-t-transparent ${isNavbarBackgroundVisible
+        className={`px-2 lg:component-x-axis-padding flex w-full py-5 items-center text-white duration-300 border-b-[1px] border-b-white/[.5] border-t-transparent ${isNavbarBackgroundVisible
           ? "bg-black/[.5] backdrop-blur-md border-t-[1px] border-t-white/[.5]"
           : "bg-transparent backdrop-blur-md"
           }`}
         data-testid="bottom-navbar"
         ref={bottomNavbarRef}>
         <button onClick={scrollToTop} className="flex items-center gap-2 hover:scale-110 duration-300">
-          <span className="bg-[#1bddf3] w-5 h-5 block"></span>
-          <span className="font-bold text-2xl tracking-wider text-white">WS</span>
+          <span className="bg-[#1bddf3] w-4 h-4 lg:w-5 lg:h-5 block"></span>
+          <span className="font-bold tracking-wider text-white md:text-2xl">WS</span>
         </button>
-        <div className="flex w-full justify-center">
-          <div className="flex gap-[8rem]">
+        <div className="flex w-full px-8 justify-end md:justify-center md:px-0">
+          <div className="flex gap-2 md:gap-[8rem]">
             <NavLink
               to={"/"}
               className={({ isActive }) => {

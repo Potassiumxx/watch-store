@@ -8,7 +8,7 @@ function customClassName({ addComponents }) {
       "@apply pr-[50px] pl-[50px]": {},
     },
     ".navbar-link-style": {
-      "@apply text-center border-white uppercase font-semibold tracking-wider": {},
+      "@apply text-right md:text-center border-white md:uppercase font-semibold md:tracking-wider": {},
     },
     ".navbar-link-style:hover": {
       "@apply border-t-2 border-t-white duration-100 ease-in-out": {},
