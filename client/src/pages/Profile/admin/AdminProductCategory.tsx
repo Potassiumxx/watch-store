@@ -8,7 +8,6 @@ import Button from "../../../components/ui/Button/Button";
 import { addNewCategory, deleteCategory, getAllProductCategories, updateCategory } from "../../../services/api/productAPI";
 import axios from "axios";
 import { CategoryDTO } from "../../../types/productType";
-import { fetchErrorCatcher } from "../../../utils/helpers";
 import Loader from "../../../components/ui/Loader/Loader";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
@@ -34,8 +33,9 @@ export default function AdminProductCategory() {
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [showConfirmModal, setShowConfirmModal] = React.useState<boolean>(false);
+  const [hasCategoryUpdated, setHasCategoryUpdated] = React.useState<boolean>(false);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleCategorySubmit(e: React.FormEvent) {
     e.preventDefault();
     if (newProductCategory === "") return setError("Product category cannot be empty");
 
@@ -44,6 +44,7 @@ export default function AdminProductCategory() {
     try {
       await addNewCategory(newProductCategory);
       setMessage("Product category added.");
+      setHasCategoryUpdated(true);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const backendMessage = error.response?.data;
@@ -75,6 +76,7 @@ export default function AdminProductCategory() {
         delete newErrors[categoryID];
         return newErrors;
       })
+      setHasCategoryUpdated(true);
       setEditingCategoryID(null);
     } catch (error) {
       console.log(error);
@@ -92,7 +94,7 @@ export default function AdminProductCategory() {
   async function handleCategoryDelete(categoryID: number) {
     try {
       const response = await deleteCategory(categoryID);
-      fetchCategories();
+      setHasCategoryUpdated(true);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -128,14 +130,15 @@ export default function AdminProductCategory() {
 
   React.useEffect(() => {
     fetchCategories();
-  }, [])
+    setHasCategoryUpdated(false);
+  }, [hasCategoryUpdated])
 
   return (
     <ProfileContentContainer title="Product Category">
       <div className="flex flex-col gap-20">
         <div className="innerDivBackgroundColour shadow-black shadow-lg rounded-md px-20">
           <h2 className="text-2xl text-white text-center py-4">Add New Category</h2>
-          <Form handleFormSubmit={handleSubmit}>
+          <Form handleFormSubmit={handleCategorySubmit}>
             <FormFieldWrapper
               label="Product Category"
               id="add-product-category"
@@ -188,6 +191,13 @@ export default function AdminProductCategory() {
                                   setEditedCategoryName(e.target.value);
                                   if (updateError && e.target.value !== "") setUpdateError(null);
                                   if (e.target.value === "") setUpdateError({ [category.id]: "Category name cannot be empty" });
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Escape") {
+                                    setEditingCategoryID(null);
+                                    setUpdateError(null);
+                                  }
+                                  else if (e.key === "Enter") handleCategoryUpdate(category.id);
                                 }}
                                 className={`outline-none px-2 bg-transparent text-white 
                                   ${updateError?.[category.id] ? "border-b-2 border-red-600" : "border-b-2 border-white"}`}
