@@ -2,35 +2,28 @@
 import { Outlet } from "react-router-dom";
 import Footer from "./components/ui/Footer/Footer";
 import Navbar from "./components/ui/Navbar/Navbar";
+import { useUIStore } from "./store/uiStore";
 import * as React from "react";
 import { useAuthStore } from "./store/authStore";
-import { jwtDecode } from "jwt-decode";
 import { useUserStore } from "./store/userStore";
+import { jwtDecode } from "jwt-decode";
 import { DecodedJWT } from "./types/authType";
-import { useUIStore } from "./store/uiStore";
 
 function App() {
+  const navbarHeight = useUIStore((state) => state.navbarHeight);
+
   const userSignedIn = useAuthStore((state) => state.userSignedIn);
   const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
   const setIsJWTChecked = useAuthStore((state) => state.setIsJWTChecked);
 
+  const globalUsername = useUserStore((state) => state.globalUsername);
   const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
   const setGlobalEmail = useUserStore((state) => state.setGlobalEmail);
   const setRole = useUserStore((state) => state.setRole);
   const setUserID = useUserStore((state) => state.setUserID);
 
-  const navbarHeight = useUIStore((state) => state.navbarHeight);
-
-  /**
-   * Decode the JWT stored in local storage on initial render.
-   *
-   * Checks if the user was signed in or not depending on if JWT exists or not.
-   *
-   * **JWT: JSON Web Token**
-   */
-  function decodeJWT() {
+  React.useEffect(() => {
     const jwtToken = localStorage.getItem("token");
-
     if (jwtToken) {
       const decodedToken: DecodedJWT = jwtDecode(jwtToken);
       userSignedIn();
@@ -39,13 +32,8 @@ function App() {
       setRole(decodedToken.role);
       setUserID(decodedToken.sub);
     }
-
     setIsJWTChecked(true);
-  }
-
-  React.useEffect(() => {
-    decodeJWT();
-  }, [isUserSignedIn]);
+  }, [isUserSignedIn, globalUsername]);
   return (
     <>
       <Navbar />

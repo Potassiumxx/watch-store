@@ -6,7 +6,6 @@ import { APIErrorReturnType, HandleFieldOnChangeParamter } from "../types/form";
 import { LoginAndRegisterResponse } from "../types/authType";
 import { useAuthStore } from "../store/authStore";
 import { useUIStore } from "../store/uiStore";
-import { useUserStore } from "../store/userStore";
 
 interface HandleFormSubmitParameter<V, R> {
   apiCall: () => Promise<R>;
@@ -32,9 +31,6 @@ export default function useForm<T extends { [key: string]: boolean }>(initialSta
 
   const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
   const setIsLoading = useUIStore((state) => state.setIsLoading);
-
-  const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
-  const setGlobalEmail = useUserStore((state) => state.setGlobalEmail);
 
   // Used 'V' instead of 'T' for generic type from now on so that it doesn't get confusing since there's a 'T' in parent too
 
@@ -156,8 +152,6 @@ export default function useForm<T extends { [key: string]: boolean }>(initialSta
 
       userSignedIn();
       setShowUserMenu(false);
-      setGlobalUsername(localStorage.getItem("username") || "Where is the username?");
-      setGlobalEmail(localStorage.getItem("email") || "No Email, visit your local police department");
     }
   }
 

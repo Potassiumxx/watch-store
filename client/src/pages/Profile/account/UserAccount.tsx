@@ -7,10 +7,12 @@ import * as React from "react";
 import { useCartStore } from "../../../store/cartStore";
 import { updateUsername } from "../../../services/api/authAPI";
 import axios from "axios";
+import useForm from "../../../hooks/useForm";
 
 export default function UserAccount() {
   const globalUsername = useUserStore((state) => state.globalUsername);
   const globalEmail = useUserStore((state) => state.globalEmail);
+  const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
 
   const isJWTChecked = useAuthStore((state) => state.isJWTChecked);
   const userSignedOut = useAuthStore((state) => state.userSignedOut);
@@ -23,6 +25,12 @@ export default function UserAccount() {
   const [updateNameError, setUpdateNameError] = React.useState<string | null>(null);
 
   const navigate = useNavigate();
+
+  const initialDirtyFieldState = {
+    username: false,
+  }
+
+  const { handleSuccessfulResponse } = useForm(initialDirtyFieldState);
 
   function handleLogOut(): void {
     localStorage.removeItem("token");
@@ -41,12 +49,16 @@ export default function UserAccount() {
   }
 
   async function handleUsernameUpdate() {
-    //setGlobalUsername();
     if (editedUsernameValue === "") return setUpdateNameError("Username cannot be empty");
     try {
       if (editedUsernameValue) {
         const response = await updateUsername({ updatedUsername: editedUsernameValue, userEmail: globalEmail });
         console.log(response);
+        if (response.token) {
+          setGlobalUsername("");
+          handleSuccessfulResponse(response);
+          setEditedUsernameValue(null);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -90,6 +102,13 @@ export default function UserAccount() {
                                 setUpdateNameError("Username cannot be empty");
                               }
                               setEditedUsernameValue(e.target.value)
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === "Escape") {
+                                setEditedUsernameValue(null);
+                              } else if (e.key === "Enter") {
+                                handleUsernameUpdate();
+                              }
                             }}
                           />
                           {updateNameError && <span className="text-[13px] text-red-600">{updateNameError}</span>}
