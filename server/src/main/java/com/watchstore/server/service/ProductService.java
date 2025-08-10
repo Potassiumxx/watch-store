@@ -58,8 +58,7 @@ public class ProductService {
         productRequest.getProductPrice(),
         category,
         productRequest.getProductDescription(),
-        randomFileName,
-        true);
+        randomFileName);
 
     Inventory inventory = new Inventory();
     inventory.setQuantity(productRequest.getProductQuantity());
@@ -145,5 +144,15 @@ public class ProductService {
     Inventory inventory = inventoryOpt.orElse(null);
 
     return new ProductDTO(product, inventory);
+  }
+
+  public List<ProductDTO> getAllActiveProducts() {
+    List<Product> products = productRepository.findByIsActiveTrue();
+
+    return products.stream().map(product -> {
+      Optional<Inventory> inventoryOpt = inventoryRepository.findByProduct(product);
+      Inventory inventory = inventoryOpt.orElse(null);
+      return new ProductDTO(product, inventory);
+    }).collect(Collectors.toList());
   }
 }

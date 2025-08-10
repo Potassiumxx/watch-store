@@ -74,7 +74,7 @@ export default function Products() {
     setIsError(null);
     try {
       const data = await getAllProducts();
-      setProducts(data.filter((product) => product.isActive === true));
+      setProducts(data);
     } catch (error) {
       fetchErrorCatcher(error, setIsError);
     } finally {

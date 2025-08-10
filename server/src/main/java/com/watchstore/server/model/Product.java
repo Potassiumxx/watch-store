@@ -38,13 +38,13 @@ public class Product {
   public Product() {
   };
 
-  public Product(String name, double price, Category category, String description, String image, boolean isActive) {
+  public Product(String name, double price, Category category, String description, String image) {
     this.name = name;
     this.price = price;
     this.category = category;
     this.description = description;
     this.image = image;
-    this.isActive = isActive;
+    this.isActive = true;
   }
 
   public Long getId() {
