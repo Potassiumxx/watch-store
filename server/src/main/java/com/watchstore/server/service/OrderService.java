@@ -9,10 +9,12 @@ import com.watchstore.server.dto.order.OrderRequestDTO;
 import com.watchstore.server.dto.order.OrderResponseDTO;
 import com.watchstore.server.exceptions.BadRequestException;
 import com.watchstore.server.exceptions.ResourceNotFoundException;
+import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Order;
 import com.watchstore.server.model.OrderItem;
 import com.watchstore.server.model.Product;
 import com.watchstore.server.model.User;
+import com.watchstore.server.repository.InventoryRepository;
 import com.watchstore.server.repository.OrderItemRepository;
 import com.watchstore.server.repository.OrderRepository;
 import com.watchstore.server.repository.ProductRepository;
@@ -27,13 +29,15 @@ public class OrderService {
   private final OrderItemRepository orderItemRepository;
   private final UserRepository userRepository;
   private final ProductRepository productRepository;
+  private final InventoryRepository inventoryRepository;
 
   public OrderService(OrderRepository orderRepository, OrderItemRepository orderItemRepository,
-      UserRepository userRepository, ProductRepository productRepository) {
+      UserRepository userRepository, ProductRepository productRepository, InventoryRepository inventoryRepository) {
     this.orderRepository = orderRepository;
     this.orderItemRepository = orderItemRepository;
     this.userRepository = userRepository;
     this.productRepository = productRepository;
+    this.inventoryRepository = inventoryRepository;
   }
 
   public List<OrderResponseDTO> getAllOrders() {
@@ -58,6 +62,12 @@ public class OrderService {
     for (OrderItemDTO itemDTO : dto.getItems()) {
       Product product = productRepository.findById(itemDTO.getProductId())
           .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + itemDTO.getProductId()));
+
+      Inventory inventory = inventoryRepository.findByProduct(product).orElseThrow(
+          () -> new ResourceNotFoundException("Inventory not found for the product: " + product.getName()));
+
+      inventory.setQuantity(inventory.getQuantity() - itemDTO.getQuantity());
+      inventoryRepository.save(inventory);
 
       OrderItem item = new OrderItem(order, product, itemDTO.getQuantity(), itemDTO.getUnitPrice());
       order.addItem(item);
