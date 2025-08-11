@@ -89,7 +89,7 @@ export default function AdminProductPage() {
 
   return (
     <ProfileContentContainer title="Add Product">
-      <div className="innerDivBackgroundColour shadow-lg shadow-black rounded-md px-20">
+      <div className="innerDivBackgroundColour shadow-lg shadow-black rounded-md px-4 md:px-10 lg:px-20 w-full md:w-auto mb-20">
         <ProductForm
           onSubmit={handleAddProductSubmit}
           onChange={(e) => handleProductFieldOnChange<ProductFormStringFields>({

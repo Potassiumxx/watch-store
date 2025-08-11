@@ -9,6 +9,7 @@ import { useProductStore } from "../../../store/productStore";
 import { updateProduct } from "../../../services/api/productAPI";
 import { IoCloseOutline } from "react-icons/io5";
 import { useUIStore } from "../../../store/uiStore";
+import Backdrop from "../Backdrop/Backdrop";
 
 interface UpdateProductFormProps {
   selectedProduct: ProductDTO;
@@ -132,55 +133,51 @@ export default function UpdateProductForm({ selectedProduct, fetchProductFunc }:
   }, [])
 
   return (
-    <div className="max-h-[90vh]">
+    <div className="fixed inset-0 flex justify-center items-center z-50">
+      <Backdrop handleOnClick={handleFormClose} isVisible={isFormVisible} />
       <div
-        onClick={handleFormClose}
-        className={`fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/[.8] 
-                backdrop-blur-md duration-300 ${isFormVisible ? "opacity-100" : "opacity-0"}`}
-      >
-        <div
-          onClick={(e) => e.stopPropagation()}
-          className="relative innerDivBackgroundColour rounded-md border border-white/[.5] z-100">
-          <div className="flex py-4 px-6 items-center border-b-[1px] border-white">
-            <h2 className="w-full text-white justify-self-center text-3xl font-semibold text-center">Update Product</h2>
-            <button className="absolute right-6 text-red-600 z-50 hover:text-red-400 duration-200"
-              onClick={handleFormClose}>{<IoCloseOutline size={45} />}</button>
-          </div>
-          <ProductForm
-            onSubmit={handleUpdateProductSubmit}
-            onChange={(e) => handleProductFieldOnChange<ProductFormStringFields>({
-              event: e,
-              values: {
-                productName,
-                productPrice,
-                productCategory,
-                productDescription,
-                productQuantity,
-              },
-              dirtyField: dirtyField,
-              setStringError: setProductStringFormError,
-              clearStringError: clearProductStringFormError,
-              handleFieldOnChange,
-              validateFunction: validateProductFormStringFields
-            })}
-            onFileChange={(e) => handleFileUpload({
-              e,
-              validateFileFieldFunc: validateFileField,
-              setProductFormFileErrorFunc: setProductFileFormError,
-              isValidationError: isValidationError
-            })}
-            values={{
+        className={`relative w-full h-full overflow-y-auto md:w-auto md:h-auto innerDivBackgroundColour rounded-md border border-white/[.5] z-50 
+          ${isFormVisible ? "opacity-100" : "opacity-0"} duration-300`
+        }>
+        <div className="flex py-4 px-6 items-center border-b-[1px] border-white">
+          <h2 className="w-full text-white justify-self-center text-2xl md:text-3xl font-semibold text-center">Update Product</h2>
+          <button className="absolute right-6 text-red-600 z-50 hover:text-red-400 duration-200"
+            onClick={handleFormClose}>{<IoCloseOutline size={45} />}</button>
+        </div>
+        <ProductForm
+          onSubmit={handleUpdateProductSubmit}
+          onChange={(e) => handleProductFieldOnChange<ProductFormStringFields>({
+            event: e,
+            values: {
               productName,
               productPrice,
               productCategory,
               productDescription,
               productQuantity,
-            }}
-            stringFieldError={productStringErrorFields}
-            fileFieldError={productFileErrorFields}
-            generalError={generalError}
-          />
-        </div>
+            },
+            dirtyField: dirtyField,
+            setStringError: setProductStringFormError,
+            clearStringError: clearProductStringFormError,
+            handleFieldOnChange,
+            validateFunction: validateProductFormStringFields
+          })}
+          onFileChange={(e) => handleFileUpload({
+            e,
+            validateFileFieldFunc: validateFileField,
+            setProductFormFileErrorFunc: setProductFileFormError,
+            isValidationError: isValidationError
+          })}
+          values={{
+            productName,
+            productPrice,
+            productCategory,
+            productDescription,
+            productQuantity,
+          }}
+          stringFieldError={productStringErrorFields}
+          fileFieldError={productFileErrorFields}
+          generalError={generalError}
+        />
       </div>
     </div>
   )

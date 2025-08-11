@@ -32,7 +32,7 @@ export default function UserProfile() {
   if (!hasHydrated) return <Loader />;
 
   return (
-    <div className="relative min-h-dvh outerDivBackgroundColour">
+    <div className="relative outerDivBackgroundColour min-h-dvh">
       <div className={`flex flex-col md:flex-row`}>
         <UserProfileMenu />
         <Outlet />

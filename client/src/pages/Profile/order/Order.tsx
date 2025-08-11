@@ -74,19 +74,17 @@ export default function Order() {
 
   return (
     <ProfileContentContainer title="View Orders">
-      <div className="flex flex-col gap-10 w-full">
-        <div>
-          <input
-            type="text"
-            placeholder="Search orders..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="px-2 lg:px-4 py-2 border rounded w-full text-black"
-          />
-        </div>
+      <div className="flex flex-col gap-10 w-full min-h-dvh">
+        <input
+          type="text"
+          placeholder="Search orders..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="px-2 lg:px-4 py-2 border rounded w-full text-black"
+        />
         <div className="innerDivBackgroundColour border border-white/[.5] pb-4 rounded-md shadow-lg shadow-black min-h-[420px] flex flex-col justify-between w-full overflow-x-auto px-2">
-          <table className="text-white min-w-full table-auto md:table-fixed">
-            <thead className="text-left text-[15px] text-bold bg-white/[.2]">
+          <table className="text-white min-w-full table-auto md:table-fixed text-sm md:text-base">
+            <thead className="text-left text-[15px] text-bold bg-white/[.2] text-sm md:text-base">
               <tr className="p-4">
                 <th className="p-2">#</th>
                 <th className="p-2">Order ID</th>
@@ -120,7 +118,7 @@ export default function Order() {
                           <td className="p-2">
                             <button
                               onClick={() => toggleShowOrderItems(order.orderID)}
-                              className="border px-4 py-2 hover:bg-white hover:text-black duration-200">
+                              className="border px-2 text-sm md:text-base md:px-4 md:py-2 hover:bg-white hover:text-black duration-200">
                               {expandedOrderId === order.orderID ? " Hide Details" : "Show Details"}
                             </button>
                           </td>

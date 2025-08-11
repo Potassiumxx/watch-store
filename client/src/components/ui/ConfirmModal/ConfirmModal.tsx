@@ -34,7 +34,7 @@ export default function ConfirmModal({
     <div className="fixed inset-0 flex justify-center items-center">
       <Backdrop handleOnClick={handleClose} isVisible={isVisible} />
       <div className={`flex items-center justify-center z-50 duration-300 ${isVisible ? "opacity-100" : "opacity-0"}`}>
-        <div className="bg-[#1f1f1f] text-white p-6 rounded-lg w-[400px] z-100">
+        <div className="bg-[#1f1f1f] text-white p-6 rounded-lg w-[300px] md:w-[400px] z-100">
           <h2 className="text-xl font-bold mb-3">{title}</h2>
           <p className="mb-6">{message}</p>
           <div className="flex justify-end gap-4">

@@ -55,13 +55,33 @@ export interface CategoryDTO {
   productCount: number;
 }
 
-export interface ProductStore extends ProductFormStringFields, ProductFormFileField {
-  productID?: string;
+export interface BaseProductStore extends ProductFormStringFields, ProductFormFileField {
   productStringErrorFields: Partial<ProductStringFormValidationReturnType>;
   productFileName: string;
   productFileErrorFields: { productImage?: string };
 
-  setProductID?: (id: string) => void;
+  setProductName: (name: string) => void;
+  setProductPrice: (price: string) => void;
+  setProductCategory: (category: string) => void;
+  setProductDescription: (description: string) => void;
+  setProductQuantity: (quantity: string) => void;
+  setProductImage: (image: File | null) => void;
+
+  setProductStringFormError: (inputField: keyof ProductStringFormValidationReturnType, message: string) => void;
+  setProductFileFormError: (inputField: keyof ProductFileFormValidationReturnType, message: string) => void;
+  setProductFileName: (fileName: string) => void;
+
+  clearProductStringFormError: () => void;
+  clearProductFileFormError: () => void;
+}
+
+export interface UpdateProductStore extends BaseProductStore {
+  productID: string;
+  productStringErrorFields: Partial<ProductStringFormValidationReturnType>;
+  productFileName: string;
+  productFileErrorFields: { productImage?: string };
+
+  setProductID: (id: string) => void;
   setProductName: (name: string) => void;
   setProductPrice: (price: string) => void;
   setProductCategory: (category: string) => void;

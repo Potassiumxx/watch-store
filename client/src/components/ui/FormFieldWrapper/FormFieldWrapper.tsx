@@ -28,7 +28,7 @@ export default function FormFieldWrapper({
 }: FormFieldWrapperProps) {
   return (
     <>
-      <div className={positionRow ? "grid grid-cols-[1fr_2.5fr] gap-10 items-center" : "relative flex flex-col gap-2"}>
+      <div className={positionRow ? "md:grid md:grid-cols-[1fr_2.5fr] md:gap-10 items-center" : "relative flex flex-col gap-2"}>
         <Label
           id={id}
           label={label}

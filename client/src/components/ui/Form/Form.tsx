@@ -7,7 +7,7 @@ interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
 }
 
 export default function Form({ children, handleFormSubmit, className, ...attributes }: FormProps) {
-  const defaultClassName = "flex flex-col gap-4 text-black p-6";
+  const defaultClassName = "flex flex-col gap-4 text-black p-2 md:p-6";
 
   return (
     <form

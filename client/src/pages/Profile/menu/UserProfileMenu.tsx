@@ -7,7 +7,7 @@ export default function UserProfileMenu() {
 
   return (
     <div
-      className="flex align-middle h-[30%] md:min-h-dvh w-full md:w-[20%] innerDivBackgroundColour"
+      className="flex align-middle w-full md:w-[20%] innerDivBackgroundColour"
       style={{
         boxShadow: "8px -10px 10px 4px rgb(0, 0, 0, 0.9)",
       }}

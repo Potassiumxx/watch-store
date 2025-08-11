@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { ProductStore } from "../../types/productType";
+import { BaseProductStore } from "../../types/productType";
 
-export const useAddProductStore = create<ProductStore>((set) => ({
+export const useAddProductStore = create<BaseProductStore>((set) => ({
   productName: "",
   productPrice: "",
   productCategory: "",

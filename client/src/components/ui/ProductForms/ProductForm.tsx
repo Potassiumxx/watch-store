@@ -34,13 +34,14 @@ export default function ProductForm({
 }: ProductFormProps) {
   return (
 
-    <Form handleFormSubmit={onSubmit} className="gap-[2rem] relative">
+    <Form handleFormSubmit={onSubmit} className="md:gap-[2rem] relative">
       <FormFieldWrapper
         label="Product Name"
         id="product-name"
         useVerticalLabelErrorStyle={true}
         error={stringFieldError.productName}
-        positionRow={true}>
+        positionRow={true}
+      >
         <Input
           id="product-name"
           name="productName"
@@ -140,7 +141,7 @@ export default function ProductForm({
 
       {generalError && <ErrorMessage message={generalError} className="absolute text-center" />}
       {onSuccessMessage && <SuccessMessage message={onSuccessMessage} />}
-      <Button className="formButtonStyle w-[40%] self-center mt-4" textValue={buttonTextValue} />
+      <Button className="formButtonStyle w-[40%] self-center lg:mt-4" textValue={buttonTextValue} />
     </Form>
   )
 }

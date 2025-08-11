@@ -135,8 +135,8 @@ export default function AdminProductCategory() {
 
   return (
     <ProfileContentContainer title="Product Category">
-      <div className="flex flex-col gap-20">
-        <div className="innerDivBackgroundColour shadow-black shadow-lg rounded-md px-20">
+      <div className="flex flex-col gap-20 w-full md:w-auto">
+        <div className="innerDivBackgroundColour shadow-black shadow-lg rounded-md md:px-20">
           <h2 className="text-2xl text-white text-center py-4">Add New Category</h2>
           <Form handleFormSubmit={handleCategorySubmit}>
             <FormFieldWrapper
@@ -169,18 +169,18 @@ export default function AdminProductCategory() {
               {fetchCategoriesError ? fetchCategoriesError : "No categories to show"}
             </div>
           ) : (
-            <ul className="w-full px-10 space-y-4">
+            <ul className="md:w-full px-2 md:px-10 space-y-2 md:space-y-4">
               {categories.map((category) => {
                 const isCategoryInUse: boolean = category.productCount > 0;
                 const inEditMode = editingCategoryID === category.id;
                 return (
                   <li
                     key={category.id}
-                    className="flex items-center justify-between border border-white/[.5] px-6 py-4 hover:shadow-lg hover:border-white hover:shadow-md hover:shadow-gray-400 duration-200"
+                    className="flex items-center justify-between border border-white/[.5] px-2 md:px-6 py-2 md:py-4 hover:shadow-lg hover:border-white hover:shadow-md hover:shadow-gray-400 duration-200"
                   >
                     {
                       inEditMode ? (
-                        <div className="flex items-center gap-8">
+                        <div className="flex flex-col md:flex-row items-center gap-2 md:gap-8">
 
                           {
                             <div className={`${updateError ? "flex flex-col gap-2" : "flex"}`}>
@@ -202,38 +202,42 @@ export default function AdminProductCategory() {
                                 className={`outline-none px-2 bg-transparent text-white 
                                   ${updateError?.[category.id] ? "border-b-2 border-red-600" : "border-b-2 border-white"}`}
                               />
-                              {updateError?.[category.id] && <span className="text-red-600 text-sm px-2">{updateError[category.id]}</span>}
+                              {updateError?.[category.id] && <span className="text-red-600 text-[13px] md:text-sm px-2">{updateError[category.id]}</span>}
                             </div>
                           }
-                          <button
-                            onClick={() => {
-                              handleCategoryUpdate(category.id)
-                            }}
-                            className="text-white hover:bg-[#1bddf3] hover:text-black px-2 rounded-sm duration-200">Save</button>
-                          <button
-                            onClick={() => {
-                              setEditingCategoryID(null);
-                              setUpdateError(null);
-                            }}
-                            className="text-white hover:bg-white hover:text-black px-2 rounded-sm duration-200">Cancel</button>
+                          <div className="flex w-full">
+                            <button
+                              onClick={() => {
+                                handleCategoryUpdate(category.id)
+                              }}
+                              className="text-white hover:bg-[#1bddf3] hover:text-black px-2 rounded-sm duration-200 text-sm md:text-base">Save</button>
+                            <button
+                              onClick={() => {
+                                setEditingCategoryID(null);
+                                setUpdateError(null);
+                              }}
+                              className="text-white hover:bg-white hover:text-black px-2 rounded-sm duration-200 text-sm md:text-base">Cancel</button>
+                          </div>
                         </div>
                       ) :
                         <div className="flex flex-col">
-                          <span className="text-white font-medium text-lg">{category.categoryName}</span>
+                          <span className="text-white font-medium md:text-lg">{category.categoryName}</span>
                           <span className="text-gray-400 text-sm">Products in use: {category.productCount}</span>
                         </div>
                     }
 
-                    <div className="flex gap-4">
-                      <button
-                        onClick={() => {
-                          setEditingCategoryID(category.id);
-                          setEditedCategoryName(category.categoryName);
-                          setUpdateError(null);
-                        }}
-                        className="text-white px-2 transition rounded-sm text-3xl hover:bg-white hover:text-black">
-                        <CiEdit />
-                      </button>
+                    <div className="flex gap-[2px] md:gap-4">
+                      {!inEditMode &&
+                        <button
+                          onClick={() => {
+                            setEditingCategoryID(category.id);
+                            setEditedCategoryName(category.categoryName);
+                            setUpdateError(null);
+                          }}
+                          className="text-white px-2 transition rounded-sm text-2xl md:text-3xl hover:bg-white hover:text-black">
+                          <CiEdit />
+                        </button>
+                      }
                       <button
                         onClick={() => {
                           if (!isCategoryInUse) {
@@ -242,7 +246,7 @@ export default function AdminProductCategory() {
                             setUpdateError(null);
                           }
                         }}
-                        className={`text-white px-2 transition rounded-sm text-3xl 
+                        className={`text-white px-2 transition rounded-sm text-2xl md:text-3xl 
                         ${isCategoryInUse ? "cursor-not-allowed text-gray-400" : "hover:bg-red-600 hover:text-black"}`
                         }><MdDeleteOutline /></button>
                     </div>
