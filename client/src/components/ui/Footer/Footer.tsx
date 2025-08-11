@@ -4,10 +4,10 @@ export default function Footer() {
   return (
     <footer>
       <div
-        className="flex justify-between component-x-axis-padding pt-[80px] pb-11 text-white border-t-[1px] border-white/[.5] outerDivBackgroundColour"
+        className="flex justify-between text-white border-t-[1px] border-white/[.5] outerDivBackgroundColour px-4 py-8 lg:pt-[80px] lg:pb-11 lg:component-x-axis-padding"
         data-testid="footer">
-        <h1 className="uppercase text-[18px] font-semibold">Watch Store</h1>
-        <ul className="flex gap-5 font-semibold text-[18px]">
+        <h1 className="uppercase md:text-[18px] font-semibold">Watch Store</h1>
+        <ul className="flex flex-col gap-2 md:gap-5 md:gap-5 font-semibold md:text-[18px] md:flex-row">
           <li className="hover:opacity-50 hover:underline duration-100">
             <Link to={"/"}>Home</Link>
           </li>
@@ -15,7 +15,7 @@ export default function Footer() {
             <Link to={"products"}>Products</Link>
           </li>
           <li className="hover:opacity-50 hover:underline duration-100">
-            <Link to={""}>Repository</Link>
+            <Link to={"https://github.com/Potassiumxx/watch-store"} target="_blank">Repository</Link>
           </li>
         </ul>
       </div>

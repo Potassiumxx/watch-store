@@ -105,10 +105,10 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div ref={navbarRef} className="fixed top-0 flex flex-col justify-between items-center z-20 w-full" data-testid="navbar">
+    <div ref={navbarRef} className="fixed top-0 flex flex-col justify-between items-center z-20 w-dvw overflow-hidden" data-testid="navbar">
       {showUserMenu && <UserMenu />}
       {showCart && <Cart />}
-      <div className="flex w-full py-2 outerDivBackgroundColour text-white items-center px-8 justify-end md:px-[50px] md:justify-between">
+      <div className="flex w-full py-2 outerDivBackgroundColour text-white items-center px-4 justify-end md:px-[50px] md:justify-between">
         <div>
           <span className="text-[10px] italic capitalize text-[#898989] hidden xl:block md:w-[80%] xl:w-full">Buy best watches with free shipping & returns</span>
         </div>
@@ -157,7 +157,7 @@ export default function Navbar() {
           <span className="bg-[#1bddf3] w-4 h-4 lg:w-5 lg:h-5 block"></span>
           <span className="font-bold tracking-wider text-white md:text-2xl">WS</span>
         </button>
-        <div className="flex w-full px-8 justify-end md:justify-center md:px-0">
+        <div className="flex w-full px-4 justify-end md:justify-center md:px-0">
           <div className="flex gap-2 md:gap-[8rem]">
             <NavLink
               to={"/"}

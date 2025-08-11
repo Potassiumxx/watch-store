@@ -61,20 +61,20 @@ export default function Home() {
       {/*2nd Photo by Fstopper: https://www.pexels.com/photo/round-black-current-chronograph-watch-with-link-bracelet-1075189/ */}
       {/*3rd Photo by Fernando Arcos:
       https://www.pexels.com/photo/silver-linked-bracelet-silver-and-black-round-chronograph-watch-190819/ */}
-      <div className={`flex pb-3 bg-black`} style={{ minHeight: `calc(100dvh - ${navbarHeight}px)` }}>
-        <div className="flex flex-col justify-between text-white min-h-full w-full">
-          <div className="relative h-full w-full self-center flex flex-col justify-center">
-            <span className="absolute w-[50%] h-[2px] bg-gray-600 top-[25%] bg-gradient-to-r from-gray-700 via-white to-gray-700 animate-glowline" />
-            <div className="flex flex-col gap-7 text-center self-center max-w-[700px]">
-              <h1 className="uppercase text-6xl font-bold tracking-wide">Get watches online</h1>
-              <p className="text-white text-lg font-semibold">
+      <div className={`flex pb-3 bg-black overflow-hidden`} style={{ minHeight: `calc(65dvh - ${navbarHeight}px)` }}>
+        <div className="flex flex-col text-white w-full h-[65dvh] md:h-[85dvh] xl:justify-between">
+          <div className="relative w-full self-center flex flex-col justify-center h-[60%] md:h-[70%]">
+            <span className="absolute w-[50%] h-[2px] bg-gray-600 bg-gradient-to-r from-gray-700 via-white to-gray-700 animate-glowline top-[20%] md:top-[25%] lg:top-[20%]" />
+            <div className="flex flex-col text-center self-center max-w-[700px] gap-7">
+              <h1 className="text-2xl md:text-4xl xl:text-6xl uppercase font-bold tracking-wide">Get watches online</h1>
+              <p className="text-white md:text-lg md:text-center font-semibold">
                 Discover the best collection of watches, perfect for every occasion. Stylish, durable, and affordable.
               </p>
             </div>
-            <span className="absolute w-[50%] h-[2px] bg-gray-600 bottom-[25%] bg-gradient-to-l from-gray-700 via-white to-gray-700 animate-glowline-reverse right-0" />
+            <span className="absolute w-[50%] h-[2px] bg-gray-600 bottom-[25%] bg-gradient-to-l from-gray-700 via-white to-gray-700 animate-glowline-reverse right-0 lg:bottom-[20%]" />
           </div>
           <div className="flex flex-col items-center pb-10">
-            <Link to={"/products"} className="text-2xl hover:underline underline-offset-8"> View Products </Link>
+            <Link to={"/products"} className="text-[20px] underline md:hover:underline underline-offset-8 xl:text-2xl"> View Products </Link>
           </div>
           {/*<div className="absolute bottom-4 right-4 bg-white text-black rounded-sm hover:bg-[#3f3f3f] hover:text-white transition-all duration-150">
             <a
