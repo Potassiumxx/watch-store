@@ -172,7 +172,7 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-      <div className="px-4 md:component-x-axis-padding rounded-sm h-[550px] mt-10 md:mt-0" style={{
+      <div className="px-0 md:px-4 md:component-x-axis-padding rounded-sm h-[550px] mt-10 md:mt-0" style={{
         boxShadow: "-3px 0 12px 4px rgb(0, 0, 0, 0.9)",
       }}>
         <h1 className="text-2xl md:text-3xl font-semibold">Shipping Information</h1>
@@ -225,7 +225,7 @@ export default function Checkout() {
                   value={cardNumber}
                 />
               </FormFieldWrapper>
-              <div className="flex gap-4">
+              <div className="flex gap-4 flex-col md:flex-row">
                 <FormFieldWrapper
                   id="expiry"
                   label="Expiry"

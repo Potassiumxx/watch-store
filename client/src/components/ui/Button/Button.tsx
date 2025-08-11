@@ -20,7 +20,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export default function Button({ textValue = "This is a button", className, ...attributes }: ButtonProps) {
-  const defaultStyle = "flex justify-center text-sm md:p-[10px_25px] text-4 transition-all duration-200 ease disabled:cursor-not-allowed";
+  const defaultStyle = "flex justify-center text-sm md:text-base p-[10px_25px] text-4 transition-all duration-200 ease disabled:cursor-not-allowed";
 
   return (
     <button className={`${defaultStyle} ${className}`} {...attributes}>

@@ -93,7 +93,7 @@ export function Cart() {
                 })
               }
             </div>
-            <div className="p-4 border-t border-white/[.5] bg-black h-[120px]">
+            <div className="p-4 border-t border-white/[.5] bg-black h-[80px] flex items-center">
               <Button
                 textValue="Checkout"
                 className="defaultButtonStyle bg-orange-600 text-white font-semibold w-full left-0 hover:bg-orange-500"
