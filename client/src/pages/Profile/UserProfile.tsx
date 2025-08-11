@@ -33,7 +33,7 @@ export default function UserProfile() {
 
   return (
     <div className="relative min-h-dvh outerDivBackgroundColour">
-      <div className={`flex`}>
+      <div className={`flex flex-col md:flex-row`}>
         <UserProfileMenu />
         <Outlet />
       </div>

@@ -15,12 +15,12 @@ interface ProfileContentContainerProps {
  */
 export default function ProfileContentContainer({ children, title, isLoading }: ProfileContentContainerProps) {
   return (
-    <div className="flex flex-col items-center font-semibold component-x-axis-padding inset-0 pb-3 w-full">
-      <h1 className="text-white text-4xl pt-4">{title}</h1>
+    <div className="flex flex-col items-center font-semibold px-4 md:component-x-axis-padding inset-0 pb-3 w-full">
+      <h1 className="text-white text-3xl md:text-4xl pt-4">{title}</h1>
       {isLoading ? (
         <Loader size={20} className="m-auto border-white mt-40" />
       ) : (
-        <div className="flex justify-center mt-14 w-full">{children}</div>
+        <div className="flex justify-center mt-5 md:mt-14 w-full">{children}</div>
       )}
     </div>
   );

@@ -138,9 +138,9 @@ export default function Checkout() {
   if (checkoutItems.length === 0) return <div className="text-white font-bold text-4xl mx-auto text-center mt-20">No items to checkout</div>
 
   return (
-    <div className="grid grid-cols-[1.4fr_1fr] gap-4 py-8 text-white min-h-full">
-      <div className="component-x-axis-padding">
-        <h1 className="text-3xl">{checkoutItems.length > 1 ? "Your Items" : "Your Item"}</h1>
+    <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-4 py-2 md:py-8 text-white min-h-full">
+      <div className="px-4 md:component-x-axis-padding">
+        <h1 className="text-2xl md:text-3xl font-semibold">{checkoutItems.length > 1 ? "Your Items" : "Your Item"}</h1>
         <div className="flex flex-col gap-10">
           <div className="pt-10 max-h-[500px] overflow-y-auto"> {
             checkoutItems.map((item) => {
@@ -172,10 +172,10 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-      <div className="component-x-axis-padding rounded-sm h-[550px]" style={{
+      <div className="px-4 md:component-x-axis-padding rounded-sm h-[550px] mt-10 md:mt-0" style={{
         boxShadow: "-3px 0 12px 4px rgb(0, 0, 0, 0.9)",
       }}>
-        <h1 className="text-3xl">Shipping Information</h1>
+        <h1 className="text-2xl md:text-3xl font-semibold">Shipping Information</h1>
         <div className="px-0 py-4 flex flex-col justify-between h-full">
           <Form className="flex flex-col p-0 justify-between h-full" handleFormSubmit={handleCheckoutFormSubmit}>
             <div className="flex flex-col gap-4">

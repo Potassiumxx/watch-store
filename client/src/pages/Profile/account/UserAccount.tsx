@@ -80,15 +80,15 @@ export default function UserAccount() {
        * See `ProfileContentContainer` to make this more clear.
        */}
       <ProfileContentContainer title="My Account" isLoading={!isJWTChecked}>
-        <div className="innerDivBackgroundColour p-6 rounded-2xl shadow-lg border border-white/10 w-1/2">
-          <div className="flex flex-col gap-7 text-white">
-            <div>
+        <div className="innerDivBackgroundColour p-6 rounded-2xl shadow-lg border border-white/10 w-full lg:w-[80%] xl:w-1/2">
+          <div className="flex flex-col gap-4 md:gap-7 text-white">
+            <div className="flex flex-col gap-2">
               <h3 className="text-lg mb-1">Username</h3>
               <div className="flex justify-between items-center">
                 {
                   editedUsernameValue != null ?
                     (
-                      <>
+                      <div className="flex flex-col gap-4 md:flex-row justify-between w-full">
                         <div className="flex flex-col">
                           <input
                             value={editedUsernameValue}
@@ -113,19 +113,19 @@ export default function UserAccount() {
                           />
                           {updateNameError && <span className="text-[13px] text-red-600">{updateNameError}</span>}
                         </div>
-                        <div className="flex gap-4 items-center">
+                        <div className="flex gap-4 items-center justify-between">
                           <Button
                             textValue="Save"
-                            className="py-1 h-[50%] w-[100px] border-2 hover:bg-white hover:text-black"
+                            className="border-2 border-white py-1 hover:bg-white hover:text-black w-[100px]"
                             onClick={handleUsernameUpdate}
                           />
                           <Button
                             textValue="Cancel"
-                            className="py-1 h-[50%] w-[100px] border-2 hover:bg-white hover:text-black"
+                            className="border-2 border-white py-1 hover:bg-white hover:text-black w-[100px]"
                             onClick={() => setEditedUsernameValue(null)}
                           />
                         </div>
-                      </>
+                      </div>
                     ) :
                     (
                       <>
@@ -140,7 +140,7 @@ export default function UserAccount() {
                 }
               </div>
             </div>
-            <div>
+            <div className="flex flex-col gap-2">
               <h3 className="text-lg mb-1">Email</h3>
               <div className="flex justify-between items-center">
                 <div className="font-normal text-white/90">{modifiedEmail(globalEmail)}</div>
@@ -151,7 +151,7 @@ export default function UserAccount() {
                 />
               </div>
             </div>
-            <div className="flex justify-end border-t-2 border-t-white/20 mt-20">
+            <div className="flex justify-end border-t-2 border-t-white/20 mt-10 md:mt-20">
               <Button
                 textValue="Log Out"
                 onClick={handleLogOut}

@@ -46,7 +46,7 @@ export default function SidePanelContainer({ children, panelTitle = "Title", cla
       <Backdrop handleOnClick={hideSidePanelClosing} isVisible={isVisible} />
 
       <div
-        className={`fixed top-0 right-0 h-full w-[420px] bg-[#1a1a1a] text-white z-50 shadow-lg transform transition-transform duration-300 ease-in ${className} ${isVisible ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0 right-0 h-full w-full md:w-[500px] bg-[#1a1a1a] text-white z-50 shadow-lg transform transition-transform duration-300 ease-in ${className} ${isVisible ? "translate-x-0" : "translate-x-full"
           }`}
         data-testid="side-panel-container">
         <div className="flex w-full border-b-white border-b-2">
