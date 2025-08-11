@@ -120,11 +120,11 @@ export default function Products() {
       <div className="text-white">
         <h1 className="text-center text-3xl font-bold mb-6">Products</h1>
 
-        <div className="component-x-axis-padding grid grid-cols-3 gap-8 pb-10">
+        <div className="px-4 md:component-x-axis-padding grid md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
           {
             getFilteredProducts(searchedValue).map((product) => (
               <div
-                className="flex flex-col gap"
+                className="flex flex-col"
                 key={product.id}
               >
                 {role === ROLES.ADMIN &&
@@ -150,15 +150,15 @@ export default function Products() {
                 }
                 <Link to={`/product/${product.id}`}>
                   <div
-                    className={`h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}>
+                    className={`h-[400px] md:h-[500px] flex flex-col innerDivBackgroundColour group border-[1px] border-white/[.5] rounded-md hover:border-white`}>
                     <div className="flex justify-between pt-4 px-4 items-center">
                       <div className="flex flex-col gap-1">
-                        <h1 className="font-black text-3xl whitespace-nowrap overflow-x-auto max-w-[200px]">{product.name}</h1>
+                        <h1 className="font-black text-2xl md:text-3xl whitespace-nowrap overflow-x-auto max-w-[200px]">{product.name}</h1>
                         <h1 className="font-semibold text-sm tracking-wide text-[#c7c7c7]">{product.category}</h1>
                       </div>
                     </div>
                     <img
-                      className="h-[370px] object-contain w-full py-2 scale-90 group-hover:scale-105 transition-transform duration-200"
+                      className="h-[280px] md:h-[370px] object-contain w-full py-2 scale-90 group-hover:scale-105 transition-transform duration-200"
                       src={`http://localhost:5000/images/${product.imagePath}`}
                       alt={product.name}
                     />
@@ -168,7 +168,7 @@ export default function Products() {
                         <h3 className="text-[#c7c7c7] text-sm">Quantity</h3>
                         <h1 className="font-semibold text-lg max-w-[50px] overflow-x-auto">{product.quantity}</h1>
                       </span>
-                      <h1 className="font-bold text-3xl max-w-[90px] overflow-x-auto whitespace-nowrap">{product.price}</h1>
+                      <h1 className="font-bold text-2xl md:text-3xl max-w-[90px] overflow-x-auto whitespace-nowrap">{product.price}</h1>
                     </div>
                   </div>
                 </Link>

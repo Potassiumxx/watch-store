@@ -38,30 +38,37 @@ export default function SingleProductPage() {
   return (
     <FetchStatusDisplay isLoading={isLoading} isEmpty={!product} error={error} emptyMessage="Could not fetch product.">
       {product &&
-        <div className="grid grid-cols-2 gap-8 text-white">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-white">
           <img
             src={`http://localhost:5000/images/${product.imagePath}`}
             alt={product.name}
             className="w-[600px] rounded-lg shadow-lg"
           />
-          <div className="flex flex-col px-2 py-4 gap-8 pl-8 max-w-[500px]">
+          <div className="flex flex-col px-4 py-4 gap-4 md:pl-8 max-w-full md:max-w-[500px]">
             <div>
-              <h1 className="text-5xl font-semibold mb-4 w-full overflow-style">{product.name}</h1>
-              <p className="text-2xl text-gray-300 mb-2 max-w-full overflow-style">{product.category}</p>
+              <h1 className="text-3xl md:text-5xl font-semibold md:mb-4 md:w-full overflow-style">{product.name}</h1>
+              <p className="text-[14px] md:text-2xl text-gray-300 mb-2 max-w-full overflow-style">{product.category}</p>
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col md:gap-2">
               <span className="flex justify-between text-gray-300 items-center uppercase">
-                <h4>Price</h4>
-                <h4>Quantity</h4>
+                <h4 className="text-[14px] md:text-[16px]">Price</h4>
+                <h4 className="text-[14px] md:text-[16px]">Quantity</h4>
               </span>
               <span className="flex justify-between items-center">
-                <p className="text-4xl font-semibold max-w-[130px] overflow-style">{product.price}</p>
-                <span className="text-3xl font-semibold text-left max-w-[80px] overflow-style">{product.quantity}</span>
+                <p className="text-3xl md:text-4xl font-semibold max-w-[130px] overflow-style">{product.price}</p>
+                <span className="text-2xl md:text-3xl font-semibold text-left max-w-[80px] overflow-style">{product.quantity}</span>
               </span>
             </div>
             <span className="flex flex-col gap-4 border-b-2">
-              <h4 className="uppercase text-gray-300">Description</h4>
-              <p className="text-base mb-4 max-h-[250px] max-w-full overflow-style">{product.description}</p>
+              <h4 className="uppercase text-gray-300 text-[14px] md:text-[16px]">Description</h4>
+              <p className="text-base mb-4 max-h-[250px] max-w-full overflow-y-auto border px-2 md:border-none">
+                {product.description.split('\n').map((line, idx) => (
+                  <React.Fragment key={idx}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </p>
             </span>
             {
               product.quantity > 0 ?

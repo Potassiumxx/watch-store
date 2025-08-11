@@ -147,7 +147,7 @@ export default function Navbar() {
         </div>
       </div>
       <div
-        className={`px-2 lg:component-x-axis-padding flex w-full py-5 items-center text-white duration-300 border-b-[1px] border-b-white/[.5] border-t-transparent ${isNavbarBackgroundVisible
+        className={`px-4 md:component-x-axis-padding flex w-full py-5 items-center text-white duration-300 border-b-[1px] border-b-white/[.5] border-t-transparent ${isNavbarBackgroundVisible
           ? "bg-black/[.5] backdrop-blur-md border-t-[1px] border-t-white/[.5]"
           : "bg-transparent backdrop-blur-md"
           }`}
