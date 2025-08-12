@@ -5,12 +5,14 @@ import { OrderResponseDTO } from "../../../types/orderType";
 import { useUserStore } from "../../../store/userStore";
 import { ROLES } from "../../../utils/constants";
 import { useAuthStore } from "../../../store/authStore";
+import { useSortedList } from "../../../hooks/useSortedList";
 
 export default function Order() {
   const [orders, setOrders] = React.useState<OrderResponseDTO[]>([]);
   const [expandedOrderId, setExpandedOrderId] = React.useState<number | null>(null);
   const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [sortOption, setSortOption] = React.useState<string>("az");
   const itemsPerPage = 5;
 
   const filteredOrders = orders.filter((order) => {
@@ -24,7 +26,12 @@ export default function Order() {
     );
   });
 
-  const paginatedOrders = filteredOrders.slice(
+  const sortedOrders = useSortedList<OrderResponseDTO>(filteredOrders, sortOption, {
+    newest: "createdAt",
+    oldest: "createdAt",
+  })
+
+  const paginatedOrders = sortedOrders.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -74,14 +81,30 @@ export default function Order() {
 
   return (
     <ProfileContentContainer title="View Orders">
-      <div className="flex flex-col gap-10 w-full min-h-dvh">
-        <input
-          type="text"
-          placeholder="Search orders..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="px-2 lg:px-4 py-2 border rounded w-full text-black"
-        />
+      <div className="flex flex-col gap-4 md:gap-10 w-full min-h-dvh">
+        <div className="flex flex-col-reverse md:flex-row gap-4 h-10 items-center mt-8 md:mt-0">
+          <div className="flex items-center justify-center md:justify-end gap-2">
+            <label htmlFor="sort" className="text-white font-semibold md:text-2xl">
+              Sort:
+            </label>
+            <select
+              id="sort"
+              className="bg-white text-black rounded-md px-1 md:px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+            >
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+            </select>
+          </div>
+          <input
+            type="text"
+            placeholder="Search orders..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="px-2 lg:px-4 py-2 border rounded w-full text-black"
+          />
+        </div>
         <div className="innerDivBackgroundColour border border-white/[.5] pb-4 rounded-md shadow-lg shadow-black min-h-[420px] flex flex-col justify-between w-full overflow-x-auto px-2">
           <table className="text-white min-w-full table-auto md:table-fixed text-sm md:text-base">
             <thead className="text-left text-[15px] text-bold bg-white/[.2] text-sm md:text-base">
