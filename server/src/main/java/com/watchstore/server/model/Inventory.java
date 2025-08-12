@@ -47,6 +47,10 @@ public class Inventory {
     return quantity;
   }
 
+  public LocalDate getDateAdded() {
+    return dateAdded;
+  }
+
   public void setQuantity(int quantity) {
     this.quantity = quantity;
   }

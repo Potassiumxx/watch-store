@@ -33,6 +33,7 @@ export default function Products() {
     quantity: 0,
     imagePath: "null",
     isActive: true,
+    dateAdded: ""
   });
 
   const role = useUserStore((state) => state.role);
@@ -58,9 +59,9 @@ export default function Products() {
       case "priceHighLow":
         return products.sort((a, b) => b.price - a.price);
       case "newest":
-        return products.sort((a, b) => b.id - a.id);
+        return products.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
       case "oldest":
-        return products.sort((a, b) => a.id - b.id);
+        return products.sort((a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime());
       default:
         return products;
     }

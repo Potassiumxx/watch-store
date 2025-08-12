@@ -47,6 +47,7 @@ export interface ProductDTO {
   quantity: number;
   imagePath: string;
   isActive: boolean;
+  dateAdded: string;
 }
 
 export interface CategoryDTO {

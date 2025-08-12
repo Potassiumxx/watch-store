@@ -1,5 +1,7 @@
 package com.watchstore.server.dto.product;
 
+import java.time.LocalDate;
+
 import com.watchstore.server.model.Inventory;
 import com.watchstore.server.model.Product;
 
@@ -12,6 +14,7 @@ public class ProductDTO {
   private String imagePath;
   private int quantity;
   private boolean isActive;
+  private LocalDate dateAdded;
 
   public ProductDTO(Product product, Inventory inventory) {
     this.id = product.getId();
@@ -22,6 +25,7 @@ public class ProductDTO {
     this.imagePath = product.getImage();
     this.isActive = product.isActive();
     this.quantity = inventory.getQuantity();
+    this.dateAdded = inventory.getDateAdded();
   }
 
   public Long getID() {
@@ -54,6 +58,10 @@ public class ProductDTO {
 
   public boolean getIsActive() {
     return this.isActive;
+  }
+
+  public LocalDate getDateAdded() {
+    return this.dateAdded;
   }
 
 }
