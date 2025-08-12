@@ -18,6 +18,7 @@ export default function Products() {
   const [showConfirmModal, setShowConfirmModal] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [error, setIsError] = React.useState<string | null>(null);
+  const [sortOption, setSortOption] = React.useState<string>("az");
   const [productToDelete, setProductToDelete] = React.useState({
     id: 0,
     name: ""
@@ -41,6 +42,29 @@ export default function Products() {
 
   const showUpdateProductForm = useUIStore((state) => state.showUpdateProductForm);
   const setShowUpdateProductForm = useUIStore((state) => state.setShowUpdateProductForm);
+
+  const filteredProducts = getFilteredProducts(searchedValue);
+
+  const sortedProducts = React.useMemo(() => {
+    let products = [...filteredProducts];
+
+    switch (sortOption) {
+      case "az":
+        return products.sort((a, b) => a.name.localeCompare(b.name));
+      case "za":
+        return products.sort((a, b) => b.name.localeCompare(a.name));
+      case "priceLowHigh":
+        return products.sort((a, b) => a.price - b.price);
+      case "priceHighLow":
+        return products.sort((a, b) => b.price - a.price);
+      case "newest":
+        return products.sort((a, b) => b.id - a.id);
+      case "oldest":
+        return products.sort((a, b) => a.id - b.id);
+      default:
+        return products;
+    }
+  }, [sortOption, filteredProducts]);
 
 
   function getFilteredProducts(searchedString: string) {
@@ -109,7 +133,7 @@ export default function Products() {
     };
   }, [showUpdateProductForm]);
 
-  if (products.length === 0 || getFilteredProducts(searchedValue).length === 0) return (
+  if (products.length === 0 || getFilteredProducts(searchedValue).length === 0 && !isLoading) return (
     <div className="w-full text-center mt-20">
       <h1 className="text-white text-4xl font-semibold">No products found</h1>
     </div>
@@ -117,12 +141,30 @@ export default function Products() {
 
   return (
     <FetchStatusDisplay isLoading={isLoading} error={error} isEmpty={!products} emptyMessage="No products available">
-      <div className="text-white">
+      <div className="text-white px-4 md:component-x-axis-padding">
         <h1 className="text-center text-3xl font-bold mb-6">Products</h1>
 
-        <div className="px-4 md:component-x-axis-padding grid md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
+        <div className="flex items-center justify-center md:justify-end gap-2 pb-8">
+          <label htmlFor="sort" className="text-white font-semibold md:text-2xl">
+            Sort:
+          </label>
+          <select
+            id="sort"
+            className="bg-white text-black rounded-md px-1 md:px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+          >
+            <option value="az">A-Z</option>
+            <option value="za">Z-A</option>
+            <option value="priceLowHigh">Price: Low-High</option>
+            <option value="priceHighLow">Price: High-Low</option>
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
           {
-            getFilteredProducts(searchedValue).map((product) => (
+            sortedProducts.map((product) => (
               <div
                 className="flex flex-col"
                 key={product.id}
