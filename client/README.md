@@ -31,6 +31,11 @@ to run all the available tests at once.
 
 More tests will be added in the future and the code will be refactored in the future. Contributions are welcome.
 
+## Algorithm
+
+This project implements a fuzzy search feature using the Levenshtein Distance algorithm. I learned the algorithm concept from [this helpful video](https://www.youtube.com/watch?v=Dd_NgYVOdLk) and implemented it based on my understanding.
+Since this is a learning implementation, the algorithm may not be fully optimized or perfect. Contributions and recommendations to improve it are very welcome!
+
 # Project structure and components
 
 Some components are straight forward and might not need explanation. But some components might need explanation about why they were created, where and how they are being used and when to use them in future.

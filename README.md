@@ -2,13 +2,6 @@
 
 Simple fullstack E-commerce website I built as a learning project. It still has a lot of features to add and improvements to be made.
 
-# Missing features (Things I stopped caring about)
-- Sorting and filtering products and orders
-- Proper payment gateway integration
-- Proper error handling everywhere
-- Full test coverage (None for backend)
-- Clean and refactored code
-
 # Tools used
 - Frontned: React, Tailwind CSS, Typescript
 - Backend: Spring Boot (Java)
