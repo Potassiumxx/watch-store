@@ -6,6 +6,7 @@ import { useUserStore } from "../../../store/userStore";
 import { ROLES } from "../../../utils/constants";
 import { useAuthStore } from "../../../store/authStore";
 import { useSortedList } from "../../../hooks/useSortedList";
+import getLevenshteinDistance from "../../../utils/algorithm";
 
 export default function Order() {
   const [orders, setOrders] = React.useState<OrderResponseDTO[]>([]);
@@ -15,16 +16,47 @@ export default function Order() {
   const [sortOption, setSortOption] = React.useState<string>("az");
   const itemsPerPage = 5;
 
-  const filteredOrders = orders.filter((order) => {
-    const query = searchQuery.toLowerCase();
-    return (
-      order.orderID.toString().includes(query) ||
-      order.userEmail?.toLowerCase().includes(query) ||
-      order.dropLocation?.toLowerCase().includes(query) ||
-      order.phoneNumber?.toLowerCase().includes(query) ||
-      order.orderItems.some(item => item.productName?.toLowerCase().includes(query))
-    );
-  });
+  function getFuzzyFilteredOrders(orders: OrderResponseDTO[], searchQuery: string) {
+    if (!searchQuery.trim()) return orders;
+
+    const normalizedSearch = searchQuery.toLowerCase().replace(/\s+/g, "");
+
+    return orders.filter((order) => {
+      const normalizedOrderID = order.orderID.toString().toLowerCase();
+      const normalizedUserEmail = order.userEmail?.toLowerCase() || "";
+      const normalizedDropLocation = order.dropLocation.toLowerCase();
+      const normalizedPhoneNumber = order.phoneNumber.toLowerCase();
+
+      // Check direct includes first
+      if (
+        normalizedOrderID.includes(normalizedSearch) ||
+        normalizedUserEmail.includes(normalizedSearch) ||
+        normalizedDropLocation.includes(normalizedSearch) ||
+        normalizedPhoneNumber.includes(normalizedSearch) ||
+        order.orderItems.some(item =>
+          item.productName?.toLowerCase().includes(normalizedSearch)
+        )
+      ) {
+        return true;
+      }
+
+      const fieldsToCheck = [
+        normalizedOrderID,
+        normalizedUserEmail,
+        normalizedDropLocation,
+        normalizedPhoneNumber,
+        ...order.orderItems.map(item => item.productName?.toLowerCase() || "")
+      ];
+
+      return fieldsToCheck.some(field => {
+        const distance = getLevenshteinDistance(normalizedSearch, field);
+        const threshold = Math.floor(field.length * 0.8);
+        return distance <= threshold;
+      });
+    });
+  }
+
+  const filteredOrders = React.useMemo(() => getFuzzyFilteredOrders(orders, searchQuery), [orders, searchQuery]);
 
   const sortedOrders = useSortedList<OrderResponseDTO>(filteredOrders, sortOption, {
     newest: "createdAt",
