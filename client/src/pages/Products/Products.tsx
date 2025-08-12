@@ -63,20 +63,45 @@ export default function Products() {
 
     return products.filter((product) => {
       const normalisedProductName = product.name.toLowerCase().replace(/\s+/g, "");
+      const normalisedCategory = product.category.toLowerCase().replace(/\s+/g, "");
 
-      if (normalisedProductName.includes(normalisedSearch)) return true;
+      if (normalisedProductName.includes(normalisedSearch) || normalisedCategory.includes(normalisedSearch)) return true;
 
-      const distance = getLevenshteinDistance(normalisedSearch, normalisedProductName);
-      const threshold = Math.floor(normalisedProductName.length * 0.9);
+      const nameDistance = getLevenshteinDistance(normalisedSearch, normalisedProductName);
+      const categoryDistance = getLevenshteinDistance(normalisedSearch, normalisedCategory);
 
-      return distance <= threshold;
+      const nameThresold = Math.floor(normalisedProductName.length * 0.9);
+      const categoryThresold = Math.floor(normalisedCategory.length * 0.8);
+
+      return nameDistance <= nameThresold || categoryDistance <= categoryThresold;
     }).sort((a, b) => {
-      const aIncludes = a.name.toLowerCase().includes(searchedString.toLowerCase()) ? 0 : 1;
-      const bIncludes = b.name.toLowerCase().includes(searchedString.toLowerCase()) ? 0 : 1;
+      const aIncludes = a.name.toLowerCase().includes(searchedString.toLowerCase()) ||
+        a.category.toLowerCase().includes(searchedString.toLowerCase())
+        ? 0 : 1;
+      const bIncludes = b.name.toLowerCase().includes(searchedString.toLowerCase()) ||
+        b.category.toLowerCase().includes(searchedString.toLowerCase())
+        ? 0 : 1;
       if (aIncludes !== bIncludes) return aIncludes - bIncludes;
 
-      const aDist = getLevenshteinDistance(normalisedSearch, a.name.toLowerCase().replace(/\s+/g, ''));
-      const bDist = getLevenshteinDistance(normalisedSearch, b.name.toLowerCase().replace(/\s+/g, ''));
+      const aDistName = getLevenshteinDistance(
+        normalisedSearch,
+        a.name.toLowerCase().replace(/\s+/g, "")
+      );
+      const aDistCategory = getLevenshteinDistance(
+        normalisedSearch,
+        a.category.toLowerCase().replace(/\s+/g, "")
+      );
+      const aDist = Math.min(aDistName, aDistCategory);
+
+      const bDistName = getLevenshteinDistance(
+        normalisedSearch,
+        b.name.toLowerCase().replace(/\s+/g, "")
+      );
+      const bDistCategory = getLevenshteinDistance(
+        normalisedSearch,
+        b.category.toLowerCase().replace(/\s+/g, "")
+      );
+      const bDist = Math.min(bDistName, bDistCategory);
 
       return aDist - bDist;
     })
