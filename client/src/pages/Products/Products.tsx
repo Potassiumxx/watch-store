@@ -12,6 +12,7 @@ import FetchStatusDisplay from "../../components/ui/FetchStatusDisplay/FetchStat
 import { useNavbarStore } from "../../store/navbarStore";
 import getLevenshteinDistance from "../../utils/algorithm";
 import { useUIStore } from "../../store/uiStore";
+import { useSortedList } from "../../hooks/useSortedList";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);
@@ -44,31 +45,18 @@ export default function Products() {
   const showUpdateProductForm = useUIStore((state) => state.showUpdateProductForm);
   const setShowUpdateProductForm = useUIStore((state) => state.setShowUpdateProductForm);
 
-  const filteredProducts = getFilteredProducts(searchedValue);
+  const filteredProducts = getSearchedProducts(searchedValue);
 
-  const sortedProducts = React.useMemo(() => {
-    let products = [...filteredProducts];
+  const sortedProducts = useSortedList<ProductDTO>(filteredProducts, sortOption, {
+    az: "name",
+    za: "name",
+    priceLowHigh: "price",
+    priceHighLow: "price",
+    newest: "dateAdded",
+    oldest: "dateAdded",
+  })
 
-    switch (sortOption) {
-      case "az":
-        return products.sort((a, b) => a.name.localeCompare(b.name));
-      case "za":
-        return products.sort((a, b) => b.name.localeCompare(a.name));
-      case "priceLowHigh":
-        return products.sort((a, b) => a.price - b.price);
-      case "priceHighLow":
-        return products.sort((a, b) => b.price - a.price);
-      case "newest":
-        return products.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
-      case "oldest":
-        return products.sort((a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime());
-      default:
-        return products;
-    }
-  }, [sortOption, filteredProducts]);
-
-
-  function getFilteredProducts(searchedString: string) {
+  function getSearchedProducts(searchedString: string) {
     if (!searchedString.trim()) return products;
 
     const normalisedSearch = searchedString.toLowerCase().replace(/\s+/g, "");
@@ -134,7 +122,7 @@ export default function Products() {
     };
   }, [showUpdateProductForm]);
 
-  if (products.length === 0 || getFilteredProducts(searchedValue).length === 0 && !isLoading) return (
+  if (products.length === 0 || getSearchedProducts(searchedValue).length === 0 && !isLoading) return (
     <div className="w-full text-center mt-20">
       <h1 className="text-white text-4xl font-semibold">No products found</h1>
     </div>
