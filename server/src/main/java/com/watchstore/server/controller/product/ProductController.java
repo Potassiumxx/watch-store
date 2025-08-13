@@ -1,11 +1,12 @@
-package com.watchstore.server.controller;
+package com.watchstore.server.controller.product;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.watchstore.server.service.ProductService;
@@ -21,12 +22,14 @@ public class ProductController {
   }
 
   @GetMapping
-  public ResponseEntity<List<ProductDTO>> getAllProducts() {
-    return ResponseEntity.ok(productService.getAllActiveProducts());
+  @ResponseStatus(HttpStatus.OK)
+  public List<ProductDTO> getAllProducts() {
+    return productService.getAllActiveProducts();
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-    return ResponseEntity.ok(productService.getProductById(id));
+  @ResponseStatus(HttpStatus.OK)
+  public ProductDTO getProductById(@PathVariable Long id) {
+    return productService.getProductById(id);
   }
 }
