@@ -30,7 +30,7 @@ public class CategoryService {
     categoryRepository.save(category);
   }
 
-  public void updateCategory(long id, CategoryRequest categoryRequest) {
+  public void updateCategory(Long id, CategoryRequest categoryRequest) {
     if (categoryRepository.findByCategoryName(categoryRequest.getCategoryName().toLowerCase()).isPresent()) {
       throw new BadRequestException(categoryRequest.getCategoryName() + " already exists!");
     }
@@ -43,15 +43,7 @@ public class CategoryService {
     categoryRepository.save(category);
   }
 
-  public List<CategoryDTO> getAllCategories() {
-    List<Category> categories = categoryRepository.findAll();
-    return categories.stream()
-        .map(category -> new CategoryDTO(category.getId(), category.getCategoryName(),
-            productRepository.countByCategoryId(category.getId())))
-        .toList();
-  }
-
-  public void deleteCategory(long id) {
+  public void deleteCategory(Long id) {
     categoryRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Category not found! Nothing to delete."));
 
@@ -61,5 +53,13 @@ public class CategoryService {
           "Cannot delete category. It is currently in use by " + productCount + "product(s).");
     }
     categoryRepository.deleteById(id);
+  }
+
+  public List<CategoryDTO> getAllCategories() {
+    List<Category> categories = categoryRepository.findAll();
+    return categories.stream()
+        .map(category -> new CategoryDTO(category.getId(), category.getCategoryName(),
+            productRepository.countByCategoryId(category.getId())))
+        .toList();
   }
 }
