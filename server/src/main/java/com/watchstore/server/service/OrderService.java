@@ -3,7 +3,7 @@ package com.watchstore.server.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.watchstore.server.controller.UserOrderResponseDTO;
+import com.watchstore.server.dto.order.UserOrderResponseDTO;
 import com.watchstore.server.dto.order.OrderItemDTO;
 import com.watchstore.server.dto.order.OrderRequestDTO;
 import com.watchstore.server.dto.order.OrderResponseDTO;

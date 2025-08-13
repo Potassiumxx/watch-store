@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.watchstore.server.service.OrderService;
+import com.watchstore.server.dto.order.UserOrderResponseDTO;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -20,7 +21,7 @@ public class OrderController {
   }
 
   @GetMapping("/user/{id}")
-  public ResponseEntity<List<UserOrderResponseDTO>> getOrderByUserId(@PathVariable("id") long userID) {
+  public ResponseEntity<List<UserOrderResponseDTO>> getOrderByUserId(@PathVariable("id") Long userID) {
     return ResponseEntity.ok(orderService.getOrderByUserId(userID));
   }
 }

@@ -1,10 +1,9 @@
-package com.watchstore.server.controller;
+package com.watchstore.server.dto.order;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.watchstore.server.dto.order.OrderItemDTO;
 import com.watchstore.server.model.Order;
 
 public class UserOrderResponseDTO {
