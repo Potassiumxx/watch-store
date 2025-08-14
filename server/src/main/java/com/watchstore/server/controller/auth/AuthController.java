@@ -1,7 +1,11 @@
 package com.watchstore.server.controller.auth;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +19,11 @@ import com.watchstore.server.dto.auth.UserDTO;
 import com.watchstore.server.dto.auth.VerifySecurityCodeRequest;
 import com.watchstore.server.service.AuthService;
 import com.watchstore.server.util.AuthResponseUtil;
+import com.watchstore.server.util.JWTUtil;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -26,15 +35,15 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
+  public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
     UserDTO userDTO = authService.login(loginRequest);
-    return ResponseEntity.ok(AuthResponseUtil.buildAuthResponse((userDTO)));
+    return ResponseEntity.ok(AuthResponseUtil.buildAuthResponse(userDTO, response));
   }
 
   @PostMapping("/register")
-  public ResponseEntity<Object> register(@RequestBody RegisterRequest registerRequest) {
+  public ResponseEntity<Object> register(@RequestBody RegisterRequest registerRequest, HttpServletResponse response) {
     UserDTO userDTO = authService.register(registerRequest);
-    return new ResponseEntity<>(AuthResponseUtil.buildAuthResponse(userDTO), HttpStatus.CREATED);
+    return new ResponseEntity<>(AuthResponseUtil.buildAuthResponse(userDTO, response), HttpStatus.CREATED);
   }
 
   @PostMapping("/verify/security-code")
@@ -44,8 +53,24 @@ public class AuthController {
   }
 
   @PutMapping("/reset-password")
-  public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordRequest request) {
+  public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordRequest request, HttpServletResponse response) {
     UserDTO userDTO = authService.resetPassword(request);
-    return ResponseEntity.ok(AuthResponseUtil.buildAuthResponse(userDTO));
+    return ResponseEntity.ok(AuthResponseUtil.buildAuthResponse(userDTO, response));
+  }
+
+  @GetMapping("/verify/cookie-token")
+  public ResponseEntity<Object> verifyCookieToken(HttpServletRequest request) {
+    String token = Arrays.stream(Optional.ofNullable(request.getCookies()).orElse(new Cookie[0]))
+        .filter(c -> "jwt".equals(c.getName()))
+        .findFirst()
+        .map(Cookie::getValue)
+        .orElse(null);
+
+    if (token != null && JWTUtil.isTokenValid(token)) {
+      UserDTO user = JWTUtil.getUserFromToken(token);
+      return ResponseEntity.ok(user);
+    }
+
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
   }
 }
