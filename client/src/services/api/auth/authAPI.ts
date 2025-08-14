@@ -81,7 +81,7 @@ export async function verifySecurityCode(credentials: ResetPasswordCredentials):
 
 export async function resetPasswordAPI(credentials: loginCredentials): Promise<UserDTOResponse> {
   try {
-    const response = await axios.post(`${BACKEND_API_URL}/auth/reset-password`, credentials, { withCredentials: true });
+    const response = await axios.put(`${BACKEND_API_URL}/auth/reset-password`, credentials, { withCredentials: true });
     console.log(response);
     return response.data;
   } catch (error) {
