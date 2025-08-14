@@ -36,6 +36,8 @@ interface AuthStore {
 
   clearLoginErrors: () => void;
   clearRegisterErrors: () => void;
+
+  clearAllValues: () => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -81,6 +83,20 @@ export const useAuthStore = create<AuthStore>()(
 
       clearLoginErrors: () => set({ loginErrorFields: {} }),
       clearRegisterErrors: () => set({ registerErrorFields: {} }),
+
+      clearAllValues: () =>
+        set({
+          loginEmail: "",
+          loginPassword: "",
+
+          registerEmail: "",
+          registerPassword: "",
+          registerUsername: "",
+          securityCode: "",
+
+          loginErrorFields: {},
+          registerErrorFields: {},
+        }),
     }),
     {
       name: "user",

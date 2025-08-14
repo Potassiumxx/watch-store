@@ -8,6 +8,8 @@ import { useCartStore } from "../../../store/cartStore";
 import { updateUsername } from "../../../services/api/user/userAPI";
 import axios from "axios";
 import useForm from "../../../hooks/useForm";
+import { logoutAPI } from "../../../services/api/auth/authAPI";
+import { ErrorMessage } from "../../../components/ui/Error/ErrorMessage";
 
 export default function UserAccount() {
   const globalUsername = useUserStore((state) => state.globalUsername);
@@ -17,12 +19,14 @@ export default function UserAccount() {
   const isJWTChecked = useAuthStore((state) => state.isJWTChecked);
   const userSignedOut = useAuthStore((state) => state.userSignedOut);
   const setIsJWTChecked = useAuthStore((state) => state.setIsJWTChecked);
+  const clearAllValues = useAuthStore((state) => state.clearAllValues);
 
   const clearCart = useCartStore((state) => state.clearCart);
 
   const [isEmailRevealed, setIsEmailRevealed] = React.useState<boolean>(false);
   const [editedUsernameValue, setEditedUsernameValue] = React.useState<string | null>(null);
   const [updateNameError, setUpdateNameError] = React.useState<string | null>(null);
+  const [logoutError, setLogoutError] = React.useState<string | null | unknown>(null);
 
   const navigate = useNavigate();
 
@@ -32,11 +36,18 @@ export default function UserAccount() {
 
   const { handleSuccessfulResponse } = useForm(initialDirtyFieldState);
 
-  function handleLogOut(): void {
-    setIsJWTChecked(false);
-    userSignedOut();
-    clearCart();
-    navigate("/");
+  async function handleLogOut() {
+    try {
+      await logoutAPI();
+      setIsJWTChecked(false);
+      userSignedOut();
+      clearCart();
+      navigate("/");
+      clearAllValues();
+    } catch (error) {
+      console.log(error);
+      setLogoutError(error);
+    }
   }
 
   function modifiedEmail(email: string): string {
@@ -152,6 +163,7 @@ export default function UserAccount() {
                 </div>
               </div>
               <div className="flex justify-end border-t-2 border-t-white/20 mt-10 md:mt-20">
+                {logoutError ? <ErrorMessage message="Could not log out. Try again later" className="text-center" /> : null}
                 <Button
                   textValue="Log Out"
                   onClick={handleLogOut}

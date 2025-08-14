@@ -111,4 +111,18 @@ export async function validateToken(): Promise<UserDTOResponse> {
   }
 }
 
-export async function logoutAPI() {}
+export async function logoutAPI(): Promise<string> {
+  try {
+    const response = await axios.post(`${BACKEND_API_URL}/auth/logout`, {}, { withCredentials: true });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data);
+      throw error;
+    } else {
+      console.error("Unexpected error:", error);
+      throw error;
+    }
+  }
+}

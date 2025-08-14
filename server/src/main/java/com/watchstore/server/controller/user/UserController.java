@@ -12,6 +12,8 @@ import com.watchstore.server.dto.auth.UserDTO;
 import com.watchstore.server.service.UserService;
 import com.watchstore.server.util.AuthResponseUtil;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -23,8 +25,8 @@ public class UserController {
 
   @PutMapping("/update-username")
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<Object> updateUsername(UpdateUsernameRequest request) {
+  public ResponseEntity<Object> updateUsername(UpdateUsernameRequest request, HttpServletResponse response) {
     UserDTO userDTO = userService.updateUsername(request);
-    return ResponseEntity.ok(AuthResponseUtil.buildAuthResponse(userDTO));
+    return ResponseEntity.ok(AuthResponseUtil.buildAuthResponse(userDTO, response));
   }
 }

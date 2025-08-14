@@ -1,8 +1,5 @@
 package com.watchstore.server.controller.auth;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +16,7 @@ import com.watchstore.server.dto.auth.UserDTO;
 import com.watchstore.server.dto.auth.VerifySecurityCodeRequest;
 import com.watchstore.server.service.AuthService;
 import com.watchstore.server.util.AuthResponseUtil;
-import com.watchstore.server.util.JWTUtil;
+import com.watchstore.server.util.CookieUtil;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -59,18 +56,16 @@ public class AuthController {
   }
 
   @GetMapping("/verify/cookie-token")
-  public ResponseEntity<Object> verifyCookieToken(HttpServletRequest request) {
-    String token = Arrays.stream(Optional.ofNullable(request.getCookies()).orElse(new Cookie[0]))
-        .filter(c -> "jwt".equals(c.getName()))
-        .findFirst()
-        .map(Cookie::getValue)
-        .orElse(null);
+  public ResponseEntity<UserDTO> verifyCookieToken(HttpServletRequest request) {
+    return CookieUtil.getUserFromRequest(request)
+        .map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+  }
 
-    if (token != null && JWTUtil.isTokenValid(token)) {
-      UserDTO user = JWTUtil.getUserFromToken(token);
-      return ResponseEntity.ok(user);
-    }
-
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+  @PostMapping("/logout")
+  public ResponseEntity<Object> logout(HttpServletResponse response) {
+    Cookie cookie = CookieUtil.deleteCookie();
+    response.addCookie(cookie);
+    return new ResponseEntity<>("Logged out", HttpStatus.OK);
   }
 }
