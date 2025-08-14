@@ -20,7 +20,7 @@ public class AdminOrderController {
     this.orderService = orderService;
   }
 
-  @GetMapping("/")
+  @GetMapping
   @ResponseStatus(HttpStatus.OK)
   public List<AdminOrderResponseDTO> getAllOrders() {
     return orderService.getAllOrders();
