@@ -53,6 +53,11 @@ interface StoreSettersType {
   setProductImage: (f: File | null) => void;
 }
 
+/**
+ * Custom hook that handles product form's submissions and its field's onChange handling. This hook was specifically created to handle the product's file handling. It does not handle dirty field states. Use `useForm` hook with this hook to handle dirty field states.
+ *
+ * @param storeSetters Setter functions (or methods) from `productStore.ts`
+ */
 export default function useProductForm(storeSetters: StoreSettersType) {
   const setProductFileName = useProductStore((state) => state.setProductFileName);
   //  const setProductImage = useProductStore((state) => state.setProductImage);
