@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./components/ui/Footer/Footer";
 import Navbar from "./components/ui/Navbar/Navbar";
 import { useUIStore } from "./store/uiStore";
@@ -8,6 +8,16 @@ import { useAuthStore } from "./store/authStore";
 import { useUserStore } from "./store/userStore";
 import { jwtDecode } from "jwt-decode";
 import { DecodedJWT } from "./types/authType";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  React.useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function App() {
   const navbarHeight = useUIStore((state) => state.navbarHeight);
@@ -38,6 +48,7 @@ function App() {
     <>
       <Navbar />
       <div className="min-h-dvh outerDivBackgroundColour" style={{ paddingTop: `${navbarHeight ?? 121}px` }}>
+        <ScrollToTop />
         <Outlet />
       </div>
       <Footer />
