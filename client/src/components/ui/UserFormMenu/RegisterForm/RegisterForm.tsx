@@ -4,7 +4,7 @@ import { registerUser } from "../../../../services/api/auth/authAPI";
 import Input from "../../Input/Input";
 import { validateRegisterForm } from "../../../../utils/validateAuthForm";
 import { ErrorMessage } from "../../Error/ErrorMessage";
-import { RegisterFields, LoginAndRegisterResponse } from "../../../../types/authType";
+import { RegisterFields, UserDTOResponse } from "../../../../types/authType";
 import { DirtyFieldState } from "../../../../types/form";
 import useForm from "../../../../hooks/useForm";
 import Form from "../../Form/Form";
@@ -81,7 +81,7 @@ export default function RegisterForm() {
 
     if (isValidationError<RegisterFields>(validationError, setRegisterError)) return;
 
-    const response = await handleFormSubmit<RegisterFields, LoginAndRegisterResponse>({
+    const response = await handleFormSubmit<RegisterFields, UserDTOResponse>({
       apiCall: () => registerUser({ registerEmail, registerPassword, registerUsername, securityCode }),
       setError: setRegisterError,
     });

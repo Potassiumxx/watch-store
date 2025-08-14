@@ -3,7 +3,7 @@ import useDirtyField from "./useDirtyField";
 import { ACTION_TYPES, GENERAL_ERROR_KEY } from "../utils/constants";
 import { applyFieldErrors, errorHandler } from "../utils/errorHandler";
 import { APIErrorReturnType, HandleFieldOnChangeParamter } from "../types/form";
-import { LoginAndRegisterResponse } from "../types/authType";
+import { UserDTOResponse } from "../types/authType";
 import { useAuthStore } from "../store/authStore";
 import { useUIStore } from "../store/uiStore";
 
@@ -146,7 +146,7 @@ export default function useForm<T extends { [key: string]: boolean }>(initialSta
    * Handles the logic after successful response from the backend after login or register is successful.
    * @param response Response sent from the backend. May include object with keys and values or undefined.
    */
-  async function handleSuccessfulResponse(response: LoginAndRegisterResponse): Promise<void> {
+  async function handleSuccessfulResponse(response: UserDTOResponse): Promise<void> {
     if (response) {
       userSignedIn();
       setShowUserMenu(false);

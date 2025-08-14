@@ -18,10 +18,6 @@ export interface DecodedJWT {
   role: string;
 }
 
-export interface LoginAndRegisterResponse {
-  token: string;
-}
-
 export interface UserDTOResponse {
   id: string;
   email: string;

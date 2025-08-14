@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LoginAndRegisterResponse, UserDTOResponse } from "../../../types/authType";
+import { UserDTOResponse } from "../../../types/authType";
 import { BACKEND_API_URL } from "../../../utils/constants";
 
 interface loginCredentials {
@@ -24,7 +24,7 @@ interface ResetPasswordCredentials {
  *
  * @param credentials Login data, e.g., email and password values/data
  */
-export async function loginUser(credentials: loginCredentials): Promise<LoginAndRegisterResponse> {
+export async function loginUser(credentials: loginCredentials): Promise<UserDTOResponse> {
   try {
     const response = await axios.post(`${BACKEND_API_URL}/auth/login`, credentials, { withCredentials: true });
     return response.data;
@@ -44,7 +44,7 @@ export async function loginUser(credentials: loginCredentials): Promise<LoginAnd
  *
  * @param credentials Registration data, e.g., email, password and username
  */
-export async function registerUser(credentials: registerCredentials): Promise<LoginAndRegisterResponse> {
+export async function registerUser(credentials: registerCredentials): Promise<UserDTOResponse> {
   console.log(credentials);
   try {
     const response = await axios.post(`${BACKEND_API_URL}/auth/register`, credentials, { withCredentials: true });
@@ -79,7 +79,7 @@ export async function verifySecurityCode(credentials: ResetPasswordCredentials):
   }
 }
 
-export async function resetPasswordAPI(credentials: loginCredentials): Promise<LoginAndRegisterResponse> {
+export async function resetPasswordAPI(credentials: loginCredentials): Promise<UserDTOResponse> {
   try {
     const response = await axios.post(`${BACKEND_API_URL}/auth/reset-password`, credentials, { withCredentials: true });
     console.log(response);
@@ -110,3 +110,5 @@ export async function validateToken(): Promise<UserDTOResponse> {
     }
   }
 }
+
+export async function logoutAPI() {}

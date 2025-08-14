@@ -4,7 +4,7 @@ import { loginUser, resetPasswordAPI, verifySecurityCode } from "../../../../ser
 import Input from "../../Input/Input";
 import { validateLoginForm } from "../../../../utils/validateAuthForm";
 import { ErrorMessage } from "../../Error/ErrorMessage";
-import { LoginFields, LoginAndRegisterResponse } from "../../../../types/authType";
+import { LoginFields, UserDTOResponse } from "../../../../types/authType";
 import { DirtyFieldState } from "../../../../types/form";
 import useForm from "../../../../hooks/useForm";
 import Form from "../../Form/Form";
@@ -81,7 +81,7 @@ export default function LoginForm({ hasForgotPassword, setHasForgotPassword }: L
 
     if (isValidationError<LoginFields>(validationError, setLoginError)) return;
 
-    let loginResponse: LoginAndRegisterResponse | undefined;
+    let loginResponse: UserDTOResponse | undefined;
     let verifySecurityCodeResponse: string | undefined;
 
     if (hasForgotPassword) {
@@ -90,12 +90,12 @@ export default function LoginForm({ hasForgotPassword, setHasForgotPassword }: L
         setError: setLoginError,
       });
     } else if (isResetPasswordState) {
-      loginResponse = await handleFormSubmit<LoginFields, LoginAndRegisterResponse>({
+      loginResponse = await handleFormSubmit<LoginFields, UserDTOResponse>({
         apiCall: () => resetPasswordAPI({ loginEmail, loginPassword }),
         setError: setLoginError,
       });
     } else {
-      loginResponse = await handleFormSubmit<LoginFields, LoginAndRegisterResponse>({
+      loginResponse = await handleFormSubmit<LoginFields, UserDTOResponse>({
         apiCall: () => loginUser({ loginEmail, loginPassword }),
         setError: setLoginError,
       });
