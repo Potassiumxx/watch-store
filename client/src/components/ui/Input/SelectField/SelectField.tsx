@@ -1,7 +1,7 @@
 import * as React from "react";
 import { BaseFormFieldProps } from "../../../../types/form";
 import Loader from "../../Loader/Loader";
-import { getAllProductCategories } from "../../../../services/api/productAPI";
+import { getAllProductCategories } from "../../../../services/api/category/categoryAPI";
 import { CategoryDTO } from "../../../../types/productType";
 import { Link } from "react-router-dom";
 

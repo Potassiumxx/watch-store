@@ -5,7 +5,7 @@ import { useProductStore } from "../../../store/productStore";
 import * as React from "react";
 import Input from "../../../components/ui/Input/Input";
 import Button from "../../../components/ui/Button/Button";
-import { addNewCategory, deleteCategory, getAllProductCategories, updateCategory } from "../../../services/api/productAPI";
+import { addNewCategory, deleteCategory, getAllProductCategories, updateCategory } from "../../../services/api/category/categoryAPI";
 import axios from "axios";
 import { CategoryDTO } from "../../../types/productType";
 import Loader from "../../../components/ui/Loader/Loader";
@@ -45,6 +45,7 @@ export default function AdminProductCategory() {
       await addNewCategory(newProductCategory);
       setMessage("Product category added.");
       setHasCategoryUpdated(true);
+      setError("");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const backendMessage = error.response?.data;

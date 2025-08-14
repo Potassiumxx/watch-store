@@ -1,6 +1,6 @@
 import axios from "axios";
-import { LoginAndRegisterResponse } from "../../types/authType";
-import { BACKEND_API_URL } from "../../utils/constants";
+import { LoginAndRegisterResponse } from "../../../types/authType";
+import { BACKEND_API_URL } from "../../../utils/constants";
 
 interface loginCredentials {
   loginEmail: string;
@@ -17,11 +17,6 @@ interface registerCredentials {
 interface ResetPasswordCredentials {
   loginEmail: string;
   securityCode: string;
-}
-
-interface UpdateUsernameCredentials {
-  updatedUsername: string;
-  userEmail: string;
 }
 
 /**
@@ -68,7 +63,7 @@ export async function registerUser(credentials: registerCredentials): Promise<Lo
   }
 }
 
-export async function verifySecurityCode(credentials: ResetPasswordCredentials) {
+export async function verifySecurityCode(credentials: ResetPasswordCredentials): Promise<string> {
   try {
     const response = await axios.post(`${BACKEND_API_URL}/auth/verify/security-code`, credentials);
     console.log(response);
@@ -84,25 +79,9 @@ export async function verifySecurityCode(credentials: ResetPasswordCredentials) 
   }
 }
 
-export async function resetPasswordAPI(credentials: loginCredentials) {
+export async function resetPasswordAPI(credentials: loginCredentials): Promise<LoginAndRegisterResponse> {
   try {
     const response = await axios.post(`${BACKEND_API_URL}/auth/reset-password`, credentials);
-    console.log(response);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error("Axios error:", error.response?.data);
-      throw error;
-    } else {
-      console.error("Unexpected error:", error);
-      throw error;
-    }
-  }
-}
-
-export async function updateUsername(credentials: UpdateUsernameCredentials) {
-  try {
-    const response = await axios.put(`${BACKEND_API_URL}/auth/update-username`, credentials);
     console.log(response);
     return response.data;
   } catch (error) {
