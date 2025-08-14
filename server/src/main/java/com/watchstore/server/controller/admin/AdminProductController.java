@@ -40,6 +40,7 @@ public class AdminProductController {
   @DeleteMapping("/delete-product/{id}")
   @ResponseStatus(HttpStatus.OK)
   public String deleteProduct(@PathVariable("id") Long productID) {
+    productService.deleteProduct(productID);
     return "product deleted";
   }
 }
