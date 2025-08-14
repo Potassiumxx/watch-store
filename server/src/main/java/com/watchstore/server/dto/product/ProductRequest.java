@@ -10,6 +10,23 @@ public class ProductRequest {
   private int productQuantity;
   private MultipartFile productImage;
 
+  public ProductRequest() {
+  }
+
+  public ProductRequest(String productName,
+      double productPrice,
+      String productCategory,
+      String productDescription,
+      int productQuantity,
+      MultipartFile productImage) {
+    this.productName = productName;
+    this.productPrice = productPrice;
+    this.productCategory = productCategory;
+    this.productDescription = productDescription;
+    this.productQuantity = productQuantity;
+    this.productImage = productImage;
+  }
+
   public String getProductName() {
     return productName;
   }

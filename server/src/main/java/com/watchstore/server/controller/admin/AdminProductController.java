@@ -24,7 +24,7 @@ public class AdminProductController {
 
   @PostMapping("/add-product")
   @ResponseStatus(HttpStatus.CREATED)
-  public String addProduct(ProductRequest request) {
+  public String addProduct(@ModelAttribute ProductRequest request) {
     productService.createProductWithInventory(request);
     return "Product created";
   }
