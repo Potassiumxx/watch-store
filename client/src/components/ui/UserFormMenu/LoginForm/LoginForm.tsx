@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useAuthStore } from "../../../../store/authStore";
-import { loginUser, resetPasswordAPI, verifySecurityCode } from "../../../../services/api/authAPI";
+import { loginUser, resetPasswordAPI, verifySecurityCode } from "../../../../services/api/auth/authAPI";
 import Input from "../../Input/Input";
 import { validateLoginForm } from "../../../../utils/validateAuthForm";
 import { ErrorMessage } from "../../Error/ErrorMessage";
@@ -81,28 +81,29 @@ export default function LoginForm({ hasForgotPassword, setHasForgotPassword }: L
 
     if (isValidationError<LoginFields>(validationError, setLoginError)) return;
 
-    let response;
+    let loginResponse: LoginAndRegisterResponse | undefined;
+    let verifySecurityCodeResponse: string | undefined;
 
     if (hasForgotPassword) {
-      response = await handleFormSubmit<LoginFields, LoginAndRegisterResponse>({
+      verifySecurityCodeResponse = await handleFormSubmit<LoginFields, string>({
         apiCall: () => verifySecurityCode({ loginEmail, securityCode }),
         setError: setLoginError,
       });
     } else if (isResetPasswordState) {
-      response = await handleFormSubmit<LoginFields, LoginAndRegisterResponse>({
+      loginResponse = await handleFormSubmit<LoginFields, LoginAndRegisterResponse>({
         apiCall: () => resetPasswordAPI({ loginEmail, loginPassword }),
         setError: setLoginError,
       });
     } else {
-      response = await handleFormSubmit<LoginFields, LoginAndRegisterResponse>({
+      loginResponse = await handleFormSubmit<LoginFields, LoginAndRegisterResponse>({
         apiCall: () => loginUser({ loginEmail, loginPassword }),
         setError: setLoginError,
       });
     }
 
-    if (response && !hasForgotPassword) {
-      await handleSuccessfulResponse(response);
-    } else if (response && hasForgotPassword) {
+    if (loginResponse) {
+      await handleSuccessfulResponse(loginResponse);
+    } else if (verifySecurityCodeResponse) {
       setIsResetPasswordState(true);
       setHasForgotPassword(false);
       setSecurityCode("");
