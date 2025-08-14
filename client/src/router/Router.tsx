@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../App";
 import Home from "../pages/Home/Home";
-import ErrorPage from "../pages/ErrorPage";
+import ErrorPage from "../pages/Error/ErrorPage";
 import UserProfile from "../pages/Profile/UserProfile";
 import AdminProductPage from "../pages/Profile/admin/AdminProductPage";
 import AdminProductCategory from "../pages/Profile/admin/AdminProductCategory";
