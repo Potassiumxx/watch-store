@@ -3,7 +3,7 @@ package com.watchstore.server.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.watchstore.server.dto.order.UserOrderResponseDTO;
+import com.watchstore.server.dto.order.AdminOrderResponseDTO;
 import com.watchstore.server.dto.order.OrderItemDTO;
 import com.watchstore.server.dto.order.OrderRequestDTO;
 import com.watchstore.server.dto.order.OrderResponseDTO;
@@ -40,13 +40,13 @@ public class OrderService {
     this.inventoryRepository = inventoryRepository;
   }
 
-  public List<OrderResponseDTO> getAllOrders() {
+  public List<AdminOrderResponseDTO> getAllOrders() {
     List<Order> orders = orderRepository.findAll();
-    return orders.stream().map(OrderResponseDTO::new).collect(Collectors.toList());
+    return orders.stream().map(AdminOrderResponseDTO::new).collect(Collectors.toList());
   }
 
-  public List<UserOrderResponseDTO> getOrderByUserId(Long userID) {
-    return orderRepository.findByUserId(userID).stream().map(UserOrderResponseDTO::new).collect(Collectors.toList());
+  public List<OrderResponseDTO> getOrderByUserId(Long userID) {
+    return orderRepository.findByUserId(userID).stream().map(OrderResponseDTO::new).collect(Collectors.toList());
   }
 
   @Transactional

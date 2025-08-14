@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.watchstore.server.service.OrderService;
-import com.watchstore.server.dto.order.UserOrderResponseDTO;
+import com.watchstore.server.dto.order.OrderResponseDTO;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -23,7 +23,7 @@ public class OrderController {
 
   @GetMapping("/user/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public List<UserOrderResponseDTO> getOrderByUserId(@PathVariable("id") Long userID) {
+  public List<OrderResponseDTO> getOrderByUserId(@PathVariable("id") Long userID) {
     return orderService.getOrderByUserId(userID);
   }
 }

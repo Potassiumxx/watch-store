@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.watchstore.server.dto.order.OrderResponseDTO;
+import com.watchstore.server.dto.order.AdminOrderResponseDTO;
 import com.watchstore.server.service.OrderService;
 
 @RestController
@@ -22,7 +22,7 @@ public class AdminOrderController {
 
   @GetMapping("/")
   @ResponseStatus(HttpStatus.OK)
-  public List<OrderResponseDTO> getAllOrders() {
+  public List<AdminOrderResponseDTO> getAllOrders() {
     return orderService.getAllOrders();
   }
 }
