@@ -1,4 +1,4 @@
-package com.watchstore.server.controller.product;
+package com.watchstore.server.controller.category;
 
 import java.util.List;
 
