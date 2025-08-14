@@ -17,8 +17,7 @@ interface UpdateProductFormProps {
 
 export default function UpdateProductForm({ selectedProduct, fetchProductFunc }: UpdateProductFormProps) {
   const { dirtyField, handleFieldOnChange, generalError, setGeneralError, isValidationError, handleFormSubmit } = useForm(initialProductDirtyFieldState);
-  const productStore = useProductStore();
-  const { handleFileUpload, validateProductFormFields, handleProductFieldOnChange } = useProductForm(productStore);
+  const { handleFileUpload, validateProductFormFields, handleProductFieldOnChange } = useProductForm(useProductStore.getState());
 
   const {
     productID,
@@ -28,17 +27,16 @@ export default function UpdateProductForm({ selectedProduct, fetchProductFunc }:
     productDescription,
     productQuantity,
     productImage,
+    productFileName,
     productStringErrorFields,
     productFileErrorFields,
     setProductStringFormError,
     setProductFileFormError,
+    setProductFileName,
     clearProductStringFormError,
     clearProductFileFormError,
     clearProductFormFieldsValues
   } = useProductStore();
-
-  const setProductFileName = useProductStore((state) => state.setProductFileName);
-  const fileName = useProductStore((state) => state.productFileName);
 
   const [isFormVisible, setIsFormVisible] = React.useState<boolean>(false);
 
@@ -70,7 +68,7 @@ export default function UpdateProductForm({ selectedProduct, fetchProductFunc }:
       },
       fileProperties: {
         file: productImage,
-        fileName
+        fileName: productFileName,
       },
       setStringError: setProductStringFormError,
       setFileError: setProductFileFormError,
