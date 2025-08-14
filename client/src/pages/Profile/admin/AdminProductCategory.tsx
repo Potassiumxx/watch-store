@@ -15,8 +15,8 @@ import ConfirmModal from "../../../components/ui/ConfirmModal/ConfirmModal";
 import { getAllProductCategories } from "../../../services/api/category/categoryAPI";
 
 export default function AdminProductCategory() {
-  const newProductCategory = useProductStore((state) => state.newProductCategory);
-  const setNewProductCategory = useProductStore((state) => state.setNewProductCategory);
+  const newCategory = useProductStore((state) => state.newCategory);
+  const setNewCategory = useProductStore((state) => state.setNewCategory);
 
   const [error, setError] = React.useState<string | undefined>("");
   const [fetchCategoriesError, setFetchCategoriesError] = React.useState<string | null>(null);
@@ -38,12 +38,12 @@ export default function AdminProductCategory() {
 
   async function handleCategorySubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (newProductCategory === "") return setError("Product category cannot be empty");
+    if (newCategory === "") return setError("Product category cannot be empty");
 
     if (message) setMessage(null);
 
     try {
-      await addNewCategory(newProductCategory);
+      await addNewCategory(newCategory);
       setMessage("Product category added.");
       setHasCategoryUpdated(true);
       setError("");
@@ -127,7 +127,7 @@ export default function AdminProductCategory() {
     if (error && value !== "") setError("");
     if (value === "") setError("Product Category cannot be empty");
 
-    setNewProductCategory(value);
+    setNewCategory(value);
   }
 
   React.useEffect(() => {
@@ -153,7 +153,7 @@ export default function AdminProductCategory() {
                 id="add-product-category"
                 name="newProductCategory"
                 placeholder="Digital Watch"
-                value={newProductCategory}
+                value={newCategory}
                 onChange={handleOnChange}
                 error={error}
               />

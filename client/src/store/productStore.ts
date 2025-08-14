@@ -4,11 +4,11 @@ import {
   ProductFormFileField,
   ProductStringFormValidationReturnType,
   ProductFileFormValidationReturnType,
-  ProductCategoryFormFields,
+  CategoryFormFields,
   ProductFormFields,
 } from "../types/productType";
 
-interface ProductStore extends ProductFormStringFields, ProductFormFileField, ProductCategoryFormFields {
+interface ProductStore extends ProductFormStringFields, ProductFormFileField, CategoryFormFields {
   productID?: string;
 
   productStringErrorFields: Partial<ProductStringFormValidationReturnType>;
@@ -16,6 +16,7 @@ interface ProductStore extends ProductFormStringFields, ProductFormFileField, Pr
   productFileErrorFields: { productImage?: string };
 
   setFieldValue: <K extends keyof ProductFormFields>(field: K, value: ProductFormFields[K]) => void;
+  setNewCategory: (newCategory: string) => void;
 
   setProductStringFormError: (inputField: keyof ProductStringFormValidationReturnType, message: string) => void;
   setProductFileFormError: (inputField: keyof ProductFileFormValidationReturnType, message: string) => void;
@@ -35,12 +36,14 @@ export const useProductStore = create<ProductStore>((set) => ({
   productQuantity: "",
   productImage: null,
   productFileName: "",
-  newProductCategory: "",
+  newCategory: "",
 
   productStringErrorFields: {},
   productFileErrorFields: {},
 
   setFieldValue: (field, value) => set({ [field]: value }),
+
+  setNewCategory: (newCategory) => set({ newCategory: newCategory }),
 
   setProductStringFormError: (inputField, message) =>
     set((state) => ({
@@ -64,7 +67,7 @@ export const useProductStore = create<ProductStore>((set) => ({
       productDescription: "",
       productQuantity: "",
       productImage: null,
-      newProductCategory: "",
+      newCategory: "",
     }),
   clearProductStringFormError: () => set({ productStringErrorFields: {} }),
   clearProductFileFormError: () => set({ productFileErrorFields: {} }),
