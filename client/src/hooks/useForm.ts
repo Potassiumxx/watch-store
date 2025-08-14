@@ -148,8 +148,6 @@ export default function useForm<T extends { [key: string]: boolean }>(initialSta
    */
   async function handleSuccessfulResponse(response: LoginAndRegisterResponse): Promise<void> {
     if (response) {
-      localStorage.setItem("token", response.token);
-
       userSignedIn();
       setShowUserMenu(false);
     }

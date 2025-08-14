@@ -33,7 +33,6 @@ export default function UserAccount() {
   const { handleSuccessfulResponse } = useForm(initialDirtyFieldState);
 
   function handleLogOut(): void {
-    localStorage.removeItem("token");
     setIsJWTChecked(false);
     userSignedOut();
     clearCart();

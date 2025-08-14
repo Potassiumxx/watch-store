@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LoginAndRegisterResponse } from "../../../types/authType";
+import { LoginAndRegisterResponse, UserDTOResponse } from "../../../types/authType";
 import { BACKEND_API_URL } from "../../../utils/constants";
 
 interface loginCredentials {
@@ -26,7 +26,7 @@ interface ResetPasswordCredentials {
  */
 export async function loginUser(credentials: loginCredentials): Promise<LoginAndRegisterResponse> {
   try {
-    const response = await axios.post(`${BACKEND_API_URL}/auth/login`, credentials);
+    const response = await axios.post(`${BACKEND_API_URL}/auth/login`, credentials, { withCredentials: true });
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
@@ -47,7 +47,7 @@ export async function loginUser(credentials: loginCredentials): Promise<LoginAnd
 export async function registerUser(credentials: registerCredentials): Promise<LoginAndRegisterResponse> {
   console.log(credentials);
   try {
-    const response = await axios.post(`${BACKEND_API_URL}/auth/register`, credentials);
+    const response = await axios.post(`${BACKEND_API_URL}/auth/register`, credentials, { withCredentials: true });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -81,7 +81,23 @@ export async function verifySecurityCode(credentials: ResetPasswordCredentials):
 
 export async function resetPasswordAPI(credentials: loginCredentials): Promise<LoginAndRegisterResponse> {
   try {
-    const response = await axios.post(`${BACKEND_API_URL}/auth/reset-password`, credentials);
+    const response = await axios.post(`${BACKEND_API_URL}/auth/reset-password`, credentials, { withCredentials: true });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error:", error.response?.data);
+      throw error;
+    } else {
+      console.error("Unexpected error:", error);
+      throw error;
+    }
+  }
+}
+
+export async function validateToken(): Promise<UserDTOResponse> {
+  try {
+    const response = await axios.get(`${BACKEND_API_URL}/auth/verify/cookie-token`, { withCredentials: true });
     console.log(response);
     return response.data;
   } catch (error) {

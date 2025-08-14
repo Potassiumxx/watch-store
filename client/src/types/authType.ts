@@ -21,3 +21,10 @@ export interface DecodedJWT {
 export interface LoginAndRegisterResponse {
   token: string;
 }
+
+export interface UserDTOResponse {
+  id: string;
+  email: string;
+  username: string;
+  role: string;
+}

@@ -1,13 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Footer from "./components/ui/Footer/Footer";
 import Navbar from "./components/ui/Navbar/Navbar";
 import { useUIStore } from "./store/uiStore";
 import * as React from "react";
 import { useAuthStore } from "./store/authStore";
 import { useUserStore } from "./store/userStore";
-import { jwtDecode } from "jwt-decode";
-import { DecodedJWT } from "./types/authType";
+import { validateToken } from "./services/api/auth/authAPI";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -20,11 +19,14 @@ function ScrollToTop() {
 }
 
 function App() {
+  const navigate = useNavigate();
+
   const navbarHeight = useUIStore((state) => state.navbarHeight);
 
-  const userSignedIn = useAuthStore((state) => state.userSignedIn);
-  const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
   const setIsJWTChecked = useAuthStore((state) => state.setIsJWTChecked);
+  const isUserSignedIn = useAuthStore((state) => state.isUserSignedIn);
+  const userSignedIn = useAuthStore((state) => state.userSignedIn);
+  const userSignedOut = useAuthStore((state) => state.userSignedOut);
 
   const globalUsername = useUserStore((state) => state.globalUsername);
   const setGlobalUsername = useUserStore((state) => state.setGlobalUsername);
@@ -32,17 +34,25 @@ function App() {
   const setRole = useUserStore((state) => state.setRole);
   const setUserID = useUserStore((state) => state.setUserID);
 
-  React.useEffect(() => {
-    const jwtToken = localStorage.getItem("token");
-    if (jwtToken) {
-      const decodedToken: DecodedJWT = jwtDecode(jwtToken);
+  async function validateCookieToken() {
+    try {
+      const response = await validateToken();
+      setGlobalEmail(response.email);
+      setGlobalUsername(response.username)
+      setRole(response.role);
+      setUserID(response.id);
       userSignedIn();
-      setGlobalUsername(decodedToken.username);
-      setGlobalEmail(decodedToken.email);
-      setRole(decodedToken.role);
-      setUserID(decodedToken.sub);
+    } catch (error) {
+      console.log(error);
+      navigate("/", { replace: true });
+      userSignedOut();
+    } finally {
+      setIsJWTChecked(true);
     }
-    setIsJWTChecked(true);
+  }
+
+  React.useEffect(() => {
+    if (isUserSignedIn) validateCookieToken();
   }, [isUserSignedIn, globalUsername]);
   return (
     <>
