@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,14 +23,18 @@ import com.watchstore.server.util.FileStorageUtil;
 
 @Service
 public class ProductService {
-  @Autowired
-  private ProductRepository productRepository;
-  @Autowired
-  private InventoryRepository inventoryRepository;
-  @Autowired
-  private CategoryRepository categoryRepository;
-  @Autowired
-  private OrderItemRepository orderItemRepository;
+  private final ProductRepository productRepository;
+  private final InventoryRepository inventoryRepository;
+  private final CategoryRepository categoryRepository;
+  private final OrderItemRepository orderItemRepository;
+
+  public ProductService(ProductRepository productRepository, InventoryRepository inventoryRepository,
+      CategoryRepository categoryRepository, OrderItemRepository orderItemRepository) {
+    this.productRepository = productRepository;
+    this.categoryRepository = categoryRepository;
+    this.inventoryRepository = inventoryRepository;
+    this.orderItemRepository = orderItemRepository;
+  }
 
   private final String uploadDirectory = "/home/asus/Pictures";
 

@@ -2,7 +2,6 @@ package com.watchstore.server.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.watchstore.server.dto.category.CategoryDTO;
@@ -15,10 +14,13 @@ import com.watchstore.server.repository.ProductRepository;
 
 @Service
 public class CategoryService {
-  @Autowired
-  private CategoryRepository categoryRepository;
-  @Autowired
-  private ProductRepository productRepository;
+  private final CategoryRepository categoryRepository;
+  private final ProductRepository productRepository;
+
+  public CategoryService(CategoryRepository categoryRepository, ProductRepository productRepository) {
+    this.categoryRepository = categoryRepository;
+    this.productRepository = productRepository;
+  }
 
   public void createCategory(CategoryRequest categoryRequest) {
     if (categoryRepository.findByCategoryName(categoryRequest.getCategoryName().toLowerCase()).isPresent()) {

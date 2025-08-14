@@ -2,7 +2,6 @@ package com.watchstore.server.service;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,10 +18,13 @@ import com.watchstore.server.repository.UserRepository;
 
 @Service
 public class AuthService {
-  @Autowired
-  private UserRepository userRepository;
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  private final UserRepository userRepository;
+  private final PasswordEncoder passwordEncoder;
+
+  public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+  }
 
   public UserDTO login(LoginRequest loginRequest) {
     Optional<User> userOptional = userRepository.findByEmail(loginRequest.getEmail().trim().toLowerCase());
