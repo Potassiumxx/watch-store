@@ -148,7 +148,7 @@ export default function Products() {
     };
   }, [showUpdateProductForm]);
 
-  if (products.length === 0 && !isLoading || sortedProducts.length === 0) return (
+  if (products.length === 0 && !isLoading || sortedProducts.length === 0 && !isLoading) return (
     <div className="w-full text-center mt-20">
       <h1 className="text-white text-4xl font-semibold">No products found</h1>
     </div>
