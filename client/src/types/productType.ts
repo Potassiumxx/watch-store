@@ -32,7 +32,7 @@ export interface ProductCategoryFormFields {
   newProductCategory: string;
 }
 
-export type ProductFormFields = ProductFormStringFields & ProductFormFileField;
+export type ProductFormFields = ProductFormStringFields & ProductFormFileField & { productID?: string };
 
 export interface ProductFormResponse {
   message: string;

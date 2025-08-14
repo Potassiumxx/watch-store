@@ -4,7 +4,6 @@ import { ProductDTO, ProductFormResponse, ProductFormStringFields, ProductString
 import { initialProductDirtyFieldState, validateProductFormStringFields, validateFileField } from "../../../utils/validateProductForm";
 import ProductForm from "./ProductForm";
 import useProductForm from "../../../hooks/useProductForm";
-import { useUpdateProductStore } from "../../../store/productStore/useUpdateProductStore";
 import { useProductStore } from "../../../store/productStore";
 import { updateProduct } from "../../../services/api/admin/adminProductAPI";
 import { IoCloseOutline } from "react-icons/io5";
@@ -17,16 +16,9 @@ interface UpdateProductFormProps {
 }
 
 export default function UpdateProductForm({ selectedProduct, fetchProductFunc }: UpdateProductFormProps) {
-  const { dirtyField, handleFieldOnChange, generalError, isValidationError, handleFormSubmit } = useForm(initialProductDirtyFieldState);
-  const { handleFileUpload, validateProductFormFields, handleProductFieldOnChange } = useProductForm({
-    setProductName: useUpdateProductStore.getState().setProductName,
-    setProductPrice: useUpdateProductStore.getState().setProductPrice,
-    setProductCategory: useUpdateProductStore.getState().setProductCategory,
-    setProductDescription: useUpdateProductStore.getState().setProductDescription,
-    setProductQuantity: useUpdateProductStore.getState().setProductQuantity,
-    setProductFileName: useUpdateProductStore.getState().setProductFileName,
-    setProductImage: useUpdateProductStore.getState().setProductImage,
-  });
+  const { dirtyField, handleFieldOnChange, generalError, setGeneralError, isValidationError, handleFormSubmit } = useForm(initialProductDirtyFieldState);
+  const productStore = useProductStore();
+  const { handleFileUpload, validateProductFormFields, handleProductFieldOnChange } = useProductForm(productStore);
 
   const {
     productID,
@@ -38,17 +30,11 @@ export default function UpdateProductForm({ selectedProduct, fetchProductFunc }:
     productImage,
     productStringErrorFields,
     productFileErrorFields,
-    setProductID,
-    setProductName,
-    setProductPrice,
-    setProductCategory,
-    setProductDescription,
-    setProductQuantity,
     setProductStringFormError,
     setProductFileFormError,
     clearProductStringFormError,
     clearProductFileFormError
-  } = useUpdateProductStore();
+  } = useProductStore();
 
   const setProductFileName = useProductStore((state) => state.setProductFileName);
   const fileName = useProductStore((state) => state.productFileName);
@@ -90,6 +76,7 @@ export default function UpdateProductForm({ selectedProduct, fetchProductFunc }:
       isValidationError: isValidationError
     })) return;
 
+    if (!productID) return setGeneralError("No product ID. Could not update the proudct");
     const response = await handleFormSubmit<ProductStringFormValidationReturnType, ProductFormResponse>({
       apiCall: () => updateProduct(productID, { productName, productPrice, productCategory, productDescription, productQuantity, productImage }),
       setError: setProductStringFormError
@@ -103,12 +90,14 @@ export default function UpdateProductForm({ selectedProduct, fetchProductFunc }:
   }
 
   React.useEffect(() => {
-    setProductID(selectedProduct.id.toString());
-    setProductName(selectedProduct.name);
-    setProductPrice(selectedProduct.price.toString());
-    setProductCategory(selectedProduct.category);
-    setProductDescription(selectedProduct.description);
-    setProductQuantity(selectedProduct.quantity.toString());
+    if (!selectedProduct) return;
+
+    useProductStore.getState().setFieldValue("productID", selectedProduct.id.toString());
+    useProductStore.getState().setFieldValue("productName", selectedProduct.name);
+    useProductStore.getState().setFieldValue("productPrice", selectedProduct.price.toString());
+    useProductStore.getState().setFieldValue("productCategory", selectedProduct.category);
+    useProductStore.getState().setFieldValue("productDescription", selectedProduct.description);
+    useProductStore.getState().setFieldValue("productQuantity", selectedProduct.quantity.toString());
 
     setProductFileName(selectedProduct.imagePath);
 

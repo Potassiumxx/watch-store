@@ -2,6 +2,7 @@ import { useProductStore } from "../store/productStore";
 import { DirtyFieldState, HandleFieldOnChangeParamter } from "../types/form";
 import {
   ProductFileFormValidationReturnType,
+  ProductFormFields,
   ProductFormFileField,
   ProductFormStringFields,
   ProductStringFormValidationReturnType,
@@ -44,13 +45,7 @@ interface HandleFileUploadParameter {
 }
 
 interface StoreSettersType {
-  setProductName: (v: string) => void;
-  setProductPrice: (v: string) => void;
-  setProductCategory: (v: string) => void;
-  setProductDescription: (v: string) => void;
-  setProductQuantity: (v: string) => void;
-  setProductFileName: (v: string) => void;
-  setProductImage: (f: File | null) => void;
+  setFieldValue: <K extends keyof ProductFormFields>(field: K, value: ProductFormFields[K]) => void;
 }
 
 /**
@@ -60,17 +55,6 @@ interface StoreSettersType {
  */
 export default function useProductForm(storeSetters: StoreSettersType) {
   const setProductFileName = useProductStore((state) => state.setProductFileName);
-  //  const setProductImage = useProductStore((state) => state.setProductImage);
-
-  const {
-    // setProductName,
-    // setProductPrice,
-    // setProductCategory,
-    // setProductDescription,
-    // setProductQuantity,
-    // setProductFileName,
-    setProductImage,
-  } = storeSetters;
 
   function validateProductFormFields({
     stringFields,
@@ -91,7 +75,7 @@ export default function useProductForm(storeSetters: StoreSettersType) {
     return isValidationError(stringError, setStringError) || isValidationError(fileError, setFileError);
   }
 
-  function handleProductFieldOnChange<T extends { [K in keyof T]: string | undefined }>({
+  function handleProductFieldOnChange<T extends Partial<ProductFormFields>>({
     event,
     values,
     dirtyField,
@@ -101,22 +85,14 @@ export default function useProductForm(storeSetters: StoreSettersType) {
     validateFunction,
   }: HandleProductFieldOnChangeProps<T>) {
     const { value, name } = event.target;
-    const key = name as keyof T;
+    const key = name as keyof ProductFormFields;
 
     handleFieldOnChange({
       fieldKey: key,
       newValue: value,
       allFormValues: values,
       formValueSetter: (v: string) => {
-        const productSetters: Record<keyof ProductFormStringFields, (value: string) => void> = {
-          productName: storeSetters.setProductName,
-          productPrice: storeSetters.setProductPrice,
-          productCategory: storeSetters.setProductCategory,
-          productDescription: storeSetters.setProductDescription,
-          productQuantity: storeSetters.setProductQuantity,
-        };
-
-        productSetters[key as keyof ProductFormStringFields]?.(v);
+        storeSetters.setFieldValue(key, v as ProductFormFields[typeof key]);
       },
       validateFunction: validateFunction,
       setFieldErrorFunction: setStringError,
@@ -135,7 +111,8 @@ export default function useProductForm(storeSetters: StoreSettersType) {
 
     if (file) {
       setProductFileName(file.name);
-      setProductImage(file);
+      storeSetters.setFieldValue("productImage", file);
+      file;
     }
 
     const fileError = validateFileFieldFunc({

@@ -20,7 +20,7 @@ function appendFormData(productData: ProductFormFields): FormData {
 export async function addProduct(productData: ProductFormFields): Promise<ProductFormResponse> {
   const formData = appendFormData(productData);
   try {
-    const response = await axios.post(`${BACKEND_API_URL}/admin/add-product`, formData);
+    const response = await axios.post(`${BACKEND_API_URL}/admin/product/add-product`, formData);
     console.log(response);
     return response.data;
   } catch (error) {
@@ -37,7 +37,7 @@ export async function addProduct(productData: ProductFormFields): Promise<Produc
 export async function updateProduct(productID: string, productData: ProductFormFields): Promise<ProductFormResponse> {
   const formData = appendFormData(productData);
   try {
-    const response = await axios.put(`${BACKEND_API_URL}/admin/update-product/${productID}`, formData);
+    const response = await axios.put(`${BACKEND_API_URL}/admin/product/update-product/${productID}`, formData);
     console.log(response);
     return response.data;
   } catch (error) {
@@ -53,7 +53,7 @@ export async function updateProduct(productID: string, productData: ProductFormF
 
 export async function deleteProduct(productID: number): Promise<ProductFormResponse> {
   try {
-    const response = await axios.delete(`${BACKEND_API_URL}/admin/delete-product/${productID}`);
+    const response = await axios.delete(`${BACKEND_API_URL}/admin/product/delete-product/${productID}`);
     console.log(response);
     return response.data;
   } catch (error) {

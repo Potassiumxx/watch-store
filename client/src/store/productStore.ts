@@ -5,20 +5,17 @@ import {
   ProductStringFormValidationReturnType,
   ProductFileFormValidationReturnType,
   ProductCategoryFormFields,
+  ProductFormFields,
 } from "../types/productType";
 
 interface ProductStore extends ProductFormStringFields, ProductFormFileField, ProductCategoryFormFields {
+  productID?: string;
+
   productStringErrorFields: Partial<ProductStringFormValidationReturnType>;
   productFileName: string;
   productFileErrorFields: { productImage?: string };
 
-  setProductName: (name: string) => void;
-  setProductPrice: (price: string) => void;
-  setProductCategory: (category: string) => void;
-  setProductDescription: (description: string) => void;
-  setProductQuantity: (quantity: string) => void;
-  setProductImage: (image: File | null) => void;
-  setNewProductCategory: (newCategory: string) => void;
+  setFieldValue: <K extends keyof ProductFormFields>(field: K, value: ProductFormFields[K]) => void;
 
   setProductStringFormError: (inputField: keyof ProductStringFormValidationReturnType, message: string) => void;
   setProductFileFormError: (inputField: keyof ProductFileFormValidationReturnType, message: string) => void;
@@ -30,6 +27,7 @@ interface ProductStore extends ProductFormStringFields, ProductFormFileField, Pr
 }
 
 export const useProductStore = create<ProductStore>((set) => ({
+  productID: "",
   productName: "",
   productPrice: "",
   productCategory: "",
@@ -42,13 +40,7 @@ export const useProductStore = create<ProductStore>((set) => ({
   productStringErrorFields: {},
   productFileErrorFields: {},
 
-  setProductName: (name) => set({ productName: name }),
-  setProductPrice: (price) => set({ productPrice: price }),
-  setProductCategory: (category) => set({ productCategory: category }),
-  setProductDescription: (description) => set({ productDescription: description }),
-  setProductQuantity: (quantity) => set({ productQuantity: quantity }),
-  setProductImage: (image) => set({ productImage: image }),
-  setNewProductCategory: (newCategory) => set({ newProductCategory: newCategory }),
+  setFieldValue: (field, value) => set({ [field]: value }),
 
   setProductStringFormError: (inputField, message) =>
     set((state) => ({

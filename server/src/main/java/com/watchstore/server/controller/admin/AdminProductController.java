@@ -14,7 +14,7 @@ import com.watchstore.server.dto.product.ProductRequest;
 import com.watchstore.server.service.ProductService;
 
 @RestController
-@RequestMapping("/api/admin/products")
+@RequestMapping("/api/admin/product")
 public class AdminProductController {
   private final ProductService productService;
 
