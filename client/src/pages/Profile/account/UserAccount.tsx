@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ProfileContentContainer from "../container/ProfileContentContainer";
 import * as React from "react";
 import { useCartStore } from "../../../store/cartStore";
-import { updateUsername } from "../../../services/api/authAPI";
+import { updateUsername } from "../../../services/api/user/userAPI";
 import axios from "axios";
 import useForm from "../../../hooks/useForm";
 

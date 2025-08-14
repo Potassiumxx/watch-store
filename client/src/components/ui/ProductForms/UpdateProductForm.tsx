@@ -6,7 +6,7 @@ import ProductForm from "./ProductForm";
 import useProductForm from "../../../hooks/useProductForm";
 import { useUpdateProductStore } from "../../../store/productStore/useUpdateProductStore";
 import { useProductStore } from "../../../store/productStore";
-import { updateProduct } from "../../../services/api/productAPI";
+import { updateProduct } from "../../../services/api/admin/adminProductAPI";
 import { IoCloseOutline } from "react-icons/io5";
 import { useUIStore } from "../../../store/uiStore";
 import Backdrop from "../Backdrop/Backdrop";

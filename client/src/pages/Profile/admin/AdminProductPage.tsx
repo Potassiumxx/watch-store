@@ -10,7 +10,7 @@ import {
   ProductFormStringFields,
   ProductStringFormValidationReturnType,
 } from "../../../types/productType";
-import { addProduct } from "../../../services/api/productAPI";
+import { addProduct } from "../../../services/api/admin/adminProductAPI";
 import ProductForm from "../../../components/ui/ProductForms/ProductForm";
 import useProductForm from "../../../hooks/useProductForm";
 import { useAddProductStore } from "../../../store/productStore/useAddProductStore";

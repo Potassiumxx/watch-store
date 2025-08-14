@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BACKEND_API_URL } from "../../utils/constants";
+import { BACKEND_API_URL } from "../../../utils/constants";
 
 export async function placeOrder(orderData: {
   userId: string;

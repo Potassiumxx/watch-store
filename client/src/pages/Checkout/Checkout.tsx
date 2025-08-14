@@ -10,7 +10,7 @@ import useForm from "../../hooks/useForm";
 import { useCartStore } from "../../store/cartStore";
 import { useNavigate } from "react-router-dom";
 import { useUIStore } from "../../store/uiStore";
-import { placeOrder } from "../../services/api/checkoutAPI";
+import { placeOrder } from "../../services/api/checkout/checkoutAPI";
 import { useUserStore } from "../../store/userStore";
 
 export default function Checkout() {

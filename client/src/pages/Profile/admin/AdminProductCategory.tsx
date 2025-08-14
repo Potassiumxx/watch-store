@@ -5,13 +5,14 @@ import { useProductStore } from "../../../store/productStore";
 import * as React from "react";
 import Input from "../../../components/ui/Input/Input";
 import Button from "../../../components/ui/Button/Button";
-import { addNewCategory, deleteCategory, getAllProductCategories, updateCategory } from "../../../services/api/category/categoryAPI";
+import { addNewCategory, deleteCategory, updateCategory } from "../../../services/api/admin/adminCategoryAPI";
 import axios from "axios";
 import { CategoryDTO } from "../../../types/productType";
 import Loader from "../../../components/ui/Loader/Loader";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import ConfirmModal from "../../../components/ui/ConfirmModal/ConfirmModal";
+import { getAllProductCategories } from "../../../services/api/category/categoryAPI";
 
 export default function AdminProductCategory() {
   const newProductCategory = useProductStore((state) => state.newProductCategory);

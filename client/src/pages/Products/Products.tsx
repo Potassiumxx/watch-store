@@ -1,5 +1,5 @@
 import * as React from "react";
-import { deleteProduct, getAllProducts } from "../../services/api/productAPI";
+import { getAllProducts } from "../../services/api/product/productAPI";
 import { ProductDTO } from "../../types/productType";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button/Button";
@@ -13,6 +13,7 @@ import { useNavbarStore } from "../../store/navbarStore";
 import getLevenshteinDistance from "../../utils/algorithm";
 import { useUIStore } from "../../store/uiStore";
 import { useSortedList } from "../../hooks/useSortedList";
+import { deleteProduct } from "../../services/api/admin/adminProductAPI";
 
 export default function Products() {
   const [products, setProducts] = React.useState<ProductDTO[]>([]);

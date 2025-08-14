@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import { ProductDTO } from "../../types/productType";
-import { getProductByID } from "../../services/api/productAPI";
+import { getProductByID } from "../../services/api/product/productAPI";
 import { fetchErrorCatcher } from "../../utils/helpers";
 import FetchStatusDisplay from "../../components/ui/FetchStatusDisplay/FetchStatusDisplay";
 import Button from "../../components/ui/Button/Button";

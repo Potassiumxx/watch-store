@@ -1,12 +1,13 @@
 import * as React from "react";
 import ProfileContentContainer from "../container/ProfileContentContainer";
-import { getAllOrders, getSpecificOrder } from "../../../services/api/orderAPI";
+import { getSpecificOrder } from "../../../services/api/order/orderAPI";
 import { OrderResponseDTO } from "../../../types/orderType";
 import { useUserStore } from "../../../store/userStore";
 import { ROLES } from "../../../utils/constants";
 import { useAuthStore } from "../../../store/authStore";
 import { useSortedList } from "../../../hooks/useSortedList";
 import getLevenshteinDistance from "../../../utils/algorithm";
+import { getAllOrders } from "../../../services/api/admin/adminOrderAPI";
 
 export default function Order() {
   const [orders, setOrders] = React.useState<OrderResponseDTO[]>([]);

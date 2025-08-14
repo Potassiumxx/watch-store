@@ -34,7 +34,7 @@ export async function addProduct(productData: ProductFormFields): Promise<Produc
   }
 }
 
-export async function updateProduct(productID: string, productData: ProductFormFields): Promise<string> {
+export async function updateProduct(productID: string, productData: ProductFormFields): Promise<ProductFormResponse> {
   const formData = appendFormData(productData);
   try {
     const response = await axios.put(`${BACKEND_API_URL}/admin/update-product/${productID}`, formData);
@@ -51,7 +51,7 @@ export async function updateProduct(productID: string, productData: ProductFormF
   }
 }
 
-export async function deleteProduct(productID: number): Promise<string> {
+export async function deleteProduct(productID: number): Promise<ProductFormResponse> {
   try {
     const response = await axios.delete(`${BACKEND_API_URL}/admin/delete-product/${productID}`);
     console.log(response);
