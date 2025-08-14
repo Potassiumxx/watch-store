@@ -21,6 +21,7 @@ export default function SingleProductPage() {
   const setShowUserMenu = useUIStore((state) => state.setShowUserMenu);
 
   async function fetchProduct() {
+    setIsLoading(true);
     try {
       const data = await getProductByID(Number(id));
       setProduct(data);
@@ -36,7 +37,7 @@ export default function SingleProductPage() {
   }, [id]);
 
   return (
-    <FetchStatusDisplay isLoading={isLoading} isEmpty={!product} error={error} emptyMessage="Could not fetch product.">
+    <FetchStatusDisplay isLoading={isLoading} isEmpty={!product && !isLoading} error={error} emptyMessage="Could not fetch product.">
       {product &&
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-white">
           <img

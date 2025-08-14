@@ -7,7 +7,8 @@ export function isEmpty(value?: string): boolean {
 export function fetchErrorCatcher(error: unknown, setErrorFunc: (error: string) => void): void {
   if (axios.isAxiosError(error)) {
     console.log(error.code ?? "ERR_NETWORK");
-    setErrorFunc("A network error occured. Check your internet or try again later.");
+    if (error.response?.status === 404) setErrorFunc(error.response.data);
+    else setErrorFunc("A network error occured. Check your internet or try again later.");
   } else {
     console.log("Unknown error", error);
     setErrorFunc("An unexpected error occured. Could be a problem from the server, try again later.");

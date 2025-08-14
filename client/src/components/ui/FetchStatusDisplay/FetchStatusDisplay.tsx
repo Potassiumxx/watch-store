@@ -24,7 +24,7 @@ export default function FetchStatusDisplay({
 
   if (error) {
     return (
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center mt-20">
         <h1 className="text-white text-3xl">{error}</h1>
       </div>
     );
