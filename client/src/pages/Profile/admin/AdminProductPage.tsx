@@ -28,14 +28,13 @@ export default function AdminProductPage() {
     productImage,
     productStringErrorFields,
     productFileErrorFields,
+    productFileName,
     setProductStringFormError,
     setProductFileFormError,
     clearProductStringFormError,
-    clearProductFileFormError
+    clearProductFileFormError,
+    clearProductFormFieldsValues
   } = useProductStore();
-
-  const fileName = useProductStore((state) => state.productFileName);
-  const clearProductFormFieldsValues = useProductStore((state) => state.clearProductFormFieldsValues);
 
   const [message, setMessage] = React.useState<string | null>(null);
 
@@ -54,7 +53,7 @@ export default function AdminProductPage() {
       },
       fileProperties: {
         file: productImage,
-        fileName
+        fileName: productFileName,
       },
       setStringError: setProductStringFormError,
       setFileError: setProductFileFormError,

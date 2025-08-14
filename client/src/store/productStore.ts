@@ -57,11 +57,14 @@ export const useProductStore = create<ProductStore>((set) => ({
 
   clearProductFormFieldsValues: () =>
     set({
+      productID: "",
       productName: "",
       productPrice: "",
       productCategory: "",
       productDescription: "",
+      productQuantity: "",
       productImage: null,
+      newProductCategory: "",
     }),
   clearProductStringFormError: () => set({ productStringErrorFields: {} }),
   clearProductFileFormError: () => set({ productFileErrorFields: {} }),

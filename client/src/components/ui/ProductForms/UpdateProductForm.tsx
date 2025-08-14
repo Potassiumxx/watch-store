@@ -33,7 +33,8 @@ export default function UpdateProductForm({ selectedProduct, fetchProductFunc }:
     setProductStringFormError,
     setProductFileFormError,
     clearProductStringFormError,
-    clearProductFileFormError
+    clearProductFileFormError,
+    clearProductFormFieldsValues
   } = useProductStore();
 
   const setProductFileName = useProductStore((state) => state.setProductFileName);
@@ -52,7 +53,7 @@ export default function UpdateProductForm({ selectedProduct, fetchProductFunc }:
       // Add product page sould initially be empty. More information about this will be provided in the future.
       setProductFileName("");
     }, 300);
-
+    clearProductFormFieldsValues();
   }
 
 
@@ -85,12 +86,14 @@ export default function UpdateProductForm({ selectedProduct, fetchProductFunc }:
     if (response) {
       handleFormClose();
       fetchProductFunc();
+      clearProductFormFieldsValues();
     };
 
   }
 
   React.useEffect(() => {
     if (!selectedProduct) return;
+    clearProductFormFieldsValues();
 
     useProductStore.getState().setFieldValue("productID", selectedProduct.id.toString());
     useProductStore.getState().setFieldValue("productName", selectedProduct.name);
