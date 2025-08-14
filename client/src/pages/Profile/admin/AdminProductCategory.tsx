@@ -13,6 +13,7 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import ConfirmModal from "../../../components/ui/ConfirmModal/ConfirmModal";
 import { getAllProductCategories } from "../../../services/api/category/categoryAPI";
+import FetchStatusDisplay from "../../../components/ui/FetchStatusDisplay/FetchStatusDisplay";
 
 export default function AdminProductCategory() {
   const newCategory = useProductStore((state) => state.newCategory);
@@ -164,13 +165,12 @@ export default function AdminProductCategory() {
         </div>
         <div className="innerDivBackgroundColour py-4 shadow-black shadow-lg rounded-md mb-10">
           <h2 className="text-2xl text-white text-center py-4">Categories</h2>
-          {isLoading ? (
-            <Loader />
-          ) : categories.length === 0 ? (
-            <div className="text-white text-center text-[22px] pt-10">
-              {fetchCategoriesError ? fetchCategoriesError : "No categories to show"}
-            </div>
-          ) : (
+          <FetchStatusDisplay
+            isLoading={isLoading}
+            error={fetchCategoriesError}
+            isEmpty={categories.length === 0}
+            emptyMessage="No categories found"
+            loadingIconSize={30}>
             <ul className="md:w-full px-2 md:px-10 space-y-2 md:space-y-4">
               {categories.map((category) => {
                 const isCategoryInUse: boolean = category.productCount > 0;
@@ -256,7 +256,8 @@ export default function AdminProductCategory() {
                 )
               })}
             </ul>
-          )}
+            )
+          </FetchStatusDisplay>
         </div>
 
         {

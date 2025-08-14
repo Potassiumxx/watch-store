@@ -32,7 +32,7 @@ export default function SelectField({ id, error, ...attributes }: SelectFieldPro
     fetchCategoryOptions();
   }, []);
 
-  if (isLoading) return <Loader />
+  if (isLoading) return <Loader className="text-white border-white mx-auto" />
 
   if (fetchError) return <span className="text-white">Could not get category options. Try again later.</span>
 

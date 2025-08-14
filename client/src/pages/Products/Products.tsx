@@ -148,14 +148,14 @@ export default function Products() {
     };
   }, [showUpdateProductForm]);
 
-  if (products.length === 0 || getSearchedProducts(searchedValue).length === 0 && !isLoading) return (
+  if (products.length === 0 && !isLoading || sortedProducts.length === 0) return (
     <div className="w-full text-center mt-20">
       <h1 className="text-white text-4xl font-semibold">No products found</h1>
     </div>
   )
 
   return (
-    <FetchStatusDisplay isLoading={isLoading} error={error} isEmpty={!products} emptyMessage="No products available">
+    <FetchStatusDisplay isLoading={isLoading} error={error} isEmpty={!products && !isLoading} emptyMessage="No products available">
       <div className="text-white px-4 md:component-x-axis-padding">
         <h1 className="text-center text-3xl font-bold mb-6">Products</h1>
 

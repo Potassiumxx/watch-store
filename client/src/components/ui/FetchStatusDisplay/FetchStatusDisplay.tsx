@@ -7,6 +7,7 @@ interface FetchStatusDisplayProps {
   isEmpty?: boolean;
   emptyMessage?: string;
   children: ReactNode;
+  loadingIconSize?: number;
 }
 
 export default function FetchStatusDisplay({
@@ -15,14 +16,15 @@ export default function FetchStatusDisplay({
   isEmpty = false,
   emptyMessage = "No data available.",
   children,
+  loadingIconSize = 50
 }: FetchStatusDisplayProps) {
   if (isLoading) {
-    return <Loader className="border-white w-full m-auto mt-40 border-8" size={50} />;
+    return <Loader className="border-white w-full m-auto mt-40 border-8" size={loadingIconSize} />;
   }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center mt-40">
+      <div className="flex justify-center items-center">
         <h1 className="text-white text-3xl">{error}</h1>
       </div>
     );
