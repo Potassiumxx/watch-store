@@ -18,6 +18,7 @@ DB_USERNAME=root # change username according to your setup if root does not work
 DB_PASSWORD=your_database_password
 
 JWT_SECRET_KEY=256_bits_key_is_recommended
+SECURE_COOKIE="false" # true for HTTPS connection, false of HTTP connection
 
 ADMIN_EMAIL=any_email_works
 ADMIN_USERNAME="huge_loser"
